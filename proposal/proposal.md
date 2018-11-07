@@ -23,7 +23,7 @@ The final products were included regression models using to analyze the effect o
 
 ### Anticipated data sources
 
-The dataset were collected from the environment and health data portal from the NYC health system(<http://a816-dohbesp.nyc.gov/IndicatorPublic/BuildATable.aspx>).
+The dataset were collected from the environment and health data portal from the [NYC health system](http://a816-dohbesp.nyc.gov/IndicatorPublic/BuildATable.aspx).
 
 ### Planned analysis / visualizations / coding challenges
 
