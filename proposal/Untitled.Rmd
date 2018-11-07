@@ -1,0 +1,45 @@
+---
+title: "proposal"
+date: "11/7/2018"
+output: github_document
+---
+
+
+|Name        | Uni       |
+|------------|-----------|
+|Qi Shao     | qs2200    |
+|Baoyi Shi   | bs3141    |
+|Xinyao Wu   | xw2598    |
+|Jingwei Ren | jr3869    |
+
+# The relationship between air qualities and asthma outcomes in New York City
+
+### Motivation 
+
+The motivation for this project is to investigate the effect of air pollution on asthma in different areas in New York City from 2009 to 2016. Specifically, the air pollution variables include ozone, nitrogen dioxide, sulfur dioxide and PM2. 
+
+## Intended final product
+
+The final products were included regression models using to analyze the effect of each air pollution variables on asthma and figures presenting the asthma outcomes and air qualities distributions in different areas. 
+
+### Anticipated data sources
+
+The dataset were collected from the environment and health data portal from the NYC health system(http://a816-dohbesp.nyc.gov/IndicatorPublic/BuildATable.aspx).
+
+### Planned analysis / visualizations / coding challenges
+
+*We planned to map the air quality data and asthma outcome data based on time. Visualizations might include boxplots, heatmaps, hex plots, etc. We would also use interactive plots if needed. 
+
+*One of the coding challenges is tidy data based on categories of the time variable and units.
+
+### Timeline
+
+|Date              | Completed tasks                       |
+|------------------|---------------------------------------|
+|November 13       | Assign work to each person            |
+|November 18       | Tidy data                             |
+|November 22       | Present draft plots and web pages     |
+|November 28       | Completed web pages and report        |
+|December 3        | Complete screencast                   |
+|December 6        | Turn in report and screencast         |
+|December 11       | Show off how awesome we are in class  |
