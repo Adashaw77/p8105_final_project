@@ -142,6 +142,12 @@ air_asthma$year = str_remove(air_asthma$year, &quot;Annual Average &quot;)
 air_asthma1 = air_asthma %&gt;%
   mutate(name_measure=str_c(name,&quot;-&quot;,measure)) %&gt;%
   select(-name, -measure, -message) %&gt;%
+  filter(description == &quot;Neighborhood (UHF 42)&quot;) %&gt;%
+  spread(key = name_measure, value = data_value) 
+
+air_asthma2 = air_asthma %&gt;%
+  mutate(name_measure=str_c(name,&quot;-&quot;,measure)) %&gt;%
+  select(-name, -measure, -message) %&gt;%
   filter(description == &quot;Neighborhood (UHF 34)&quot;) %&gt;%
   spread(key = name_measure, value = data_value) 
 #  filter(geo_entity_name == &quot;Williamsburg - Bushwick&quot;)
