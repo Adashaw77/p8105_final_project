@@ -129,31 +129,29 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>air_asthma = read_csv(&quot;./data/Air_Asthma_Smoking_Data.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_integer(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_integer(),
-##   data_value = col_double(),
-##   message = col_character()
-## )</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 5323 parsing failures.
-## row # A tibble: 5 x 5 col     row col           expected   actual         file                       expected   &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;      &lt;chr&gt;          &lt;chr&gt;                      actual 1  1907 year_descrip… an integer Annual Averag… './data/Air_Asthma_Smokin… file 2  1908 year_descrip… an integer Annual Averag… './data/Air_Asthma_Smokin… row 3  1909 year_descrip… an integer Annual Averag… './data/Air_Asthma_Smokin… col 4  1910 year_descrip… an integer Annual Averag… './data/Air_Asthma_Smokin… expected 5  1911 year_descrip… an integer Annual Averag… './data/Air_Asthma_Smokin…
-## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
-## See problems(...) for more details.</code></pre>
+<pre class="r"><code>air_asthma = read.csv(&quot;./data/Air_Asthma_Smoking_Data.csv&quot;)</code></pre>
+<p>Description of the original dataset:</p>
+<pre class="r"><code>air_asthma = read.csv(&quot;./data/Air_Asthma_Smoking_Data.csv&quot;) %&gt;%
+  select(name, description, Measure, geo_entity_name,
+         year = year_description, data_value, message) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(str_detect(year, &quot;^20|^An&quot;))
+
+air_asthma$year = str_remove(air_asthma$year, &quot;Annual Average &quot;)
+
+air_asthma1 = air_asthma %&gt;%
+  mutate(name_measure=str_c(name,&quot;-&quot;,measure)) %&gt;%
+  select(-name, -measure, -message) %&gt;%
+  filter(description == &quot;Neighborhood (UHF 34)&quot;) %&gt;%
+  spread(key = name_measure, value = data_value) 
+#  filter(geo_entity_name == &quot;Williamsburg - Bushwick&quot;)
+
+  
+#filter(description == &quot;Neighborhood (UHF 34)&quot;, geo_entity_name == &quot;Williamsburg - Bushwick&quot;, year == 2009) %&gt;%
+    
+#distinct(air_asthma1, geo_entity_name)
+
+#abc_df = air_asthma1[c(99,106),]</code></pre>
 
 
 

@@ -7,9 +7,38 @@ output: html_document
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(plyr)
 ```
 
 ```{r tidy data}
-air_asthma = read_csv("./data/Air_Asthma_Smoking_Data.csv")
+air_asthma = read.csv("./data/Air_Asthma_Smoking_Data.csv")
+```
 
+Description of the original dataset:
+
+
+
+
+```{r}
+air_asthma = read.csv("./data/Air_Asthma_Smoking_Data.csv") %>%
+  select(name, description, Measure, geo_entity_name,
+         year = year_description, data_value, message) %>%
+  janitor::clean_names() %>%
+  filter(str_detect(year, "^20|^An"))
+
+air_asthma$year = str_remove(air_asthma$year, "Annual Average ")
+
+air_asthma1 = air_asthma %>%
+  mutate(name_measure=str_c(name,"-",measure)) %>%
+  select(-name, -measure, -message) %>%
+  filter(description == "Neighborhood (UHF 34)") %>%
+  spread(key = name_measure, value = data_value) 
+#  filter(geo_entity_name == "Williamsburg - Bushwick")
+
+  
+#filter(description == "Neighborhood (UHF 34)", geo_entity_name == "Williamsburg - Bushwick", year == 2009) %>%
+    
+#distinct(air_asthma1, geo_entity_name)
+
+#abc_df = air_asthma1[c(99,106),]
 ```
