@@ -1,0 +1,15 @@
+---
+title: "Tidydata"
+author: "Qi Shao"
+date: "11/11/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r tidy data}
+air_asthma = read_csv("./data/Air_Asthma_Smoking_Data.csv")
+
+```
