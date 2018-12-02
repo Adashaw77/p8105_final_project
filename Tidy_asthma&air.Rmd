@@ -1,0 +1,19 @@
+---
+title: "Tidy"
+author: "Qi Shao"
+date: "12/2/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(plyr)
+```
+
+```{r}
+
+
+
+
+
+```
