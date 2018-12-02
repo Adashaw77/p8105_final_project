@@ -138,7 +138,8 @@ $(document).ready(function () {
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(dplyr)
-library(readr)</code></pre>
+library(readr)
+library(ggplot2)</code></pre>
 <pre class="r"><code>#import tree data, retain only trees alive and good to health
 tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
   janitor::clean_names() %&gt;%
@@ -153,6 +154,17 @@ tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
 ##   Latitude = col_double(),
 ##   longitude = col_double()
 ## )</code></pre>
+<pre class="r"><code>tree_df %&gt;%
+  group_by(boroname) %&gt;%
+  summarise(total = n())</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   boroname       total
+##   &lt;chr&gt;          &lt;int&gt;
+## 1 Bronx          66603
+## 2 Brooklyn      138212
+## 3 Manhattan      47358
+## 4 Queens        194008
+## 5 Staten Island  82669</code></pre>
 
 
 
