@@ -162,6 +162,7 @@ $(document).ready(function () {
   janitor::clean_names() %&gt;% 
   filter(measure %in% c(&quot;Mean&quot;, &quot;Rate&quot;, &quot;Number&quot;, &quot;Percent&quot;, &quot;Age-Adjusted Percent&quot;, &quot;Age-Adjusted Rate &quot;)) %&gt;%
   mutate(name_measure=str_c(name,&quot;-&quot;,measure)) %&gt;%
+  filter(year == 2015) %&gt;%
   select(-name, -measure, -description) %&gt;%
   spread(key = name_measure, value = data_value) </code></pre>
 

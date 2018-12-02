@@ -26,6 +26,7 @@ asthma_air1 = asthma_air %>%
   janitor::clean_names() %>% 
   filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
   mutate(name_measure=str_c(name,"-",measure)) %>%
+  filter(year == 2015) %>%
   select(-name, -measure, -description) %>%
   spread(key = name_measure, value = data_value) 
 
