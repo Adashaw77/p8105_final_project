@@ -26,6 +26,7 @@ air_asthma = read.csv("./data/Air_Asthma_Smoking_Data.csv") %>%
   janitor::clean_names() %>%
   filter(str_detect(year, "^20|^An"))
 
+
 air_asthma$year = str_remove(air_asthma$year, "Annual Average ")
 
 air_asthma1 = air_asthma %>%
@@ -44,7 +45,19 @@ air_asthma2 = air_asthma %>%
   
 #filter(description == "Neighborhood (UHF 34)", geo_entity_name == "Williamsburg - Bushwick", year == 2009) %>%
     
-#distinct(air_asthma1, geo_entity_name)
+distinct(air_asthma1, geo_entity_name)
 
 #abc_df = air_asthma1[c(99,106),]
+
+air_asthma1 %>%
+ #filter (year %in%c(2009, 2010, 2011, 2012)) %>%
+  filter (year %in%c(2009)) %>%
+  ggplot(aes(x = `Asthma Hospitalizations (Children 5 to 14 Yrs Old)-Rate`, y = `Asthma Hospitalizations (Youths and Adults)-Age-Adjusted Rate`, color = year))+
+  geom_line()+
+  geom_point()
+  
+nynta = read_csv("./data/nynta.csv")
+
+distinct(nynta, NTAName)
+
 ```

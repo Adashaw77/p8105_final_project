@@ -1,0 +1,31 @@
+---
+
+title: "map"
+author: "Qi Shao"
+date: "12/2/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(rgdal)
+```
+
+```{r}
+mydat = rgdal::readOGR("./data/UHF_42_DOHMH.shp")
+plot(mydat)
+names(mydat)
+mydat$UHF
+
+mydat@data
+
+mymap = ggplot(data = fortify(mydat)) +
+    geom_polygon(aes(x = long, y = lat, group = ), colour = "black",
+                 fill = NA) +
+    theme_grey()
+print(mymap + coord_map())
+fortify(mydat)
+```
+
+
