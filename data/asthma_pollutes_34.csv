@@ -1,0 +1,205 @@
+name,Measure,geo_type_name,geo_entity_id,geo_entity_name,year_description,data_value
+Nitric Oxide (NO),Mean,UHF34,101,Kingsbridge - Riverdale,Annual Average 2016,13.22
+Nitric Oxide (NO),Mean,UHF34,102,Northeast Bronx,Annual Average 2016,14.62
+Nitric Oxide (NO),Mean,UHF34,103,Fordham - Bronx Pk,Annual Average 2016,14.92
+Nitric Oxide (NO),Mean,UHF34,104,Pelham - Throgs Neck,Annual Average 2016,15.94
+Nitric Oxide (NO),Mean,UHF34,201,Greenpoint,Annual Average 2016,20.4
+Nitric Oxide (NO),Mean,UHF34,202,Downtown - Heights - Slope,Annual Average 2016,21.23
+Nitric Oxide (NO),Mean,UHF34,203,Bedford Stuyvesant - Crown Heights,Annual Average 2016,19.03
+Nitric Oxide (NO),Mean,UHF34,204,East New York,Annual Average 2016,18.22
+Nitric Oxide (NO),Mean,UHF34,205,Sunset Park,Annual Average 2016,17.74
+Nitric Oxide (NO),Mean,UHF34,206,Borough Park,Annual Average 2016,16.24
+Nitric Oxide (NO),Mean,UHF34,207,East Flatbush - Flatbush,Annual Average 2016,18.09
+Nitric Oxide (NO),Mean,UHF34,208,Canarsie - Flatlands,Annual Average 2016,15.6
+Nitric Oxide (NO),Mean,UHF34,209,Bensonhurst - Bay Ridge,Annual Average 2016,14.91
+Nitric Oxide (NO),Mean,UHF34,210,Coney Island - Sheepshead Bay,Annual Average 2016,14.39
+Nitric Oxide (NO),Mean,UHF34,211,Williamsburg - Bushwick,Annual Average 2016,18.83
+Nitric Oxide (NO),Mean,UHF34,301,Washington Heights,Annual Average 2016,16.53
+Nitric Oxide (NO),Mean,UHF34,302,Central Harlem - Morningside Heights,Annual Average 2016,16.98
+Nitric Oxide (NO),Mean,UHF34,303,East Harlem,Annual Average 2016,18.73
+Nitric Oxide (NO),Mean,UHF34,304,Upper West Side,Annual Average 2016,22.11
+Nitric Oxide (NO),Mean,UHF34,401,Long Island City - Astoria,Annual Average 2016,16.68
+Nitric Oxide (NO),Mean,UHF34,402,West Queens,Annual Average 2016,17.22
+Nitric Oxide (NO),Mean,UHF34,403,Flushing - Clearview,Annual Average 2016,15.06
+Nitric Oxide (NO),Mean,UHF34,405,Ridgewood - Forest Hills,Annual Average 2016,17.4
+Nitric Oxide (NO),Mean,UHF34,407,Southwest Queens,Annual Average 2016,16.48
+Nitric Oxide (NO),Mean,UHF34,408,Jamaica,Annual Average 2016,15.76
+Nitric Oxide (NO),Mean,UHF34,409,Southeast Queens,Annual Average 2016,14.38
+Nitric Oxide (NO),Mean,UHF34,410,Rockaways,Annual Average 2016,13.62
+Nitric Oxide (NO),Mean,UHF34,305307,Upper East Side-Gramercy,Annual Average 2016,27.93
+Nitric Oxide (NO),Mean,UHF34,306308,Chelsea-Village  ,Annual Average 2016,29.91
+Nitric Oxide (NO),Mean,UHF34,309310,Union Square-Lower Manhattan,Annual Average 2016,25.96
+Nitric Oxide (NO),Mean,UHF34,404406,Bayside Little Neck-Fresh Meadows,Annual Average 2016,15.56
+Nitric Oxide (NO),Mean,UHF34,501502,Northern SI,Annual Average 2016,12.22
+Nitric Oxide (NO),Mean,UHF34,503504,Southern SI,Annual Average 2016,9.73
+Nitric Oxide (NO),Mean,UHF34,105106107,South Bronx,Annual Average 2016,16.2
+Fine Particulate Matter (PM2.5),Mean,UHF34,101,Kingsbridge - Riverdale,Annual Average 2016,7.5
+Fine Particulate Matter (PM2.5),Mean,UHF34,102,Northeast Bronx,Annual Average 2016,7.55
+Fine Particulate Matter (PM2.5),Mean,UHF34,103,Fordham - Bronx Pk,Annual Average 2016,7.57
+Fine Particulate Matter (PM2.5),Mean,UHF34,104,Pelham - Throgs Neck,Annual Average 2016,7.5
+Fine Particulate Matter (PM2.5),Mean,UHF34,201,Greenpoint,Annual Average 2016,9.46
+Fine Particulate Matter (PM2.5),Mean,UHF34,202,Downtown - Heights - Slope,Annual Average 2016,8.86
+Fine Particulate Matter (PM2.5),Mean,UHF34,203,Bedford Stuyvesant - Crown Heights,Annual Average 2016,7.94
+Fine Particulate Matter (PM2.5),Mean,UHF34,204,East New York,Annual Average 2016,7.8
+Fine Particulate Matter (PM2.5),Mean,UHF34,205,Sunset Park,Annual Average 2016,8.4
+Fine Particulate Matter (PM2.5),Mean,UHF34,206,Borough Park,Annual Average 2016,7.45
+Fine Particulate Matter (PM2.5),Mean,UHF34,207,East Flatbush - Flatbush,Annual Average 2016,7.64
+Fine Particulate Matter (PM2.5),Mean,UHF34,208,Canarsie - Flatlands,Annual Average 2016,7.12
+Fine Particulate Matter (PM2.5),Mean,UHF34,209,Bensonhurst - Bay Ridge,Annual Average 2016,7.11
+Fine Particulate Matter (PM2.5),Mean,UHF34,210,Coney Island - Sheepshead Bay,Annual Average 2016,6.75
+Fine Particulate Matter (PM2.5),Mean,UHF34,211,Williamsburg - Bushwick,Annual Average 2016,8.67
+Fine Particulate Matter (PM2.5),Mean,UHF34,301,Washington Heights,Annual Average 2016,7.81
+Fine Particulate Matter (PM2.5),Mean,UHF34,302,Central Harlem - Morningside Heights,Annual Average 2016,7.95
+Fine Particulate Matter (PM2.5),Mean,UHF34,303,East Harlem,Annual Average 2016,8.19
+Fine Particulate Matter (PM2.5),Mean,UHF34,304,Upper West Side,Annual Average 2016,8.49
+Fine Particulate Matter (PM2.5),Mean,UHF34,401,Long Island City - Astoria,Annual Average 2016,8.65
+Fine Particulate Matter (PM2.5),Mean,UHF34,402,West Queens,Annual Average 2016,8.14
+Fine Particulate Matter (PM2.5),Mean,UHF34,403,Flushing - Clearview,Annual Average 2016,7.22
+Fine Particulate Matter (PM2.5),Mean,UHF34,405,Ridgewood - Forest Hills,Annual Average 2016,7.56
+Fine Particulate Matter (PM2.5),Mean,UHF34,407,Southwest Queens,Annual Average 2016,7.02
+Fine Particulate Matter (PM2.5),Mean,UHF34,408,Jamaica,Annual Average 2016,6.99
+Fine Particulate Matter (PM2.5),Mean,UHF34,409,Southeast Queens,Annual Average 2016,6.51
+Fine Particulate Matter (PM2.5),Mean,UHF34,410,Rockaways,Annual Average 2016,5.98
+Fine Particulate Matter (PM2.5),Mean,UHF34,305307,Upper East Side-Gramercy,Annual Average 2016,9.86
+Fine Particulate Matter (PM2.5),Mean,UHF34,306308,Chelsea-Village  ,Annual Average 2016,10.05
+Fine Particulate Matter (PM2.5),Mean,UHF34,309310,Union Square-Lower Manhattan,Annual Average 2016,9.18
+Fine Particulate Matter (PM2.5),Mean,UHF34,404406,Bayside Little Neck-Fresh Meadows,Annual Average 2016,6.94
+Fine Particulate Matter (PM2.5),Mean,UHF34,501502,Northern SI,Annual Average 2016,6.97
+Fine Particulate Matter (PM2.5),Mean,UHF34,503504,Southern SI,Annual Average 2016,6.78
+Fine Particulate Matter (PM2.5),Mean,UHF34,105106107,South Bronx,Annual Average 2016,8.21
+Nitrogen Dioxide (NO2),Mean,UHF34,101,Kingsbridge - Riverdale,Annual Average 2016,16.04
+Nitrogen Dioxide (NO2),Mean,UHF34,102,Northeast Bronx,Annual Average 2016,17.52
+Nitrogen Dioxide (NO2),Mean,UHF34,103,Fordham - Bronx Pk,Annual Average 2016,17.93
+Nitrogen Dioxide (NO2),Mean,UHF34,104,Pelham - Throgs Neck,Annual Average 2016,17.92
+Nitrogen Dioxide (NO2),Mean,UHF34,201,Greenpoint,Annual Average 2016,21.44
+Nitrogen Dioxide (NO2),Mean,UHF34,202,Downtown - Heights - Slope,Annual Average 2016,21.65
+Nitrogen Dioxide (NO2),Mean,UHF34,203,Bedford Stuyvesant - Crown Heights,Annual Average 2016,20.2
+Nitrogen Dioxide (NO2),Mean,UHF34,204,East New York,Annual Average 2016,18.26
+Nitrogen Dioxide (NO2),Mean,UHF34,205,Sunset Park,Annual Average 2016,19.32
+Nitrogen Dioxide (NO2),Mean,UHF34,206,Borough Park,Annual Average 2016,18.87
+Nitrogen Dioxide (NO2),Mean,UHF34,207,East Flatbush - Flatbush,Annual Average 2016,18.86
+Nitrogen Dioxide (NO2),Mean,UHF34,208,Canarsie - Flatlands,Annual Average 2016,15.3
+Nitrogen Dioxide (NO2),Mean,UHF34,209,Bensonhurst - Bay Ridge,Annual Average 2016,17.78
+Nitrogen Dioxide (NO2),Mean,UHF34,210,Coney Island - Sheepshead Bay,Annual Average 2016,15.62
+Nitrogen Dioxide (NO2),Mean,UHF34,211,Williamsburg - Bushwick,Annual Average 2016,20.82
+Nitrogen Dioxide (NO2),Mean,UHF34,301,Washington Heights,Annual Average 2016,19.85
+Nitrogen Dioxide (NO2),Mean,UHF34,302,Central Harlem - Morningside Heights,Annual Average 2016,22.19
+Nitrogen Dioxide (NO2),Mean,UHF34,303,East Harlem,Annual Average 2016,22.19
+Nitrogen Dioxide (NO2),Mean,UHF34,304,Upper West Side,Annual Average 2016,23.15
+Nitrogen Dioxide (NO2),Mean,UHF34,401,Long Island City - Astoria,Annual Average 2016,20.91
+Nitrogen Dioxide (NO2),Mean,UHF34,402,West Queens,Annual Average 2016,20.53
+Nitrogen Dioxide (NO2),Mean,UHF34,403,Flushing - Clearview,Annual Average 2016,18.23
+Nitrogen Dioxide (NO2),Mean,UHF34,405,Ridgewood - Forest Hills,Annual Average 2016,18.65
+Nitrogen Dioxide (NO2),Mean,UHF34,407,Southwest Queens,Annual Average 2016,17.8
+Nitrogen Dioxide (NO2),Mean,UHF34,408,Jamaica,Annual Average 2016,17.56
+Nitrogen Dioxide (NO2),Mean,UHF34,409,Southeast Queens,Annual Average 2016,16.16
+Nitrogen Dioxide (NO2),Mean,UHF34,410,Rockaways,Annual Average 2016,11.72
+Nitrogen Dioxide (NO2),Mean,UHF34,305307,Upper East Side-Gramercy,Annual Average 2016,27.31
+Nitrogen Dioxide (NO2),Mean,UHF34,306308,Chelsea-Village  ,Annual Average 2016,27.55
+Nitrogen Dioxide (NO2),Mean,UHF34,309310,Union Square-Lower Manhattan,Annual Average 2016,25.01
+Nitrogen Dioxide (NO2),Mean,UHF34,404406,Bayside Little Neck-Fresh Meadows,Annual Average 2016,17.1
+Nitrogen Dioxide (NO2),Mean,UHF34,501502,Northern SI,Annual Average 2016,15.81
+Nitrogen Dioxide (NO2),Mean,UHF34,503504,Southern SI,Annual Average 2016,12.48
+Nitrogen Dioxide (NO2),Mean,UHF34,105106107,South Bronx,Annual Average 2016,20.38
+Ozone (O3),Mean,UHF34,101,Kingsbridge - Riverdale,Summer 2016,32.46
+Ozone (O3),Mean,UHF34,102,Northeast Bronx,Summer 2016,33.21
+Ozone (O3),Mean,UHF34,103,Fordham - Bronx Pk,Summer 2016,32.78
+Ozone (O3),Mean,UHF34,104,Pelham - Throgs Neck,Summer 2016,33.63
+Ozone (O3),Mean,UHF34,201,Greenpoint,Summer 2016,32.96
+Ozone (O3),Mean,UHF34,202,Downtown - Heights - Slope,Summer 2016,31.98
+Ozone (O3),Mean,UHF34,203,Bedford Stuyvesant - Crown Heights,Summer 2016,32.98
+Ozone (O3),Mean,UHF34,204,East New York,Summer 2016,34.26
+Ozone (O3),Mean,UHF34,205,Sunset Park,Summer 2016,33.28
+Ozone (O3),Mean,UHF34,206,Borough Park,Summer 2016,33.54
+Ozone (O3),Mean,UHF34,207,East Flatbush - Flatbush,Summer 2016,33.66
+Ozone (O3),Mean,UHF34,208,Canarsie - Flatlands,Summer 2016,35.79
+Ozone (O3),Mean,UHF34,209,Bensonhurst - Bay Ridge,Summer 2016,34.25
+Ozone (O3),Mean,UHF34,210,Coney Island - Sheepshead Bay,Summer 2016,35.62
+Ozone (O3),Mean,UHF34,211,Williamsburg - Bushwick,Summer 2016,32.99
+Ozone (O3),Mean,UHF34,301,Washington Heights,Summer 2016,31.92
+Ozone (O3),Mean,UHF34,302,Central Harlem - Morningside Heights,Summer 2016,31.35
+Ozone (O3),Mean,UHF34,303,East Harlem,Summer 2016,31.62
+Ozone (O3),Mean,UHF34,304,Upper West Side,Summer 2016,30.54
+Ozone (O3),Mean,UHF34,401,Long Island City - Astoria,Summer 2016,33.15
+Ozone (O3),Mean,UHF34,402,West Queens,Summer 2016,33.12
+Ozone (O3),Mean,UHF34,403,Flushing - Clearview,Summer 2016,33.45
+Ozone (O3),Mean,UHF34,405,Ridgewood - Forest Hills,Summer 2016,33.48
+Ozone (O3),Mean,UHF34,407,Southwest Queens,Summer 2016,34.34
+Ozone (O3),Mean,UHF34,408,Jamaica,Summer 2016,33.86
+Ozone (O3),Mean,UHF34,409,Southeast Queens,Summer 2016,34.29
+Ozone (O3),Mean,UHF34,410,Rockaways,Summer 2016,38.18
+Ozone (O3),Mean,UHF34,305307,Upper East Side-Gramercy,Summer 2016,28.92
+Ozone (O3),Mean,UHF34,306308,Chelsea-Village  ,Summer 2016,29.19
+Ozone (O3),Mean,UHF34,309310,Union Square-Lower Manhattan,Summer 2016,30.01
+Ozone (O3),Mean,UHF34,404406,Bayside Little Neck-Fresh Meadows,Summer 2016,33.05
+Ozone (O3),Mean,UHF34,501502,Northern SI,Summer 2016,33.91
+Ozone (O3),Mean,UHF34,503504,Southern SI,Summer 2016,35.62
+Ozone (O3),Mean,UHF34,105106107,South Bronx,Summer 2016,32.84
+Adults with Asthma in the Past 12 Months,Percent,UHF34,101,Kingsbridge - Riverdale,2016,
+Adults with Asthma in the Past 12 Months,Percent,UHF34,102,Northeast Bronx,2016,5.7
+Adults with Asthma in the Past 12 Months,Percent,UHF34,103,Fordham - Bronx Pk,2016,2
+Adults with Asthma in the Past 12 Months,Percent,UHF34,104,Pelham - Throgs Neck,2016,6.3
+Adults with Asthma in the Past 12 Months,Percent,UHF34,201,Greenpoint,2016,
+Adults with Asthma in the Past 12 Months,Percent,UHF34,202,Downtown - Heights - Slope,2016,2.5
+Adults with Asthma in the Past 12 Months,Percent,UHF34,203,Bedford Stuyvesant - Crown Heights,2016,5.5
+Adults with Asthma in the Past 12 Months,Percent,UHF34,204,East New York,2016,5.2
+Adults with Asthma in the Past 12 Months,Percent,UHF34,205,Sunset Park,2016,1.6
+Adults with Asthma in the Past 12 Months,Percent,UHF34,206,Borough Park,2016,2.3
+Adults with Asthma in the Past 12 Months,Percent,UHF34,207,East Flatbush - Flatbush,2016,1.6
+Adults with Asthma in the Past 12 Months,Percent,UHF34,208,Canarsie - Flatlands,2016,7.9
+Adults with Asthma in the Past 12 Months,Percent,UHF34,209,Bensonhurst - Bay Ridge,2016,
+Adults with Asthma in the Past 12 Months,Percent,UHF34,210,Coney Island - Sheepshead Bay,2016,3.5
+Adults with Asthma in the Past 12 Months,Percent,UHF34,211,Williamsburg - Bushwick,2016,5
+Adults with Asthma in the Past 12 Months,Percent,UHF34,301,Washington Heights,2016,3.8
+Adults with Asthma in the Past 12 Months,Percent,UHF34,302,Central Harlem - Morningside Heights,2016,7.9
+Adults with Asthma in the Past 12 Months,Percent,UHF34,303,East Harlem,2016,
+Adults with Asthma in the Past 12 Months,Percent,UHF34,304,Upper West Side,2016,
+Adults with Asthma in the Past 12 Months,Percent,UHF34,401,Long Island City - Astoria,2016,
+Adults with Asthma in the Past 12 Months,Percent,UHF34,402,West Queens,2016,5
+Adults with Asthma in the Past 12 Months,Percent,UHF34,403,Flushing - Clearview,2016,
+Adults with Asthma in the Past 12 Months,Percent,UHF34,405,Ridgewood - Forest Hills,2016,4.9
+Adults with Asthma in the Past 12 Months,Percent,UHF34,407,Southwest Queens,2016,2.8
+Adults with Asthma in the Past 12 Months,Percent,UHF34,408,Jamaica,2016,
+Adults with Asthma in the Past 12 Months,Percent,UHF34,409,Southeast Queens,2016,
+Adults with Asthma in the Past 12 Months,Percent,UHF34,410,Rockaways,2016,10.6
+Adults with Asthma in the Past 12 Months,Percent,UHF34,305307,Upper East Side-Gramercy,2016,6.4
+Adults with Asthma in the Past 12 Months,Percent,UHF34,306308,Chelsea-Village  ,2016,
+Adults with Asthma in the Past 12 Months,Percent,UHF34,309310,Union Square-Lower Manhattan,2016,1
+Adults with Asthma in the Past 12 Months,Percent,UHF34,404406,Bayside Little Neck-Fresh Meadows,2016,6.4
+Adults with Asthma in the Past 12 Months,Percent,UHF34,501502,Northern SI,2016,6.7
+Adults with Asthma in the Past 12 Months,Percent,UHF34,503504,Southern SI,2016,5.9
+Adults with Asthma in the Past 12 Months,Percent,UHF34,105106107,South Bronx,2016,8
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,101,Kingsbridge - Riverdale,2016,7.9
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,102,Northeast Bronx,2016,5
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,103,Fordham - Bronx Pk,2016,1.6
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,104,Pelham - Throgs Neck,2016,6.3
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,201,Greenpoint,2016,
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,202,Downtown - Heights - Slope,2016,2.5
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,203,Bedford Stuyvesant - Crown Heights,2016,5.7
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,204,East New York,2016,5.1
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,205,Sunset Park,2016,1.6
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,206,Borough Park,2016,2.4
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,207,East Flatbush - Flatbush,2016,1.4
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,208,Canarsie - Flatlands,2016,9.6
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,209,Bensonhurst - Bay Ridge,2016,4.4
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,210,Coney Island - Sheepshead Bay,2016,3
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,211,Williamsburg - Bushwick,2016,5.3
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,301,Washington Heights,2016,4.5
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,302,Central Harlem - Morningside Heights,2016,7.1
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,303,East Harlem,2016,
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,304,Upper West Side,2016,
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,401,Long Island City - Astoria,2016,
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,402,West Queens,2016,4.7
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,403,Flushing - Clearview,2016,
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,405,Ridgewood - Forest Hills,2016,4.9
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,407,Southwest Queens,2016,2.8
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,408,Jamaica,2016,
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,409,Southeast Queens,2016,
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,410,Rockaways,2016,9.9
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,305307,Upper East Side-Gramercy,2016,6.2
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,306308,Chelsea-Village  ,2016,
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,309310,Union Square-Lower Manhattan,2016,1
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,404406,Bayside Little Neck-Fresh Meadows,2016,6.2
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,501502,Northern SI,2016,6
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,503504,Southern SI,2016,6.2
+Adults with Asthma in the Past 12 Months,Age-Adjusted Percent,UHF34,105106107,South Bronx,2016,8.4

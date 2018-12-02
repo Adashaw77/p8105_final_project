@@ -15,34 +15,15 @@ library(rgdal)
 ```{r}
 mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
 plot(mydat)
-names(mydat)
-mydat$UHF
 
-mydat@data
-names(mydat)
-ggplot() +
-  geom_polygon(data=mydat, aes(x=long, y=lat, group=group))+
-  coord_map()
+
+
+
 
 
 ggplot(data = mydat, mapping = aes(x = long, y = lat, group = group)) + 
   geom_polygon(data = mydat, fill = NA, color = "white") +
   geom_polygon(color = "black", fill = NA) 
-
-fortify(mydat) %>% 
-  filter(id == 1)
-  
-
-length(mydat)
-mydat$UHFCODE
-names(mydat)
-table(iconv(mydat$UHFCODE, from = "GBK"))
-
-
-neighb0 = Shanghai = mydat[mydat$UHFCODE == 501,]
-plot(neighb0)
-
-fortify(neighb0)
 
 map_data = fortify(mydat) %>%
   dplyr::select(id, everything() )%>%
@@ -53,4 +34,22 @@ map_data = map_data %>%
   unnest
 ```
 
+```{r}
+asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
+  filter(str_detect(year_description, "^20|^An")) %>%
+  mutate(year_description = str_remove(year_description, "Annual Average "))
 
+
+
+asthma_air1 = asthma_air %>%
+  select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
+  janitor::clean_names() %>% 
+  filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
+  mutate(name_measure=str_c(name,"-",measure)) %>%
+  filter(year == 2015) %>%
+  select(-name, -measure, -description) %>%
+  spread(key = name_measure, value = data_value) 
+
+
+
+```
