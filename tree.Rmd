@@ -1,5 +1,5 @@
 ---
-title: "FINAL"
+title: "tree"
 author: "Baoyi Shi"
 date: "2018年12月2日"
 output: html_document
@@ -29,4 +29,52 @@ tree_df %>%
 ```{r }
 ggplot(aes(x = latitude, y = longitude), data = tree_df) +
   geom_hex()
+```
+
+```{r }
+asthma_pollutes_df = read_csv("./data/asthma_pollutes_34.csv") %>%
+  janitor::clean_names()
+
+asthma = asthma_pollutes_df %>%
+  filter(measure == "Percent")
+
+ozone = asthma_pollutes_df %>%
+  filter(name == "Ozone (O3)")
+
+pm = asthma_pollutes_df %>%
+  filter(name == "Fine Particulate Matter (PM2.5)")
+
+no2 = asthma_pollutes_df %>%
+  filter(name == "Nitrogen Dioxide (NO2)")
+
+no = asthma_pollutes_df %>%
+  filter(name == "Nitric Oxide (NO)")
+
+df_ozone = left_join(asthma, ozone, by = "geo_entity_name") %>%
+  filter(is.na(data_value.x) == FALSE, is.na(data_value.y) == FALSE)
+
+ggplot(data = df_ozone, aes(x = data_value.x, y = data_value.y)) +
+  geom_point() +
+  geom_smooth()
+
+df_pm = left_join(asthma, pm, by = "geo_entity_name") %>%
+  filter(is.na(data_value.x) == FALSE, is.na(data_value.y) == FALSE)
+
+ggplot(data = df_pm, aes(x = data_value.x, y = data_value.y)) +
+  geom_point() +
+  geom_smooth()
+
+df_no2 = left_join(asthma, no2, by = "geo_entity_name") %>%
+  filter(is.na(data_value.x) == FALSE, is.na(data_value.y) == FALSE)
+
+ggplot(data = df_no2, aes(x = data_value.x, y = data_value.y)) +
+  geom_point() +
+  geom_smooth()
+
+df_no = left_join(asthma, no, by = "geo_entity_name") %>%
+  filter(is.na(data_value.x) == FALSE, is.na(data_value.y) == FALSE)
+
+ggplot(data = df_no, aes(x = data_value.x, y = data_value.y)) +
+  geom_point() +
+  geom_smooth()
 ```
