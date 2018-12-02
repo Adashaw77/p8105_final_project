@@ -9,6 +9,7 @@ output: html_document
 library(tidyverse)
 library(dplyr)
 library(readr)
+library(ggplot2)
 ```
 
 ```{r }
@@ -16,6 +17,16 @@ library(readr)
 tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
   janitor::clean_names() %>%
   filter(status == "Alive", health == "Good") 
-  
-  
+```
+
+```{r }
+#compute the total tree number of each boro
+tree_df %>%
+  group_by(boroname) %>%
+  summarise(total = n())
+```
+
+```{r }
+ggplot(aes(x = latitude, y = longitude), data = tree_df) +
+  geom_hex()
 ```
