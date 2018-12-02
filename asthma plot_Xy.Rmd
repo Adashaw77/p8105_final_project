@@ -22,14 +22,27 @@ distinct(name) %>% pull()
 ```{r}
 asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
   filter(str_detect(year_description, "^20|^An")) %>%
-  mutate(year_description = str_remove(year_description, "Annual Average "))
-asthma_air1 = asthma_air %>%
+  mutate(year_description = str_remove(year_description, "Annual Average ")) %>%
+    filter(year_description == 2015)
+
+sulfur_dioxide= read_csv("./data/asthma_air/Data.csv") %>%
+  filter(name == "Sulfur Dioxide (SO2)") %>%
+  filter(year_description == "Winter 2014-15")
+
+ozone= read_csv("./data/asthma_air/Data.csv") %>%
+  filter(name == "Ozone (O3)") %>%
+  filter(year_description == "Summer 2015")
+
+data = rbind(asthma_air,sulfur_dioxide,ozone)
+  
+
+
+asthma_air1 = data %>%
   select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
   janitor::clean_names() %>% 
   filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
   mutate(name_measure=str_c(name,"-",measure)) %>%
-  filter(year == 2015) %>%
-  select(-name, -measure, -description) %>%
+  select(-name, -measure, -description, -year) %>%
   spread(key = name_measure, value = data_value) 
 
 ```
@@ -53,23 +66,45 @@ asthma %>%
 
 
 ### asthma vs air_pollution
+
+##### NO vs.astma
 ```{r}
-#NO vs.astma
 asthma_air1 = asthma_air1 %>% 
   janitor::clean_names()
   ggplot(asthma_air1)+
-  geom_point(aes(x = nitric_oxide_no_mean, y = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate,color = "red"))+
-  geom_point(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"))
-  
-
-
-
-
+  geom_point(aes(x = nitric_oxide_no_mean, y =asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "red"))+
+  geom_smooth(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "red"),se =FALSE) +
+  geom_point(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"))+
+  geom_smooth(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"),se =FALSE) 
 ```
 
 
+#### O3 vs. asthma
+```{r}
+asthma_air1 = asthma_air1 %>% 
+  janitor::clean_names()
+asthma_air1 %>% 
+  ggplot()+
+  geom_point(aes(x = ozone_o3_mean, y =asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "red"))+
+  geom_smooth(aes(x = ozone_o3_mean, y =asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "red"),se = FALSE)+
+  geom_point(aes(x = ozone_o3_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"))+
+  geom_smooth(aes(x = ozone_o3_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"),se =FALSE)
+```
 
+##TRY line_plot
 
+```{r}
+asthma_air1 = asthma_air1 %>% 
+  janitor::clean_names()
+  ggplot(asthma_air1)+
+  geom_line(aes(x = nitric_oxide_no_mean, y =asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "red"))+
+  geom_line(aes(x = nitric_oxide_no_mean, y=asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"))
+ 
+```
+
+### tree vs air quality
+```{r}
+```
 
 
 
