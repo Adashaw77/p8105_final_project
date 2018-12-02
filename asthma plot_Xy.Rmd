@@ -1,0 +1,73 @@
+---
+title: "wifi"
+author: "Xinyao Wu"
+date: "2018/11/19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(rvest)
+library(httr)
+
+```
+
+```{r}
+asthma = read.csv("./data/asthma_air/Data.csv")
+asthma %>% 
+distinct(name) %>% pull()
+```
+
+### An alternative plot/ now not related 
+```{r}
+asthma %>% 
+  filter(geo_type_name=="UHF42") %>% 
+  filter(measurement_type_id == "1") %>% #precent#
+  filter(name == "Asthma Hospitalizations (Children 0 to 4 Yrs Old)"|name =="Asthma Hospitalizations (Children 5 to 14 Yrs Old)") %>%
+  #choose 5 geo_entity_name
+  #filter(geo_entity_name=="Rockaways"|geo_entity_name == "Port Richmond") %>% 
+  mutate(
+    loco = as.numeric(geo_entity_name)
+  ) %>% 
+  ggplot(aes(x = loco, y = data_value,color = name))+geom_point(alpha = 0.3)+geom_smooth(se = FALSE)+
+  theme(axis.text.x = element_text(angle = 90,size = 3.5))+ theme(legend.position = "bottom")+
+  facet_grid(~year_description)
+```
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
