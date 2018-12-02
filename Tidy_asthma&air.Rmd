@@ -8,12 +8,26 @@ output: html_document
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(plyr)
+library(readr)
 ```
+
 
 ```{r}
 
 
+asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
+  filter(str_detect(year_description, "^20|^An")) %>%
+  mutate(year_description = str_remove(year_description, "Annual Average "))
 
+
+
+asthma_air1 = asthma_air %>%
+  select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
+  janitor::clean_names() %>% 
+  filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
+  mutate(name_measure=str_c(name,"-",measure)) %>%
+  select(-name, -measure, -description) %>%
+  spread(key = name_measure, value = data_value) 
 
 
 ```
