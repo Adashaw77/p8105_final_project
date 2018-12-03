@@ -73,8 +73,8 @@ asthma %>%
   geom_point(aes(x = nitric_oxide_no_mean, y =asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "children_0_to_4_yrs_old"))+
   geom_smooth(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "children_0_to_4_yrs_old"),se =FALSE) +
   geom_point(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "children_5_to_14_yrs_old"))+
-  geom_smooth(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "children_5_to_14_yrs_old"),se =FALSE) +
-  theme(legend.position ="bottom") 
+  geom_smooth(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "children_5_to_14_yrs_old"),se =FALSE)  +
+  theme(legend.position ="bottom")
 ```
 
 
