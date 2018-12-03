@@ -8,24 +8,48 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+library(tidyverse)
 library(rgdal)
 ```
 
 ```{r}
-mydat = rgdal::readOGR("./data/UHF_42_DOHMH.shp")
+mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
 plot(mydat)
-names(mydat)
-mydat$UHF
 
-mydat@data
 
-mymap = ggplot(data = fortify(mydat)) +
-    geom_polygon(aes(x = long, y = lat, group = ), colour = "black",
-                 fill = NA) +
-    theme_grey()
-print(mymap + coord_map())
-fortify(mydat)
+
+
+
+
+ggplot(data = mydat, mapping = aes(x = long, y = lat, group = group)) + 
+  geom_polygon(data = mydat, fill = NA, color = "white") +
+  geom_polygon(color = "black", fill = NA) 
+
+map_data = fortify(mydat) %>%
+  dplyr::select(id, everything() )%>%
+  nest(long:group)
+map_data$uhf = mydat$UHFCODE
+
+map_data = map_data %>%
+  unnest
 ```
 
+```{r}
+asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
+  filter(str_detect(year_description, "^20|^An")) %>%
+  mutate(year_description = str_remove(year_description, "Annual Average "))
 
+
+
+asthma_air1 = asthma_air %>%
+  select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
+  janitor::clean_names() %>% 
+  filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
+  mutate(name_measure=str_c(name,"-",measure)) %>%
+  filter(year == 2015) %>%
+  select(-name, -measure, -description) %>%
+  spread(key = name_measure, value = data_value) 
+
+
+
+```
