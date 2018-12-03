@@ -86,13 +86,38 @@ zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
    select(-zipcode_no, -uhf42_code) %>%
    filter(is.na(zipcode) == FALSE)
 
-tree_df = left_join(tree_df, zipcode_uhf42, by = "zipcode") %>%
+tree_total_uhf42 = left_join(tree_df, zipcode_uhf42, by = "zipcode") %>%
   group_by(uhf42_name) %>%
   dplyr::summarize(total = n()) %>%
   filter(is.na(uhf42_name) == FALSE) %>%
   mutate(uhf42_name = forcats::fct_reorder(uhf42_name, total))
 
-ggplot(aes(x = uhf42_name, y = total), data = tree_df) +
+ggplot(aes(x = uhf42_name, y = total), data = tree_total_uhf42) +
+  geom_bar(stat = "identity", aes(fill = uhf42_name)) +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  theme(legend.position = "none")
+```
+
+```{r }
+zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
+   select(-zipcode_no, -uhf42_code) %>%
+   filter(is.na(zipcode) == FALSE)
+
+mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
+area = mydat$SHAPE_Area
+
+
+
+tree_total_uhf42 = left_join(tree_df, zipcode_uhf42, by = "zipcode") %>%
+  group_by(uhf42_name) %>%
+  dplyr::summarize(total = n()) %>%
+  mutate(area = mydat$SHAPE_Area) %>%
+  filter(is.na(uhf42_name) == FALSE) %>%
+  mutate(tree_density = total/area, 
+         uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))
+
+ggplot(aes(x = uhf42_name, y = tree_density), data = tree_total_uhf42) +
   geom_bar(stat = "identity", aes(fill = uhf42_name)) +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   theme(legend.position = "none")
