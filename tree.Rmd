@@ -9,6 +9,7 @@ output: html_document
 library(tidyverse)
 library(dplyr)
 library(readr)
+library(readxl)
 library(ggplot2)
 ```
 
@@ -23,7 +24,7 @@ tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
 #compute the total tree number of each boro
 tree_df %>%
   group_by(boroname) %>%
-  summarise(total = n())
+  dplyr::summarise(total = n()) 
 ```
 
 ```{r }
@@ -77,4 +78,22 @@ df_no = left_join(asthma, no, by = "geo_entity_name") %>%
 ggplot(data = df_no, aes(x = data_value.x, y = data_value.y)) +
   geom_point() +
   geom_smooth()
+```
+
+```{r }
+zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
+   select(-zipcode_no, -uhf42_code) %>%
+   filter(is.na(zipcode) == FALSE)
+
+tree_df = left_join(tree_df, zipcode_uhf42, by = "zipcode") %>%
+  group_by(uhf42_name) %>%
+  dplyr::summarize(total = n()) %>%
+  filter(is.na(uhf42_name) == FALSE) %>%
+  mutate(uhf42_name = forcats::fct_reorder(uhf42_name, total))
+
+ggplot(aes(x = uhf42_name, y = total), data = tree_df) +
+  geom_bar(stat = "identity", aes(fill = uhf42_name)) +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  theme(legend.position = "none")
 ```
