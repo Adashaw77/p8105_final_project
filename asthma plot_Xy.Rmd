@@ -23,6 +23,17 @@ distinct(name) %>% pull()
 asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
   filter(str_detect(year_description, "^20|^An")) %>%
   mutate(year_description = str_remove(year_description, "Annual Average ")) %>%
+<<<<<<< HEAD
+    filter(year_description == 2016)
+
+sulfur_dioxide= read_csv("./data/asthma_air/Data.csv") %>%
+  filter(name == "Sulfur Dioxide (SO2)") %>%
+  filter(year_description == "Winter 2015-16")
+
+ozone= read_csv("./data/asthma_air/Data.csv") %>%
+  filter(name == "Ozone (O3)") %>%
+  filter(year_description == "Summer 2016")
+=======
     filter(year_description == 2015)
 
 sulfur_dioxide= read_csv("./data/asthma_air/Data.csv") %>%
@@ -32,6 +43,7 @@ sulfur_dioxide= read_csv("./data/asthma_air/Data.csv") %>%
 ozone= read_csv("./data/asthma_air/Data.csv") %>%
   filter(name == "Ozone (O3)") %>%
   filter(year_description == "Summer 2015")
+>>>>>>> a7e942d3c8d91d6e53ff7144d3c6e34673e706bf
 
 data = rbind(asthma_air,sulfur_dioxide,ozone)
   
@@ -72,6 +84,16 @@ asthma %>%
 asthma_air1 = asthma_air1 %>% 
   janitor::clean_names()
   ggplot(asthma_air1)+
+<<<<<<< HEAD
+  geom_point(aes(x = nitric_oxide_no_mean, y = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate,color = "red"))+
+  geom_point(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"))
+
+#sulfur_dioxide vs. astma
+  asthma_air1 = asthma_air1 %>% 
+  janitor::clean_names()
+  ggplot(asthma_air1)+
+  geom_point(aes(x = sulfur_dioxide_so2_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"))
+=======
   geom_point(aes(x = nitric_oxide_no_mean, y =asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "red"))+
   geom_smooth(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "red"),se =FALSE) +
   geom_point(aes(x = nitric_oxide_no_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"))+
@@ -90,6 +112,7 @@ asthma_air1 %>%
   geom_point(aes(x = ozone_o3_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"))+
   geom_smooth(aes(x = ozone_o3_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "blue"),se =FALSE)
 ```
+>>>>>>> a7e942d3c8d91d6e53ff7144d3c6e34673e706bf
 
 ##TRY line_plot
 
