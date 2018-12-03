@@ -8,15 +8,19 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
+
 library(rgdal)
 ```
 
 ```{r}
-mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
+mydat = rgdal::readOGR("./data/UHF_42_DOHMH.shp")
 plot(mydat)
+names(mydat)
+mydat$UHF
 
+mydat@data
 
+<<<<<<< HEAD
 
 
 
@@ -82,3 +86,14 @@ ggplot(asthma_map) +
 ```
 
 
+=======
+mymap = ggplot(data = fortify(mydat)) +
+    geom_polygon(aes(x = long, y = lat, group = ), colour = "black",
+                 fill = NA) +
+    theme_grey()
+print(mymap + coord_map())
+fortify(mydat)
+```
+
+
+>>>>>>> e6391106597f7d79dd01e4ea397f4dfa40eb8b8f
