@@ -235,6 +235,15 @@ summary(o3_child_reg2)
 
 
 
+#asthma distrubution
+```{r}
+asthma_air1 %>% 
+  gather(key = "group",value = value,asthma_hospitalizations_children_5_to_14_yrs_old_rate,asthma_hospitalizations_children_0_to_4_yrs_old_rate) %>% 
+  ggplot(aes(x = reorder(geo_entity_name,asthma_emergency_department_visits_children_5_to_14_yrs_old_rate),y = value, color =group))+geom_point()+
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 45,size = 4.5)
+                                                                              )
+```
 
 
 
