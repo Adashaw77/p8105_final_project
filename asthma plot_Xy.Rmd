@@ -19,7 +19,8 @@ asthma %>%
 distinct(name) %>% pull()
 ```
 ##From "tidy_asthma&air.rmd"
-```{r}
+```{r warning=FALSE}
+ 
 asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
   filter(str_detect(year_description, "^20|^An")) %>%
   mutate(year_description = str_remove(year_description, "Annual Average ")) %>%
@@ -33,10 +34,14 @@ ozone= read_csv("./data/asthma_air/Data.csv") %>%
   filter(name == "Ozone (O3)") %>%
   filter(year_description == "Summer 2015")
 
-data = rbind(asthma_air,sulfur_dioxide,ozone)
+poverty= read_csv("./data/poverty/Data.csv") %>%
+  filter(year_description == "2011-15" )
+
+smoke = read_csv("./data/smoking_exer/Data.csv") %>%
+  filter(year_description == "2015" )
+
+data = rbind(asthma_air,sulfur_dioxide,ozone, poverty, smoke)
   
-
-
 asthma_air1 = data %>%
   select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
   janitor::clean_names() %>% 
@@ -44,6 +49,7 @@ asthma_air1 = data %>%
   mutate(name_measure=str_c(name,"-",measure)) %>%
   select(-name, -measure, -description, -year) %>%
   spread(key = name_measure, value = data_value) 
+
 
 ```
 
@@ -239,6 +245,7 @@ summary(o3_child_reg2)
 ```{r}
 asthma_air1 %>% 
   gather(key = "group",value = value,asthma_hospitalizations_children_5_to_14_yrs_old_rate,asthma_hospitalizations_children_0_to_4_yrs_old_rate) %>% 
+  filter(geo_entity_id<=310&geo_entity_id>=301) %>% 
   ggplot(aes(x = reorder(geo_entity_name,asthma_emergency_department_visits_children_5_to_14_yrs_old_rate),y = value, color =group))+geom_point()+
   theme(legend.position = "bottom",
         axis.text.x = element_text(angle = 45,size = 4.5)
@@ -246,9 +253,35 @@ asthma_air1 %>%
 ```
 
 
+```{r}
+asthma_air1 %>% 
+  gather(key = "group",value = value,asthma_hospitalizations_children_5_to_14_yrs_old_rate,asthma_hospitalizations_children_0_to_4_yrs_old_rate) %>% 
+  ggplot(aes(x = reorder(geo_entity_name,asthma_emergency_department_visits_children_5_to_14_yrs_old_rate),y = value, color =group))+geom_point()+
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 45,size = 4.5)
+                                                                              )
+```
 
 
+```{r}
+as1= asthma_air1 %>% 
+  gather(key = "group",value = value,asthma_hospitalizations_children_5_to_14_yrs_old_rate,asthma_hospitalizations_children_0_to_4_yrs_old_rate) %>% 
+  ggplot(aes(x = reorder(geo_entity_name,asthma_emergency_department_visits_children_5_to_14_yrs_old_rate),y = value, color =group))+geom_point()+
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 45,size = 4.5),
+         axis.title = element_text(size = 4.5))
+```
 
+```{r}
+ pov =  asthma_air1 %>%
+  janitor::clean_names() %>% 
+ ggplot(aes(x = reorder(geo_entity_name,asthma_emergency_department_visits_children_5_to_14_yrs_old_rate),y = poverty_percent))+geom_point()+
+  theme(legend.position = "bottom",axis.text.x = element_text(angle = 45,size = 4.5),
+        axis.title = element_text(size = 4.5))
+
+as1
+pov
+```
 
 
 
