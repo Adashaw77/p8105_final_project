@@ -71,6 +71,7 @@ ggplot(aes(x = uhf42_name, y = tree_density), data = tree_total_uhf42) +
 ```{r warning=F}
 asthma_pollute = read_csv("./data/asthma_air/Data.csv")
 
+#pm2.5 and tree
 pm2.5 = asthma_pollute %>%
   filter(name == "Fine Particulate Matter (PM2.5)", Measure == "Mean", year_description == "Annual Average 2015") %>%
   dplyr::rename(uhf42_name = geo_entity_name) %>%
@@ -83,27 +84,37 @@ summary(lm(pm2.5_data ~ tree_density, data = pm2.5_tree))
 ggplot(aes(x = tree_density, y = pm2.5_data), data = pm2.5_tree) +
   geom_point()+
   geom_smooth()
+```
 
-asthma_hos_children = asthma_pollute %>%
+```{r warning=F}
+#asthma 0 to 4 and tree
+asthma_hos_children_0to4 = asthma_pollute %>%
   filter(name == "Asthma Hospitalizations (Children 0 to 4 Yrs Old)", Measure == "Rate", year_description == "2015") %>%
   dplyr::rename(uhf42_name = geo_entity_name) %>%
-  select(uhf42_name, asthma_hos_children = data_value)
+  select(uhf42_name, asthma_hos_children_0to4 = data_value)
 
-asthma_hos_children_tree = left_join(asthma_hos_children, tree_total_uhf42)
+asthma_hos_children_0to4_tree = left_join(asthma_hos_children_0to4, tree_total_uhf42)
 
-summary(lm(asthma_hos_children ~ tree_density, data = asthma_hos_children_tree))
+summary(lm(asthma_hos_children_0to4 ~ tree_density, data = asthma_hos_children_0to4_tree))
 
-ggplot(aes(x = tree_density, y = asthma_hos_children), data = asthma_hos_children_tree) +
+ggplot(aes(x = tree_density, y = asthma_hos_children_0to4), data = asthma_hos_children_0to4_tree) +
   geom_point()+
   geom_smooth()
 ```
 
 ```{r warning=F}
-asthma_pm = left_join(pm2.5, asthma_hos_children)
+#asthma 5 to 14 and tree
+asthma_hos_children_5to14 = asthma_pollute %>%
+  filter(name == "Asthma Hospitalizations (Children 5 to 14 Yrs Old)", Measure == "Rate", year_description == "2015") %>%
+  dplyr::rename(uhf42_name = geo_entity_name) %>%
+  select(uhf42_name, asthma_hos_children_5to14 = data_value)
 
-summary(lm(asthma_hos_children ~ tree_density, data = asthma_hos_children_tree))
+asthma_hos_children_5to14_tree = left_join(asthma_hos_children_5to14, tree_total_uhf42)
 
-ggplot(aes(x = tree_density, y = asthma_hos_children), data = asthma_hos_children_tree) +
+summary(lm(asthma_hos_children_5to14 ~ tree_density, data = asthma_hos_children_5to14_tree))
+
+ggplot(aes(x = tree_density, y = asthma_hos_children_5to14), data = asthma_hos_children_5to14_tree) +
   geom_point()+
   geom_smooth()
 ```
+
