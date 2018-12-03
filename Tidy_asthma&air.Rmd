@@ -28,7 +28,10 @@ ozone= read_csv("./data/asthma_air/Data.csv") %>%
   filter(name == "Ozone (O3)") %>%
   filter(year_description == "Summer 2015")
 
-data = rbind(asthma_air,sulfur_dioxide,ozone)
+poverty= read_csv("./data/poverty/Data.csv") %>%
+  filter(year_description == "2011-15" )
+
+data = rbind(asthma_air,sulfur_dioxide,ozone, poverty)
   
 
 

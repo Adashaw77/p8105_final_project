@@ -216,7 +216,33 @@ $(document).ready(function () {
 ## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique… an integ… NYC Department of Health and Me… './data/asthma… file 2 19069 &lt;NA&gt;    16 colum… 1 columns                        './data/asthma… row 3 19070 Unique… an integ… Environment &amp; Health Data Portal './data/asthma… col 4 19070 &lt;NA&gt;    16 colum… 1 columns                        './data/asthma… expected 5 19071 Unique… an integ… Available at: http://nyc.gov/he… './data/asthma…
 ## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
 ## See problems(...) for more details.</code></pre>
-<pre class="r"><code>data = rbind(asthma_air,sulfur_dioxide,ozone)
+<pre class="r"><code>poverty= read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
+  filter(year_description == &quot;2011-15&quot; )</code></pre>
+<pre><code>## Warning: Missing column names filled in: 'X16' [16]</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Unique Id` = col_character(),
+##   indicator_id = col_integer(),
+##   geo_type_id = col_integer(),
+##   measurement_type_id = col_integer(),
+##   internal_id = col_integer(),
+##   subtopic_id = col_integer(),
+##   name = col_character(),
+##   Measure = col_character(),
+##   geo_type_name = col_character(),
+##   description = col_character(),
+##   geo_entity_id = col_integer(),
+##   geo_entity_name = col_character(),
+##   year_description = col_character(),
+##   data_value = col_double(),
+##   message = col_character(),
+##   X16 = col_character()
+## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
+## a multiple of vector length (arg 1)</code></pre>
+<pre><code>## Warning: 3 parsing failures.
+## row # A tibble: 3 x 5 col     row col   expected   actual    file                      expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;                     actual 1   841 &lt;NA&gt;  16 columns 1 columns './data/poverty/Data.csv' file 2   842 &lt;NA&gt;  16 columns 1 columns './data/poverty/Data.csv' row 3   843 &lt;NA&gt;  16 columns 1 columns './data/poverty/Data.csv'</code></pre>
+<pre class="r"><code>data = rbind(asthma_air,sulfur_dioxide,ozone, poverty)
   
 
 
@@ -226,7 +252,29 @@ asthma_air1 = data %&gt;%
   filter(measure %in% c(&quot;Mean&quot;, &quot;Rate&quot;, &quot;Number&quot;, &quot;Percent&quot;, &quot;Age-Adjusted Percent&quot;, &quot;Age-Adjusted Rate &quot;)) %&gt;%
   mutate(name_measure=str_c(name,&quot;-&quot;,measure)) %&gt;%
   select(-name, -measure, -description, -year) %&gt;%
-  spread(key = name_measure, value = data_value) </code></pre>
+  spread(key = name_measure, value = data_value) 
+
+names(asthma_air1)</code></pre>
+<pre><code>##  [1] &quot;geo_entity_name&quot;                                                     
+##  [2] &quot;geo_entity_id&quot;                                                       
+##  [3] &quot;Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)-Number&quot; 
+##  [4] &quot;Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)-Rate&quot;   
+##  [5] &quot;Asthma Emergency Department Visits (Children 5 to 14 Yrs Old)-Number&quot;
+##  [6] &quot;Asthma Emergency Department Visits (Children 5 to 14 Yrs Old)-Rate&quot;  
+##  [7] &quot;Asthma Hospitalizations (Children 0 to 4 Yrs Old)-Number&quot;            
+##  [8] &quot;Asthma Hospitalizations (Children 0 to 4 Yrs Old)-Rate&quot;              
+##  [9] &quot;Asthma Hospitalizations (Children 5 to 14 Yrs Old)-Number&quot;           
+## [10] &quot;Asthma Hospitalizations (Children 5 to 14 Yrs Old)-Rate&quot;             
+## [11] &quot;Black Carbon-Mean&quot;                                                   
+## [12] &quot;Children under 5 years old in Poverty-Number&quot;                        
+## [13] &quot;Children under 5 years old in Poverty-Percent&quot;                       
+## [14] &quot;Fine Particulate Matter (PM2.5)-Mean&quot;                                
+## [15] &quot;Nitric Oxide (NO)-Mean&quot;                                              
+## [16] &quot;Nitrogen Dioxide (NO2)-Mean&quot;                                         
+## [17] &quot;Ozone (O3)-Mean&quot;                                                     
+## [18] &quot;Poverty-Number&quot;                                                      
+## [19] &quot;Poverty-Percent&quot;                                                     
+## [20] &quot;Sulfur Dioxide (SO2)-Mean&quot;</code></pre>
 
 
 
