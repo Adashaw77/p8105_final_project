@@ -40,5 +40,5 @@ asthma_air1 = data %>%
   select(-name, -measure, -description, -year) %>%
   spread(key = name_measure, value = data_value) 
 
-
+names(asthma_air1)
 ```
