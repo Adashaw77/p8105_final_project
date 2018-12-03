@@ -1,0 +1,11 @@
+indicator_id,IndicatorName,Measure,How_Calculated,SourceName,SourceDescription,
+233,Poverty,Number,<p>Estimated number of people for whom poverty status is determined; whose annual income falls below 100% of the federal poverty level.</p>,American Community Survey,American Community Survey,
+221,Poverty,Percent,Estimated number of people for whom poverty status is determined; whose annual income falls below 100% of the federal poverty level; divided by the number of people for whom poverty status is determined; expressed as percent.,American Community Survey,American Community Survey,
+870,Poverty,Rank,<p>test</p>,American Community Survey,American Community Survey,
+754,Children under 5 years old in Poverty,Number,Estimated number of children who live in a household for whom poverty status is determined; whose annual income falls below twice the federal poverty.,American Community Survey,American Community Survey,
+755,Children under 5 years old in Poverty,Percent,Estimated number of children in a household whose annual income falls below twice the federal poverty level; divided by the number of children in households for whom poverty status is determined; expressed as percent.,American Community Survey,American Community Survey,
+869,Children under 5 years old in Poverty,Rank,<p>Neighborhoods are ranked citywide in 3 groups (tertiles); so that neighborhoods can be grouped and compared.</p>,American Community Survey,American Community Survey,
+
+NYC Department of Health and Mental Hygiene
+Environment & Health Data Portal
+Available at: http://nyc.gov/health/tracking Accessed 12/03/2018
