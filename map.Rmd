@@ -10,19 +10,14 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(rgdal)
+library(tidyverse)
 ```
 
+
 ```{r}
-mydat = rgdal::readOGR("./data/UHF_42_DOHMH.shp")
+mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
 plot(mydat)
 names(mydat)
-mydat$UHF
-
-mydat@data
-
-<<<<<<< HEAD
-
-
 
 
 ggplot(data = mydat, mapping = aes(x = long, y = lat, group = group)) + 
@@ -42,6 +37,7 @@ map_data = map_data %>%
 
 names(map_data)[1:2] = c("x","y") 
 ```
+
 
 ```{r}
 asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
@@ -85,15 +81,3 @@ ggplot(asthma_map) +
 
 ```
 
-
-=======
-mymap = ggplot(data = fortify(mydat)) +
-    geom_polygon(aes(x = long, y = lat, group = ), colour = "black",
-                 fill = NA) +
-    theme_grey()
-print(mymap + coord_map())
-fortify(mydat)
-```
-
-
->>>>>>> e6391106597f7d79dd01e4ea397f4dfa40eb8b8f
