@@ -365,30 +365,237 @@ asthma_air1 = data %&gt;%
 </div>
 <div id="linear-regression" class="section level1">
 <h1>Linear Regression</h1>
-<pre class="r"><code>asthma_air1 </code></pre>
-<pre><code>## # A tibble: 42 x 16
-##    geo_entity_name geo_entity_id asthma_emergenc~ asthma_emergenc~
-##    &lt;chr&gt;                   &lt;int&gt;            &lt;dbl&gt;            &lt;dbl&gt;
-##  1 Bayside - Litt~           404               28             59.9
-##  2 Bedford Stuyve~           203             1184            509  
-##  3 Bensonhurst - ~           209               84             61  
-##  4 Borough Park              206              246             70.2
-##  5 Canarsie - Fla~           208              337            272. 
-##  6 Central Harlem~           302              687            644. 
-##  7 Chelsea - Clin~           306               51             98.5
-##  8 Coney Island -~           210              203            114. 
-##  9 Crotona -Tremo~           105             1374            738. 
-## 10 Downtown - Hei~           202              246            124. 
-## # ... with 32 more rows, and 12 more variables:
-## #   asthma_emergency_department_visits_children_5_to_14_yrs_old_number &lt;dbl&gt;,
-## #   asthma_emergency_department_visits_children_5_to_14_yrs_old_rate &lt;dbl&gt;,
-## #   asthma_hospitalizations_children_0_to_4_yrs_old_number &lt;dbl&gt;,
-## #   asthma_hospitalizations_children_0_to_4_yrs_old_rate &lt;dbl&gt;,
-## #   asthma_hospitalizations_children_5_to_14_yrs_old_number &lt;dbl&gt;,
-## #   asthma_hospitalizations_children_5_to_14_yrs_old_rate &lt;dbl&gt;,
-## #   black_carbon_mean &lt;dbl&gt;, fine_particulate_matter_pm2_5_mean &lt;dbl&gt;,
-## #   nitric_oxide_no_mean &lt;dbl&gt;, nitrogen_dioxide_no2_mean &lt;dbl&gt;,
-## #   ozone_o3_mean &lt;dbl&gt;, sulfur_dioxide_so2_mean &lt;dbl&gt;</code></pre>
+<div id="so2" class="section level3">
+<h3>so2</h3>
+<pre class="r"><code>so2_child_reg = lm(asthma_emergency_department_visits_children_0_to_4_yrs_old_rate~sulfur_dioxide_so2_mean,data = asthma_air1)
+summary(so2_child_reg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate ~ 
+##     sulfur_dioxide_so2_mean, data = asthma_air1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -379.76 -149.20  -86.45  130.23  580.15 
+## 
+## Coefficients:
+##                         Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)               111.89      75.60   1.480   0.1467  
+## sulfur_dioxide_so2_mean   224.95      90.46   2.487   0.0172 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 220.9 on 40 degrees of freedom
+## Multiple R-squared:  0.1339, Adjusted R-squared:  0.1122 
+## F-statistic: 6.184 on 1 and 40 DF,  p-value: 0.01717</code></pre>
+</div>
+<div id="pm2.5" class="section level3">
+<h3>pm2.5</h3>
+<pre class="r"><code>pm2.5_child_reg = lm(asthma_emergency_department_visits_children_0_to_4_yrs_old_rate~fine_particulate_matter_pm2_5_mean,data = asthma_air1)
+summary(pm2.5_child_reg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate ~ 
+##     fine_particulate_matter_pm2_5_mean, data = asthma_air1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -259.16 -191.65  -60.49  115.58  588.58 
+## 
+## Coefficients:
+##                                    Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                          144.17     324.42   0.444    0.659
+## fine_particulate_matter_pm2_5_mean    14.94      35.54   0.420    0.676
+## 
+## Residual standard error: 236.9 on 40 degrees of freedom
+## Multiple R-squared:  0.004399,   Adjusted R-squared:  -0.02049 
+## F-statistic: 0.1767 on 1 and 40 DF,  p-value: 0.6765</code></pre>
+</div>
+<div id="no" class="section level3">
+<h3>no</h3>
+<pre class="r"><code>no_child_reg = lm(asthma_emergency_department_visits_children_0_to_4_yrs_old_rate~nitric_oxide_no_mean,data = asthma_air1)
+summary(no_child_reg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate ~ 
+##     nitric_oxide_no_mean, data = asthma_air1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -266.45 -161.58  -87.68  104.88  589.10 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)           358.625    123.265   2.909  0.00589 **
+## nitric_oxide_no_mean   -3.880      5.788  -0.670  0.50652   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 236.1 on 40 degrees of freedom
+## Multiple R-squared:  0.01111,    Adjusted R-squared:  -0.01361 
+## F-statistic: 0.4493 on 1 and 40 DF,  p-value: 0.5065</code></pre>
+</div>
+<div id="no2" class="section level3">
+<h3>no2</h3>
+<pre class="r"><code>no2_child_reg = lm(asthma_emergency_department_visits_children_0_to_4_yrs_old_rate~nitrogen_dioxide_no2_mean,data = asthma_air1)
+summary(no2_child_reg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate ~ 
+##     nitrogen_dioxide_no2_mean, data = asthma_air1)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -255.2 -186.7  -67.6  116.7  595.1 
+## 
+## Coefficients:
+##                           Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                214.362    197.429   1.086    0.284
+## nitrogen_dioxide_no2_mean    3.205      9.519   0.337    0.738
+## 
+## Residual standard error: 237.1 on 40 degrees of freedom
+## Multiple R-squared:  0.002827,   Adjusted R-squared:  -0.0221 
+## F-statistic: 0.1134 on 1 and 40 DF,  p-value: 0.7381</code></pre>
+</div>
+<div id="o3" class="section level3">
+<h3>o3</h3>
+<pre class="r"><code>o3_child_reg = lm(asthma_emergency_department_visits_children_0_to_4_yrs_old_rate~ozone_o3_mean,data = asthma_air1)
+summary(o3_child_reg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate ~ 
+##     ozone_o3_mean, data = asthma_air1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -247.84 -186.99  -73.69  111.90  599.73 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)    383.109    474.910   0.807    0.425
+## ozone_o3_mean   -3.359     15.379  -0.218    0.828
+## 
+## Residual standard error: 237.3 on 40 degrees of freedom
+## Multiple R-squared:  0.001191,   Adjusted R-squared:  -0.02378 
+## F-statistic: 0.04771 on 1 and 40 DF,  p-value: 0.8282</code></pre>
+</div>
+<div id="section" class="section level2">
+<h2>4-14</h2>
+<div id="so2-1" class="section level3">
+<h3>so2</h3>
+<pre class="r"><code>so2_child_reg2 = lm(asthma_emergency_department_visits_children_5_to_14_yrs_old_rate~sulfur_dioxide_so2_mean,data = asthma_air1)
+summary(so2_child_reg2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_emergency_department_visits_children_5_to_14_yrs_old_rate ~ 
+##     sulfur_dioxide_so2_mean, data = asthma_air1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -308.27  -97.09  -38.14   76.83  380.18 
+## 
+## Coefficients:
+##                         Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)                84.81      54.95   1.544  0.13058   
+## sulfur_dioxide_so2_mean   190.11      65.75   2.892  0.00617 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 160.6 on 40 degrees of freedom
+## Multiple R-squared:  0.1729, Adjusted R-squared:  0.1522 
+## F-statistic: 8.361 on 1 and 40 DF,  p-value: 0.006171</code></pre>
+</div>
+<div id="pm2.5-1" class="section level3">
+<h3>pm2.5</h3>
+<pre class="r"><code>pm2.5_child_reg2 = lm(asthma_emergency_department_visits_children_5_to_14_yrs_old_rate~fine_particulate_matter_pm2_5_mean,data = asthma_air1)
+summary(pm2.5_child_reg2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_emergency_department_visits_children_5_to_14_yrs_old_rate ~ 
+##     fine_particulate_matter_pm2_5_mean, data = asthma_air1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -239.66 -125.75  -54.62  114.13  416.35 
+## 
+## Coefficients:
+##                                    Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                          -23.09     238.53  -0.097    0.923
+## fine_particulate_matter_pm2_5_mean    27.53      26.13   1.054    0.298
+## 
+## Residual standard error: 174.2 on 40 degrees of freedom
+## Multiple R-squared:  0.027,  Adjusted R-squared:  0.002679 
+## F-statistic:  1.11 on 1 and 40 DF,  p-value: 0.2984</code></pre>
+</div>
+<div id="no-1" class="section level3">
+<h3>no</h3>
+<pre class="r"><code>no_child_reg2 = lm(asthma_emergency_department_visits_children_5_to_14_yrs_old_rate~nitric_oxide_no_mean,data = asthma_air1)
+summary(no_child_reg2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_emergency_department_visits_children_5_to_14_yrs_old_rate ~ 
+##     nitric_oxide_no_mean, data = asthma_air1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -195.15 -114.89  -58.49  112.42  430.84 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)          241.3962    92.1557   2.619   0.0124 *
+## nitric_oxide_no_mean  -0.7261     4.3271  -0.168   0.8676  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 176.5 on 40 degrees of freedom
+## Multiple R-squared:  0.0007034,  Adjusted R-squared:  -0.02428 
+## F-statistic: 0.02815 on 1 and 40 DF,  p-value: 0.8676</code></pre>
+</div>
+<div id="no2-1" class="section level3">
+<h3>no2</h3>
+<pre class="r"><code>no2_child_reg2 = lm(asthma_emergency_department_visits_children_5_to_14_yrs_old_rate~nitrogen_dioxide_no2_mean,data = asthma_air1)
+summary(no2_child_reg2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_emergency_department_visits_children_5_to_14_yrs_old_rate ~ 
+##     nitrogen_dioxide_no2_mean, data = asthma_air1)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -236.8 -124.3  -61.8  114.2  411.1 
+## 
+## Coefficients:
+##                           Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                 90.622    145.403   0.623    0.537
+## nitrogen_dioxide_no2_mean    6.673      7.010   0.952    0.347
+## 
+## Residual standard error: 174.6 on 40 degrees of freedom
+## Multiple R-squared:  0.02215,    Adjusted R-squared:  -0.002298 
+## F-statistic: 0.906 on 1 and 40 DF,  p-value: 0.3469</code></pre>
+</div>
+<div id="o3-1" class="section level3">
+<h3>o3</h3>
+<pre class="r"><code>o3_child_reg2 = lm(asthma_emergency_department_visits_children_5_to_14_yrs_old_rate~ozone_o3_mean,data = asthma_air1)
+summary(o3_child_reg2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_emergency_department_visits_children_5_to_14_yrs_old_rate ~ 
+##     ozone_o3_mean, data = asthma_air1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -232.14 -126.99  -63.51  111.24  416.31 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)     536.51     349.98   1.533    0.133
+## ozone_o3_mean   -10.06      11.33  -0.888    0.380
+## 
+## Residual standard error: 174.8 on 40 degrees of freedom
+## Multiple R-squared:  0.01934,    Adjusted R-squared:  -0.00518 
+## F-statistic: 0.7887 on 1 and 40 DF,  p-value: 0.3798</code></pre>
+</div>
+</div>
 </div>
 
 

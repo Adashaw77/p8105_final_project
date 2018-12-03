@@ -170,14 +170,68 @@ asthma %>%
 
 #Linear Regression
 
+
+
+
+###so2
 ```{r}
-asthma_air1 
- 
+so2_child_reg = lm(asthma_emergency_department_visits_children_0_to_4_yrs_old_rate~sulfur_dioxide_so2_mean,data = asthma_air1)
+summary(so2_child_reg)
 ```
 
+###pm2.5
+```{r}
+pm2.5_child_reg = lm(asthma_emergency_department_visits_children_0_to_4_yrs_old_rate~fine_particulate_matter_pm2_5_mean,data = asthma_air1)
+summary(pm2.5_child_reg)
+```
 
+###no
+```{r}
+no_child_reg = lm(asthma_emergency_department_visits_children_0_to_4_yrs_old_rate~nitric_oxide_no_mean,data = asthma_air1)
+summary(no_child_reg)
+```
+###no2
+```{r}
+no2_child_reg = lm(asthma_emergency_department_visits_children_0_to_4_yrs_old_rate~nitrogen_dioxide_no2_mean,data = asthma_air1)
+summary(no2_child_reg)
+```
 
+###o3
+```{r}
+o3_child_reg = lm(asthma_emergency_department_visits_children_0_to_4_yrs_old_rate~ozone_o3_mean,data = asthma_air1)
+summary(o3_child_reg)
+```
 
+##4-14
+
+###so2
+```{r}
+so2_child_reg2 = lm(asthma_emergency_department_visits_children_5_to_14_yrs_old_rate~sulfur_dioxide_so2_mean,data = asthma_air1)
+summary(so2_child_reg2)
+```
+
+###pm2.5
+```{r}
+pm2.5_child_reg2 = lm(asthma_emergency_department_visits_children_5_to_14_yrs_old_rate~fine_particulate_matter_pm2_5_mean,data = asthma_air1)
+summary(pm2.5_child_reg2)
+```
+
+###no
+```{r}
+no_child_reg2 = lm(asthma_emergency_department_visits_children_5_to_14_yrs_old_rate~nitric_oxide_no_mean,data = asthma_air1)
+summary(no_child_reg2)
+```
+###no2
+```{r}
+no2_child_reg2 = lm(asthma_emergency_department_visits_children_5_to_14_yrs_old_rate~nitrogen_dioxide_no2_mean,data = asthma_air1)
+summary(no2_child_reg2)
+```
+
+###o3
+```{r}
+o3_child_reg2 = lm(asthma_emergency_department_visits_children_5_to_14_yrs_old_rate~ozone_o3_mean,data = asthma_air1)
+summary(o3_child_reg2)
+```
 
 
 
