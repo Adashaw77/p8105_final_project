@@ -1,0 +1,24 @@
+---
+title: "Introduction"
+output: html_document
+---
+
+##  Xinyao Wu
+Current gratuate student 
+
+Department of Biostatistics
+
+Columbia University Medical Center
+
+
+
+ <img src="image/pd.jpg" style="width:55%">
+ 
+ 
+More Information:
+ 
+ *[Resume](Resume.html)
+ 
+ *[Flexdashboard](Flexdashboard.html)
+ 
+ 

@@ -1,0 +1,17 @@
+name: "Xinyao Wu"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "About"
+      href: about.html
+    - text: "Resume"
+      href: Resume.html
+    - text: "Flexdashboard"
+      href: Flexdashboard.html
+    - icon: fa-envelope fa-lg
+      href: mailto:xw2598@cumc.columbia.edu
+    - icon: fa-github fa-lg
+      href: http://github.com/xinyao0118/
+output:
+  html_document

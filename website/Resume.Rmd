@@ -1,0 +1,9 @@
+---
+title: "Resume"
+output: html_document
+---
+Download:[PDF](resume/CV.pdf)
+
+<img src = "image/0001.jpg" style = "width = 55%" >
+<img src = "image/0002.jpg" style = "width = 55%" >
+
