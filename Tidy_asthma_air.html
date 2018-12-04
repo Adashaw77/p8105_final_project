@@ -191,10 +191,25 @@ $(document).ready(function () {
   <a href="about.html">About</a>
 </li>
 <li>
-  <a href="http://github.com/xinyao0118/">
+  <a href="datasource.html">Data Source</a>
+</li>
+<li>
+  <a href="dashboard.html">Dashboard</a>
+</li>
+<li>
+  <a href="youtube.html">
+    <span class="fab fa fab fa-youtube"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/Adashaw77/p8105_final_project/">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="https://sijiayue.shinyapps.io/shinny_heatmap/">Shiny</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -215,7 +230,7 @@ $(document).ready(function () {
 <pre class="r"><code>children1 = read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
   filter(name == &quot;Asthma Hospitalizations (Children 0 to 4 Yrs Old)&quot;) %&gt;%
   filter(Measure == &quot;Rate&quot;) %&gt;%
-  select(name,geo_entity_name,year_description,data_value) </code></pre>
+  dplyr::select(name,geo_entity_name,year_description,data_value) </code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -254,7 +269,7 @@ $(document).ready(function () {
 <pre class="r"><code>children2 = read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
   filter(name == &quot;Asthma Hospitalizations (Children 5 to 14 Yrs Old)&quot;) %&gt;%
   filter(Measure == &quot;Rate&quot;) %&gt;%
-  select(name,geo_entity_name,year_description,data_value) </code></pre>
+  dplyr::select(name,geo_entity_name,year_description,data_value) </code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -437,11 +452,11 @@ $(document).ready(function () {
 
 
 asthma_air1 = data %&gt;%
-  select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %&gt;%
+ dplyr::select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %&gt;%
   janitor::clean_names() %&gt;% 
   filter(measure %in% c(&quot;Mean&quot;, &quot;Rate&quot;, &quot;Number&quot;, &quot;Percent&quot;, &quot;Age-Adjusted Percent&quot;, &quot;Age-Adjusted Rate &quot;)) %&gt;%
   mutate(name_measure=str_c(name,&quot;-&quot;,measure)) %&gt;%
-  select(-name, -measure, -description, -year) %&gt;%
+  dplyr::select(-name, -measure, -description, -year) %&gt;%
   spread(key = name_measure, value = data_value) 
 
 names(asthma_air1)</code></pre>

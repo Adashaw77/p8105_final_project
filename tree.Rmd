@@ -5,7 +5,7 @@ date: "2018年12月2日"
 output: html_document
 ---
 
-```{r warning=F}
+```{r tree,warning =FALSE}
 library(tidyverse)
 library(dplyr)
 library(readr)

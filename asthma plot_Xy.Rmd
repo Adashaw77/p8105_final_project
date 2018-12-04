@@ -5,7 +5,7 @@ date: "2018/11/19"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r plot setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(rvest)
@@ -218,7 +218,7 @@ bind_rows(so2_child_reg1,pm2.5_child_reg1,no_child_reg1,no2_child_reg1,o3_child_
   mutate(
     term = str_replace(term,"_mean","")
   ) %>% 
-  select(term,p.value) %>% 
+  dplyr::select(term,p.value) %>% 
   knitr::kable(caption = "p.value of different air pollutants in  linear modeling asthma hospitalizations rate children (0_to_4_yrs old)")
   
 ```

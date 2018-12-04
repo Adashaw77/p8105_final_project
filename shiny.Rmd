@@ -12,6 +12,7 @@ library(rgdal)
 library(leaflet)
 library(raster)
 
+
 ```
 
 
@@ -28,6 +29,9 @@ proj4string1 = "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80
 
 mydat2 = spTransform(mydat, proj4string1)
 
+bins <- c(0, 50000000, 100000000, 150000000, 200000000, Inf)
+pal <- colorBin("YlOrRd", domain = mydat2$Shape_Area, bins = bins)
+
 leaflet() %>% 
 addProviderTiles("OpenStreetMap.Mapnik") %>%
 setView(lat = 40.7, lng = -74, zoom = 9) %>%
@@ -37,8 +41,7 @@ addPolygons(data = mydat2, fillColor = ~pal(Shape_Area), weight = 2,
   dashArray = "3",
   fillOpacity = 0.7)
 
-bins <- c(0, 50000000, 100000000, 150000000, 200000000, Inf)
-pal <- colorBin("YlOrRd", domain = mydat2$Shape_Area, bins = bins)
+
 
 names(mydat2)
 ```
@@ -68,63 +71,4 @@ addLegend(position = "bottomright", pal = mypal, values = mydf$value,
           title = "UK value",
           opacity = 1)
 
-
-
 ```
-
-leaflet() %>% 
-addTiles() %>%
-setView(lat = 40.7, lng = -74, zoom = 9) %>%
-addPolygons(data = mydat2,
-            stroke = FALSE, smoothFactor = 0.2, fillOpacity = 0.3)
-
-,
-            fillColor = ~mypal(mydf$value),
-            popup = paste("Region: ", UK$NAME_2, "<br>",
-                          "Value: ", mydf$value, "<br>")) %>%
-addLegend(position = "bottomright", pal = mypal, values = mydf$value,
-          title = "UK value",
-          opacity = 1)
-
-
-
-
-
-
-
-
-
-pj <- project(mydat2, proj4string(MYDAT), inverse=TRUE)
-str(mydat)
-
-
-mydat@coords
-print(proj4string(mydat))
-fortify(mydat)
-
- library(rgdal)
-  sputm <- SpatialPoints(randompoints, proj4string=CRS("+proj=utm +zone=??? +datum=WGS84")  
-  spgeo <- spTransform(sputm, CRS("+proj=longlat +datum=WGS84"))
-  
-install.packages("proj4")
-  library(proj4)
-
-proj4string =proj4string(mydat)
-
-
-proj4string <- ""+proj=utm +zone=19 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs ""
-
-
-
-# Source data
-xy <- data.frame(x=986847.2, y = 223334.0)
-
-# Transformed data
-pj <- project(xy, proj4string, inverse=TRUE)
-latlon <- data.frame(lat=pj$y, lon=pj$x)
-print(latlon)
-
-coordinates(mydat) <- ~x+y
-
-```
-

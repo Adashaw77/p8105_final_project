@@ -5,7 +5,7 @@ date: "2018/12/2"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r UHF setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(dplyr)
@@ -14,7 +14,7 @@ library(ggplot2)
 ```
 `
 
-```{r }
+```{r}
 #import tree data, retain only trees alive and good to health
 tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
   janitor::clean_names() %>%
@@ -25,7 +25,7 @@ tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
 #compute the total tree number of each boro
 tree_df %>%
   group_by(boroname) %>%
-  summarise(total = n())
+  dplyr::summarise(total = n())
 ```
 
 ```{r }
