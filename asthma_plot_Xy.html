@@ -197,6 +197,9 @@ $(document).ready(function () {
   <a href="dashboard.html">Dashboard</a>
 </li>
 <li>
+  <a href="https://sijiayue.shinyapps.io/shinny_heatmap/">Shiny</a>
+</li>
+<li>
   <a href="youtube.html">
     <span class="fab fa fab fa-youtube"></span>
      
@@ -207,9 +210,6 @@ $(document).ready(function () {
     <span class="fa fa-github fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="https://sijiayue.shinyapps.io/shinny_heatmap/">Shiny</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -253,6 +253,7 @@ distinct(name) %&gt;% pull()</code></pre>
   filter(str_detect(year_description, &quot;^20|^An&quot;)) %&gt;%
   mutate(year_description = str_remove(year_description, &quot;Annual Average &quot;)) %&gt;%
     filter(year_description == 2015)</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `Unique Id` = col_integer(),
@@ -272,9 +273,16 @@ distinct(name) %&gt;% pull()</code></pre>
 ##   message = col_character(),
 ##   X16 = col_character()
 ## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
+## a multiple of vector length (arg 1)</code></pre>
+<pre><code>## Warning: 6 parsing failures.
+## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique~ an integ~ NYC Department of Health and Me~ &#39;./data/asthma~ file 2 19069 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/asthma~ row 3 19070 Unique~ an integ~ Environment &amp; Health Data Portal &#39;./data/asthma~ col 4 19070 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/asthma~ expected 5 19071 Unique~ an integ~ Available at: http://nyc.gov/he~ &#39;./data/asthma~
+## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
+## See problems(...) for more details.</code></pre>
 <pre class="r"><code>sulfur_dioxide= read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
   filter(name == &quot;Sulfur Dioxide (SO2)&quot;) %&gt;%
   filter(year_description == &quot;Winter 2014-15&quot;)</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `Unique Id` = col_integer(),
@@ -294,9 +302,16 @@ distinct(name) %&gt;% pull()</code></pre>
 ##   message = col_character(),
 ##   X16 = col_character()
 ## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not a multiple of vector length (arg 1)
+
+## Warning in rbind(names(probs), probs_f): 6 parsing failures.
+## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique~ an integ~ NYC Department of Health and Me~ &#39;./data/asthma~ file 2 19069 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/asthma~ row 3 19070 Unique~ an integ~ Environment &amp; Health Data Portal &#39;./data/asthma~ col 4 19070 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/asthma~ expected 5 19071 Unique~ an integ~ Available at: http://nyc.gov/he~ &#39;./data/asthma~
+## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
+## See problems(...) for more details.</code></pre>
 <pre class="r"><code>ozone= read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
   filter(name == &quot;Ozone (O3)&quot;) %&gt;%
   filter(year_description == &quot;Summer 2015&quot;)</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `Unique Id` = col_integer(),
@@ -316,8 +331,15 @@ distinct(name) %&gt;% pull()</code></pre>
 ##   message = col_character(),
 ##   X16 = col_character()
 ## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not a multiple of vector length (arg 1)
+
+## Warning in rbind(names(probs), probs_f): 6 parsing failures.
+## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique~ an integ~ NYC Department of Health and Me~ &#39;./data/asthma~ file 2 19069 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/asthma~ row 3 19070 Unique~ an integ~ Environment &amp; Health Data Portal &#39;./data/asthma~ col 4 19070 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/asthma~ expected 5 19071 Unique~ an integ~ Available at: http://nyc.gov/he~ &#39;./data/asthma~
+## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
+## See problems(...) for more details.</code></pre>
 <pre class="r"><code>poverty= read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
   filter(year_description == &quot;2011-15&quot; )</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `Unique Id` = col_character(),
@@ -337,8 +359,13 @@ distinct(name) %&gt;% pull()</code></pre>
 ##   message = col_character(),
 ##   X16 = col_character()
 ## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
+## a multiple of vector length (arg 1)</code></pre>
+<pre><code>## Warning: 3 parsing failures.
+## row # A tibble: 3 x 5 col     row col   expected   actual    file                      expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;                     actual 1   841 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; file 2   842 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; row 3   843 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
 <pre class="r"><code>smoke = read_csv(&quot;./data/smoking_exer/Data.csv&quot;) %&gt;%
   filter(year_description == &quot;2015&quot; )</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `Unique Id` = col_integer(),
@@ -358,6 +385,12 @@ distinct(name) %&gt;% pull()</code></pre>
 ##   message = col_character(),
 ##   X16 = col_character()
 ## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
+## a multiple of vector length (arg 1)</code></pre>
+<pre><code>## Warning: 6 parsing failures.
+## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1  1051 Unique~ an integ~ NYC Department of Health and Me~ &#39;./data/smokin~ file 2  1051 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/smokin~ row 3  1052 Unique~ an integ~ Environment &amp; Health Data Portal &#39;./data/smokin~ col 4  1052 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/smokin~ expected 5  1053 Unique~ an integ~ Available at: http://nyc.gov/he~ &#39;./data/smokin~
+## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
+## See problems(...) for more details.</code></pre>
 <pre class="r"><code>data = rbind(asthma_air,sulfur_dioxide,ozone, poverty, smoke)
   
 asthma_air1 = data %&gt;%
