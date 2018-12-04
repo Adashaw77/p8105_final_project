@@ -245,7 +245,7 @@ tree_df %&gt;%
 ## 5 Staten Island  82669</code></pre>
 <pre class="r"><code>ggplot(aes(x = latitude, y = longitude), data = tree_df) +
   geom_hex()</code></pre>
-<p><img src="tree_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="tree_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
    select(-zipcode_no, -uhf42_code) %&gt;%
@@ -280,7 +280,7 @@ ggplot(aes(x = uhf42_name, y = tree_density), data = tree_total_uhf42) +
   geom_bar(stat = &quot;identity&quot;, aes(fill = uhf42_name)) +
   theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="tree_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="tree_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <pre class="r"><code>asthma_pollute = read_csv(&quot;./data/asthma_air/Data.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -331,7 +331,7 @@ pm2.5_tree = left_join(pm2.5, tree_total_uhf42)</code></pre>
   geom_point()+
   geom_smooth()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="tree_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="tree_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>asthma_hos_children = asthma_pollute %&gt;%
   filter(name == &quot;Asthma Hospitalizations (Children 0 to 4 Yrs Old)&quot;, Measure == &quot;Rate&quot;, year_description == &quot;2015&quot;) %&gt;%
   dplyr::rename(uhf42_name = geo_entity_name) %&gt;%
@@ -362,7 +362,7 @@ asthma_hos_children_tree = left_join(asthma_hos_children, tree_total_uhf42)</cod
   geom_point()+
   geom_smooth()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="tree_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<p><img src="tree_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
 <pre class="r"><code>asthma_pm = left_join(pm2.5, asthma_hos_children)</code></pre>
 <pre><code>## Joining, by = &quot;uhf42_name&quot;</code></pre>
 <pre class="r"><code>summary(lm(asthma_hos_children ~ tree_density, data = asthma_hos_children_tree))</code></pre>
@@ -388,7 +388,7 @@ asthma_hos_children_tree = left_join(asthma_hos_children, tree_total_uhf42)</cod
   geom_point()+
   geom_smooth()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="tree_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="tree_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 
 
 

@@ -5,14 +5,14 @@ date: "12/2/2018"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r tidy setup, include=FALSE}
 library(tidyverse)
 library(plyr)
 library(readr)
 ```
 
 
-```{r}
+```{r }
 
 children1 = read_csv("./data/asthma_air/Data.csv") %>%
   filter(name == "Asthma Hospitalizations (Children 0 to 4 Yrs Old)") %>%
