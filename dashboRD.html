@@ -193,7 +193,7 @@ $(document).ready(function () {
   <a href="datasource.html">Data Source</a>
 </li>
 <li>
-  <a href="dashboard.html">Dashboard</a>
+  <a href="dashboRD.html">Dashboard</a>
 </li>
 <li>
   <a href="https://sijiayue.shinyapps.io/shinny_heatmap/">Shiny</a>
@@ -224,10 +224,16 @@ $(document).ready(function () {
 </div>
 
 
+<p>```</p>
 <div id="column" class="section level2" data-width="650">
 <h2>Column</h2>
 <div id="chart-a" class="section level3">
 <h3>Chart A</h3>
+<pre class="r"><code>ggplot(asthma_map) +
+    geom_map(aes(map_id = id, fill = asthma), color = &quot;white&quot;, map = map_data) +
+    scale_fill_gradient(high = &quot;darkgreen&quot;,low = &quot;lightgreen&quot;) +
+    expand_limits(map_data)</code></pre>
+<p><img src="dashboRD_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
 </div>
 <div id="column-1" class="section level2" data-width="350">

@@ -37,16 +37,16 @@ names(map_data)[1:2] = c("x","y")
 
 
 ```{r}
-asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
+asthma_air = read.csv("./data/asthma_air/Data.csv") %>%
   filter(str_detect(year_description, "^20|^An")) %>%
   mutate(year_description = str_remove(year_description, "Annual Average ")) %>%
     filter(year_description == 2015)
 
-sulfur_dioxide= read_csv("./data/asthma_air/Data.csv") %>%
+sulfur_dioxide= read.csv("./data/asthma_air/Data.csv") %>%
   filter(name == "Sulfur Dioxide (SO2)") %>%
   filter(year_description == "Winter 2014-15")
 
-ozone= read_csv("./data/asthma_air/Data.csv") %>%
+ozone= read.csv("./data/asthma_air/Data.csv") %>%
   filter(name == "Ozone (O3)") %>%
   filter(year_description == "Summer 2015")
 
@@ -69,11 +69,9 @@ asthma_map = asthma_air1 %>%
 ```
 
 ```{r}
-asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
+asthma_air = read.csv("./data/asthma_air/Data.csv") %>%
   filter(str_detect(year_description, "^20|^An")) %>%
   mutate(year_description = str_remove(year_description, "Annual Average "))
-
-
 
 asthma_air1 = asthma_air %>%
   dplyr::select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
@@ -83,8 +81,6 @@ asthma_air1 = asthma_air %>%
   filter(year == 2015) %>%
   dplyr::select(-name, -measure, -description) %>%
   spread(key = name_measure, value = data_value) 
-
-
 
 ```
 
