@@ -27,8 +27,6 @@ map_data = fortify(mydat) %>%
 map_data$uhf = mydat$UHFCODE
 
 map_data = map_data %>%
-
-  unnest
   unnest %>%
   dplyr::select(-id) %>%
   dplyr::select(id = uhf, everything()) %>%
@@ -57,16 +55,16 @@ data = rbind(asthma_air,sulfur_dioxide,ozone)
 
 
 asthma_air1 = data %>%
-  select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
+  dplyr::select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
   janitor::clean_names() %>% 
   filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
   mutate(name_measure=str_c(name,"-",measure)) %>%
-  select(-name, -measure, -description, -year) %>%
+  dplyr::select(-name, -measure, -description, -year) %>%
   spread(key = name_measure, value = data_value)  %>%
   janitor::clean_names()
 
 asthma_map = asthma_air1 %>%
-  select (id = geo_entity_id, asthma = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate)
+  dplyr::select (id = geo_entity_id, asthma = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate)
 
 ```
 
@@ -78,12 +76,12 @@ asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
 
 
 asthma_air1 = asthma_air %>%
-  select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
+  dplyr::select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
   janitor::clean_names() %>% 
   filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
   mutate(name_measure=str_c(name,"-",measure)) %>%
   filter(year == 2015) %>%
-  select(-name, -measure, -description) %>%
+  dplyr::select(-name, -measure, -description) %>%
   spread(key = name_measure, value = data_value) 
 
 
