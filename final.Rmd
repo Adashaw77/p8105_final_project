@@ -84,15 +84,15 @@ poverty_under5 = read_csv("./data/poverty/Data.csv") %>%
          name == "Children under 5 years old in Poverty") %>%
   select(geo_entity_id, poverty_under5 = data_value) 
 
-aaaa=tree_density%>%
-  filter(health == "Good") %>%
-  select(geo_entity_id=uhf42_code,tree_density,health_tree_density)
+tree_density_total = tree_density%>%
+  select(geo_entity_id=uhf42_code,tree_density) %>%
+  distinct()
 
 final_df = left_join(asthma_em_0to4,asthma_em_5to14) %>%
   left_join(so2) %>%
   left_join(poverty) %>%
   left_join(poverty_under5) %>%
-  left_join(aaaa) %>%
+  left_join(tree_density_total) %>%
   mutate(asthma_total = asthma_em_0to4+asthma_em_5to14,
          geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total)) 
   
@@ -102,27 +102,32 @@ summary(lm(asthma_em_0to4~tree_density+so2+poverty_under5,data=final_df))
 
 summary(lm(asthma_em_5to14~tree_density+so2+poverty,data=final_df))
 
-#asthma and so2
-ggplot(data=final_df)+
-  geom_point(aes(x=so2,y=asthma_em_0to4))+
-  geom_smooth(aes(x=so2,y=asthma_em_0to4),method = "lm",se=F)+
-  geom_point(aes(x=so2,y=asthma_em_5to14))+
-  geom_smooth(aes(x=so2,y=asthma_em_5to14),method = "lm",se=F)
 
-#asthma and poverty
-ggplot(data=final_df)+
-  geom_point(aes(x=poverty_under5,y=asthma_em_0to4))+
-  geom_smooth(aes(x=poverty_under5,y=asthma_em_0to4),method = "lm",se=F)+
-  geom_point(aes(x=poverty,y=asthma_em_5to14))+
-  geom_smooth(aes(x=poverty,y=asthma_em_5to14),method = "lm",se=F)
 ```
 
 ```{r }
+#asthma and so2
+final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to4:asthma_em_5to14) %>%
+  gather(key = poverty_age, value = poverty, poverty:poverty_under5) %>%
+  filter((asthma_age == "asthma_em_5to14"&poverty_age == "poverty")|(asthma_age == "asthma_em_0to4"& poverty_age == "poverty_under5"))
 
-final_df %>%
-  gather(key = name, value = rate, asthma_em_0to4:asthma_em_5to14) %>%
-  ggplot() +
-  geom_bar(aes(x=geo_entity_name,y=rate,fill=name),stat = "identity",position = "dodge") +
+ggplot(final_asthma_df) +
+   geom_point(aes(x=so2,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=so2,y=rate,color = asthma_age), method = "lm",se=F)
+
+#asthma and poverty
+ggplot(final_asthma_df) +
+   geom_point(aes(x=poverty,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = "lm",se=F)
+
+#asthma and tree
+ggplot(final_asthma_df) +
+  geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = "lm",se=F)
+
+#asthma 0-4 and asthma 5-14 in each UHF42
+ggplot(final_asthma_df) +
+  geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = "identity",position = "dodge") +
   coord_flip()
 
 ```

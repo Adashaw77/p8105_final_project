@@ -197,7 +197,7 @@ $(document).ready(function () {
   <a href="dashboRD.html">Dashboard</a>
 </li>
 <li>
-  <a href="https://sijiayue.shinyapps.io/shinny_heatmap/">Shiny</a>
+  <a href="shiny_treemap.html">Shiny</a>
 </li>
 <li>
   <a href="youtube.html">
@@ -387,15 +387,15 @@ poverty = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
 
 ## Warning in rbind(names(probs), probs_f): 3 parsing failures.
 ## row # A tibble: 3 x 5 col     row col   expected   actual    file                      expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;                     actual 1   841 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; file 2   842 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; row 3   843 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
-<pre class="r"><code>aaaa=tree_density%&gt;%
-  filter(health == &quot;Good&quot;) %&gt;%
-  select(geo_entity_id=uhf42_code,tree_density,health_tree_density)
+<pre class="r"><code>tree_density_total = tree_density%&gt;%
+  select(geo_entity_id=uhf42_code,tree_density) %&gt;%
+  distinct()
 
 final_df = left_join(asthma_em_0to4,asthma_em_5to14) %&gt;%
   left_join(so2) %&gt;%
   left_join(poverty) %&gt;%
   left_join(poverty_under5) %&gt;%
-  left_join(aaaa) %&gt;%
+  left_join(tree_density_total) %&gt;%
   mutate(asthma_total = asthma_em_0to4+asthma_em_5to14,
          geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total)) </code></pre>
 <pre><code>## Joining, by = &quot;geo_entity_id&quot;</code></pre>
@@ -449,25 +449,29 @@ summary(lm(asthma_em_0to4~tree_density+so2+poverty_under5,data=final_df))</code>
 ## Multiple R-squared:  0.6789, Adjusted R-squared:  0.6535 
 ## F-statistic: 26.78 on 3 and 38 DF,  p-value: 1.771e-09</code></pre>
 <pre class="r"><code>#asthma and so2
-ggplot(data=final_df)+
-  geom_point(aes(x=so2,y=asthma_em_0to4))+
-  geom_smooth(aes(x=so2,y=asthma_em_0to4),method = &quot;lm&quot;,se=F)+
-  geom_point(aes(x=so2,y=asthma_em_5to14))+
-  geom_smooth(aes(x=so2,y=asthma_em_5to14),method = &quot;lm&quot;,se=F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<pre class="r"><code>#asthma and poverty
-ggplot(data=final_df)+
-  geom_point(aes(x=poverty_under5,y=asthma_em_0to4))+
-  geom_smooth(aes(x=poverty_under5,y=asthma_em_0to4),method = &quot;lm&quot;,se=F)+
-  geom_point(aes(x=poverty,y=asthma_em_5to14))+
-  geom_smooth(aes(x=poverty,y=asthma_em_5to14),method = &quot;lm&quot;,se=F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
-<pre class="r"><code>final_df %&gt;%
-  gather(key = name, value = rate, asthma_em_0to4:asthma_em_5to14) %&gt;%
-  ggplot() +
-  geom_bar(aes(x=geo_entity_name,y=rate,fill=name),stat = &quot;identity&quot;,position = &quot;dodge&quot;) +
-  coord_flip()</code></pre>
+final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to4:asthma_em_5to14) %&gt;%
+  gather(key = poverty_age, value = poverty, poverty:poverty_under5) %&gt;%
+  filter((asthma_age == &quot;asthma_em_5to14&quot;&amp;poverty_age == &quot;poverty&quot;)|(asthma_age == &quot;asthma_em_0to4&quot;&amp; poverty_age == &quot;poverty_under5&quot;))
+
+ggplot(final_asthma_df) +
+   geom_point(aes(x=so2,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=so2,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
 <p><img src="final_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>#asthma and poverty
+ggplot(final_asthma_df) +
+   geom_point(aes(x=poverty,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>#asthma and tree
+ggplot(final_asthma_df) +
+  geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<pre class="r"><code>#asthma 0-4 and asthma 5-14 in each UHF42
+ggplot(final_asthma_df) +
+  geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = &quot;identity&quot;,position = &quot;dodge&quot;) +
+  coord_flip()</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
 
 
 
