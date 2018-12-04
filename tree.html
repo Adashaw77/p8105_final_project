@@ -263,7 +263,7 @@ tree_df %&gt;%
 <p><img src="tree_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
-   select(-zipcode_no, -uhf42_code) %&gt;%
+  dplyr::select(-zipcode_no, -uhf42_code) %&gt;%
    filter(is.na(zipcode) == FALSE)
 
 tree_total_uhf42 = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;) %&gt;%
@@ -273,7 +273,7 @@ tree_total_uhf42 = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;) %
   mutate(uhf42_name = forcats::fct_reorder(uhf42_name, total))</code></pre>
 <pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
-   select(-zipcode_no, -uhf42_code) %&gt;%
+ dplyr::select(-zipcode_no, -uhf42_code) %&gt;%
    filter(is.na(zipcode) == FALSE)
 
 mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
@@ -319,7 +319,7 @@ ggplot(aes(x = uhf42_name, y = tree_density), data = tree_total_uhf42) +
 <pre class="r"><code>pm2.5 = asthma_pollute %&gt;%
   filter(name == &quot;Fine Particulate Matter (PM2.5)&quot;, Measure == &quot;Mean&quot;, year_description == &quot;Annual Average 2015&quot;) %&gt;%
   dplyr::rename(uhf42_name = geo_entity_name) %&gt;%
-  select(uhf42_name, pm2.5_data = data_value)
+ dplyr::select(uhf42_name, pm2.5_data = data_value)
 
 pm2.5_tree = left_join(pm2.5, tree_total_uhf42)</code></pre>
 <pre><code>## Joining, by = &quot;uhf42_name&quot;</code></pre>
@@ -350,7 +350,7 @@ pm2.5_tree = left_join(pm2.5, tree_total_uhf42)</code></pre>
 <pre class="r"><code>asthma_hos_children = asthma_pollute %&gt;%
   filter(name == &quot;Asthma Hospitalizations (Children 0 to 4 Yrs Old)&quot;, Measure == &quot;Rate&quot;, year_description == &quot;2015&quot;) %&gt;%
   dplyr::rename(uhf42_name = geo_entity_name) %&gt;%
-  select(uhf42_name, asthma_hos_children = data_value)
+ dplyr::select(uhf42_name, asthma_hos_children = data_value)
 
 asthma_hos_children_tree = left_join(asthma_hos_children, tree_total_uhf42)</code></pre>
 <pre><code>## Joining, by = &quot;uhf42_name&quot;</code></pre>

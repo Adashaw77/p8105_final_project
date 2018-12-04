@@ -2,7 +2,6 @@
 title: "Dashboard"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: columns
     vertical_layout: fill
 ---
 
@@ -11,8 +10,10 @@ library(flexdashboard)
 library(tidyverse)
 library(rvest)
 library(httr)
+library(plotly)
 library(rgdal)
 library(patchwork)
+library(readxl)
 
 ```
 
@@ -66,21 +67,31 @@ asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
   filter(str_detect(year_description, "^20|^An")) %>%
   mutate(year_description = str_remove(year_description, "Annual Average "))
 
-asthma_air1 = asthma_air %>%
-  dplyr::select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
-  janitor::clean_names() %>% 
-  filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
-  mutate(name_measure=str_c(name,"-",measure)) %>%
-  filter(year == 2015) %>%
-  dplyr::select(-name, -measure, -description) %>%
-  spread(key = name_measure, value = data_value) 
+tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
+  janitor::clean_names() %>%
+  filter(status == "Alive", health == "Good") 
+  
+zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
+   dplyr::select(-zipcode_no, -uhf42_code) %>%
+   filter(is.na(zipcode) == FALSE)
 
+mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
+area = mydat$SHAPE_Area
+
+tree_total_uhf42 = left_join(tree_df, zipcode_uhf42, by = "zipcode") %>%
+  group_by(uhf42_name) %>%
+  dplyr::summarize(total = n()) %>%
+  mutate(area = mydat$SHAPE_Area) %>%
+  filter(is.na(uhf42_name) == FALSE) %>%
+  mutate(tree_density = total/area, 
+         uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))
 ```
 
 
 ```
 
-Column {data-width=650}
+Column {.tabset data-width=650}
 -----------------------------------------------------------------------
 
 ### Chart A
@@ -92,18 +103,42 @@ ggplot(asthma_map) +
     expand_limits(map_data)
 ```
 
-Column {data-width=350}
------------------------------------------------------------------------
 
 ### Chart B
 
 ```{r}
 
+ggplot(aes(x = uhf42_name, y = tree_density), data = tree_total_uhf42) +
+  geom_bar(stat = "identity", aes(fill = uhf42_name)) +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  theme(legend.position = "none")
+
 ```
 
+Column {data-width=550}
+-----------------------------------------------------------------------
 ### Chart C
+
+```{r fig.width=8.5, fig.height=3.5}
+ plot_so2 = ggplot(asthma_air1 )+
+  geom_point(aes(x = sulfur_dioxide_so2_mean, y =asthma_emergency_department_visits_children_0_to_4_yrs_old_rate,color = "children_0_to_4_yrs_old"))+
+  geom_smooth(aes(x = sulfur_dioxide_so2_mean, y = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate,color = "children_0_to_4_yrs_old"),method = lm,se =FALSE) +
+  geom_point(aes(x = sulfur_dioxide_so2_mean, y = asthma_emergency_department_visits_children_5_to_14_yrs_old_rate,color = "children_5_to_14_yrs_old"))+
+  geom_smooth(aes(x = sulfur_dioxide_so2_mean, y = asthma_emergency_department_visits_children_5_to_14_yrs_old_rate,color = "children_5_to_14_yrs_old"),method = lm,se =FALSE) +
+  theme(legend.position ="bottom")
+  ggplotly(plot_so2,height = 200, width=450) %>%
+layout(legend = list(orientation = "h", x = -0.5, y =-1))
+```
+
+
+### Chart D {.tabset}
 
 ```{r}
 
 ```
 
+### Chart E 
+
+```{r}
+
+```
