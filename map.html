@@ -193,7 +193,10 @@ $(document).ready(function () {
   <a href="datasource.html">Data Source</a>
 </li>
 <li>
-  <a href="dashboard.html">Dashboard</a>
+  <a href="dashboRD.html">Dashboard</a>
+</li>
+<li>
+  <a href="https://sijiayue.shinyapps.io/shinny_heatmap/">Shiny</a>
 </li>
 <li>
   <a href="youtube.html">
@@ -206,9 +209,6 @@ $(document).ready(function () {
     <span class="fa fa-github fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="https://sijiayue.shinyapps.io/shinny_heatmap/">Shiny</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -251,9 +251,10 @@ map_data = map_data %&gt;%
   dplyr::select(long, lat, everything())
 
 names(map_data)[1:2] = c(&quot;x&quot;,&quot;y&quot;) </code></pre>
-<pre class="r"><code>asthma_air = read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
+<pre class="r"><code>asthma_air = read.csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
   filter(str_detect(year_description, &quot;^20|^An&quot;)) %&gt;%
   mutate(year_description = str_remove(year_description, &quot;Annual Average &quot;)) %&gt;%
+<<<<<<< HEAD
     filter(year_description == 2015)</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
@@ -340,6 +341,19 @@ names(map_data)[1:2] = c(&quot;x&quot;,&quot;y&quot;) </code></pre>
 ## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
 ## See problems(...) for more details.</code></pre>
 <pre class="r"><code>data = rbind(asthma_air,sulfur_dioxide,ozone)
+=======
+    filter(year_description == 2015)
+
+sulfur_dioxide= read.csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
+  filter(name == &quot;Sulfur Dioxide (SO2)&quot;) %&gt;%
+  filter(year_description == &quot;Winter 2014-15&quot;)
+
+ozone= read.csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
+  filter(name == &quot;Ozone (O3)&quot;) %&gt;%
+  filter(year_description == &quot;Summer 2015&quot;)
+
+data = rbind(asthma_air,sulfur_dioxide,ozone)
+>>>>>>> e22742c652c36d414b4ed5947723e310bef881c6
   
 
 
@@ -354,8 +368,9 @@ asthma_air1 = data %&gt;%
 
 asthma_map = asthma_air1 %&gt;%
   dplyr::select (id = geo_entity_id, asthma = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate)</code></pre>
-<pre class="r"><code>asthma_air = read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
+<pre class="r"><code>asthma_air = read.csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
   filter(str_detect(year_description, &quot;^20|^An&quot;)) %&gt;%
+<<<<<<< HEAD
   mutate(year_description = str_remove(year_description, &quot;Annual Average &quot;))</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
@@ -384,6 +399,11 @@ asthma_map = asthma_air1 %&gt;%
 ## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
 ## See problems(...) for more details.</code></pre>
 <pre class="r"><code>asthma_air1 = asthma_air %&gt;%
+=======
+  mutate(year_description = str_remove(year_description, &quot;Annual Average &quot;))
+
+asthma_air1 = asthma_air %&gt;%
+>>>>>>> e22742c652c36d414b4ed5947723e310bef881c6
   dplyr::select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %&gt;%
   janitor::clean_names() %&gt;% 
   filter(measure %in% c(&quot;Mean&quot;, &quot;Rate&quot;, &quot;Number&quot;, &quot;Percent&quot;, &quot;Age-Adjusted Percent&quot;, &quot;Age-Adjusted Rate &quot;)) %&gt;%

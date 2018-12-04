@@ -19,7 +19,7 @@ asthma %>%
 distinct(name) %>% pull()
 ```
 ##From "tidy_asthma&air.rmd"
-```{r warning=FALSE}
+```{r including = FALSE}
  
 asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
   filter(str_detect(year_description, "^20|^An")) %>%

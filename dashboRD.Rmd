@@ -1,31 +1,27 @@
 ---
-
-title: "map"
-author: "Qi Shao"
-date: "12/2/2018"
-output: html_document
+title: "Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
 ---
 
-```{r map setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r dashboard setup, include=FALSE}
+library(flexdashboard)
 library(tidyverse)
+library(rvest)
+library(httr)
 library(rgdal)
-library(tidyverse)
+library(patchwork)
+
 ```
 
-
-```{r}
+```{r tidy,include= FALSE}
 mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
-plot(mydat)
-ggplot(data = mydat, mapping = aes(x = long, y = lat, group = group)) + 
-  geom_polygon(data = mydat, fill = NA, color = "white") +
-  geom_polygon(color = "black", fill = NA) 
-
 map_data = fortify(mydat) %>%
   dplyr::select(id, everything() )%>%
   nest(long:group)
 map_data$uhf = mydat$UHFCODE
-
 map_data = map_data %>%
   unnest %>%
   dplyr::select(-id) %>%
@@ -33,43 +29,40 @@ map_data = map_data %>%
   dplyr::select(long, lat, everything())
 
 names(map_data)[1:2] = c("x","y") 
-```
 
-
-```{r}
-asthma_air = read.csv("./data/asthma_air/Data.csv") %>%
+asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
   filter(str_detect(year_description, "^20|^An")) %>%
   mutate(year_description = str_remove(year_description, "Annual Average ")) %>%
     filter(year_description == 2015)
 
-sulfur_dioxide= read.csv("./data/asthma_air/Data.csv") %>%
+sulfur_dioxide= read_csv("./data/asthma_air/Data.csv") %>%
   filter(name == "Sulfur Dioxide (SO2)") %>%
   filter(year_description == "Winter 2014-15")
 
-ozone= read.csv("./data/asthma_air/Data.csv") %>%
+ozone= read_csv("./data/asthma_air/Data.csv") %>%
   filter(name == "Ozone (O3)") %>%
   filter(year_description == "Summer 2015")
 
-data = rbind(asthma_air,sulfur_dioxide,ozone)
+poverty= read_csv("./data/poverty/Data.csv") %>%
+  filter(year_description == "2011-15" )
+
+smoke = read_csv("./data/smoking_exer/Data.csv") %>%
+  filter(year_description == "2015" )
+
+data = rbind(asthma_air,sulfur_dioxide,ozone, poverty, smoke)
   
-
-
 asthma_air1 = data %>%
-  dplyr::select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
+  select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
   janitor::clean_names() %>% 
   filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
   mutate(name_measure=str_c(name,"-",measure)) %>%
-  dplyr::select(-name, -measure, -description, -year) %>%
-  spread(key = name_measure, value = data_value)  %>%
+  select(-name, -measure, -description, -year) %>%
+  spread(key = name_measure, value = data_value) %>%
   janitor::clean_names()
 
 asthma_map = asthma_air1 %>%
   dplyr::select (id = geo_entity_id, asthma = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate)
-
-```
-
-```{r}
-asthma_air = read.csv("./data/asthma_air/Data.csv") %>%
+asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
   filter(str_detect(year_description, "^20|^An")) %>%
   mutate(year_description = str_remove(year_description, "Annual Average "))
 
@@ -84,12 +77,33 @@ asthma_air1 = asthma_air %>%
 
 ```
 
+
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
 ```{r}
 ggplot(asthma_map) +
     geom_map(aes(map_id = id, fill = asthma), color = "white", map = map_data) +
     scale_fill_gradient(high = "darkgreen",low = "lightgreen") +
     expand_limits(map_data)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
 
 ```
 
+### Chart C
+
+```{r}
+
+```
 
