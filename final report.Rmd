@@ -6,3 +6,11 @@ output: html_document
 ---
 
 ## final report
+
+motivation:
+Asthma is the most prevalent chronic diease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presense of extra mucus in narrow airways. Previous research that did in Kaunas, Lithuania showed a positive association between the level of the surrounding greeness and risk of asthma in childern. Their study suggeseted that high exposure to green spaces may increase the risk of allergic conditions and the prevalence of astham through the effect of pollen. 
+
+Over the past decades, the prevalence of astham has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Our goal was to investigate the assoication between tree densities and asthma among children in New York City, including air quality factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2). 
+
+
+
