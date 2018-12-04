@@ -1,0 +1,36 @@
+---
+title: "Shiny Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(tidyverse)
+library(viridis)
+library(plotly)
+```
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+
+
+### Chart C
+

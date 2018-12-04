@@ -1,0 +1,21 @@
+name: "Yay internet!"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "About"
+      href: about.html
+    - text: "Data Source"
+      href: datasource.html
+    - text: "Dashboard"
+      href: dashboRD.html
+    - text: "Shiny"
+      href: https://sijiayue.shinyapps.io/shinny_heatmap/   
+    - icon: fab fa-youtube
+      href: youtube.html
+    - icon: fa-github fa-lg
+      href: https://github.com/Adashaw77/p8105_final_project/
+
+      
+output:
+  html_document
