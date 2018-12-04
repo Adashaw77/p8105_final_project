@@ -1,0 +1,37 @@
+---
+title: "tree_UHF42"
+author: "Xinyao Wu"
+date: "2018/12/2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(ggplot2)
+```
+`
+
+```{r }
+#import tree data, retain only trees alive and good to health
+tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
+  janitor::clean_names() %>%
+  filter(status == "Alive", health == "Good") 
+```
+
+```{r }
+#compute the total tree number of each boro
+tree_df %>%
+  group_by(boroname) %>%
+  summarise(total = n())
+```
+
+```{r }
+ggplot(aes(x = latitude, y = longitude), data = tree_df) +
+  geom_hex()
+```
+
+
+
