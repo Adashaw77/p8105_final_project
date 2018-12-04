@@ -17,7 +17,7 @@ library(readr)
 children1 = read_csv("./data/asthma_air/Data.csv") %>%
   filter(name == "Asthma Hospitalizations (Children 0 to 4 Yrs Old)") %>%
   filter(Measure == "Rate") %>%
-  select(name,geo_entity_name,year_description,data_value) 
+  dplyr::select(name,geo_entity_name,year_description,data_value) 
   
 ggplot(children1, aes(x = year_description, y = data_value)) + 
   geom_boxplot()+
@@ -31,7 +31,7 @@ ggplot(children1, aes(x = year_description, y = data_value)) +
 children2 = read_csv("./data/asthma_air/Data.csv") %>%
   filter(name == "Asthma Hospitalizations (Children 5 to 14 Yrs Old)") %>%
   filter(Measure == "Rate") %>%
-  select(name,geo_entity_name,year_description,data_value) 
+  dplyr::select(name,geo_entity_name,year_description,data_value) 
   
 ggplot(children2, aes(x = year_description, y = data_value)) + 
   geom_boxplot()+
@@ -66,11 +66,11 @@ data = rbind(asthma_air,sulfur_dioxide,ozone, poverty, smoke)
 
 
 asthma_air1 = data %>%
-  select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
+ dplyr::select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
   janitor::clean_names() %>% 
   filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
   mutate(name_measure=str_c(name,"-",measure)) %>%
-  select(-name, -measure, -description, -year) %>%
+  dplyr::select(-name, -measure, -description, -year) %>%
   spread(key = name_measure, value = data_value) 
 
 names(asthma_air1)
