@@ -13,17 +13,67 @@ library(shiny)
 library(tidyverse)
 library(viridis)
 library(plotly)
+library(readxl)
+
+mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
+
+
+tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
+  janitor::clean_names() 
+
+
+zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
+   dplyr::select(-zipcode_no, uhf42_name) %>%
+   filter(is.na(zipcode) == FALSE)
+
+tree_df =  left_join(tree_df, zipcode_uhf42, by = "zipcode") 
+
+area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %>%
+  filter(is.na(uhf42_code) == FALSE)
+
+tree_df = left_join(tree_df, area, by = "uhf42_code")
+
+
+tree_total_uhf42_1 = tree_df %>%
+  group_by(uhf42_name, health, area, uhf42_code) %>%
+  dplyr::summarize(total = n()) %>%
+  filter(is.na(uhf42_name) == FALSE)
+
+
+tree_total_uhf42_2 = tree_df %>%
+  group_by(uhf42_name, area,uhf42_code) %>%
+  dplyr::summarize(total = n()) %>%
+  mutate(health = "Total_number") %>%
+  filter(is.na(uhf42_name) == FALSE)
+
+tree_total_uhf42 = 
+  bind_rows(tree_total_uhf42_1, tree_total_uhf42_2) %>%
+  group_by(health) %>%
+  mutate(tree_density = total/area, 
+         uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))
+
+health_state = c("Fair", "Good", "Poor", "Total_number")
 ```
 
 Column {.sidebar}
 -----------------------------------------------------------------------
+```{r}
+selectInput("health_choice", label = h3("Health_state"),
+            choices = health_state, selected = "Total_number")
 
+
+```
 
 Column {data-width=650}
 -----------------------------------------------------------------------
 
 ### Chart A
+```{r}
 
+
+
+```
 
 Column {data-width=350}
 -----------------------------------------------------------------------

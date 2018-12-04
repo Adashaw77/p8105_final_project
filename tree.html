@@ -273,7 +273,11 @@ tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;)
 
 mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
+<<<<<<< HEAD
+## Source: &quot;/Users/ada/Documents/Ada Documents/Master in Columbia/Courses/Data Science/R programming/homework/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+=======
 ## Source: &quot;E:\Master\Data Science\Assignments\Final\p8105_final_project\UHF42\UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+>>>>>>> d2964e143b662137edaf4da85107d04de0b3aa94
 ## with 43 features
 ## It has 8 fields</code></pre>
 <pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%

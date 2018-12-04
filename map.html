@@ -196,7 +196,7 @@ $(document).ready(function () {
   <a href="dashboRD.html">Dashboard</a>
 </li>
 <li>
-  <a href="https://sijiayue.shinyapps.io/shinny_heatmap/">Shiny</a>
+  <a href="shiny_treemap.html">Shiny</a>
 </li>
 <li>
   <a href="youtube.html">
@@ -254,94 +254,6 @@ names(map_data)[1:2] = c(&quot;x&quot;,&quot;y&quot;) </code></pre>
 <pre class="r"><code>asthma_air = read.csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
   filter(str_detect(year_description, &quot;^20|^An&quot;)) %&gt;%
   mutate(year_description = str_remove(year_description, &quot;Annual Average &quot;)) %&gt;%
-<<<<<<< HEAD
-    filter(year_description == 2015)</code></pre>
-<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_integer(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_character(),
-##   data_value = col_double(),
-##   message = col_character(),
-##   X16 = col_character()
-## )</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 6 parsing failures.
-## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique… an integ… NYC Department of Health and Me… &#39;./data/asthma… file 2 19069 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… row 3 19070 Unique… an integ… Environment &amp; Health Data Portal &#39;./data/asthma… col 4 19070 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… expected 5 19071 Unique… an integ… Available at: http://nyc.gov/he… &#39;./data/asthma…
-## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
-## See problems(...) for more details.</code></pre>
-<pre class="r"><code>sulfur_dioxide= read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
-  filter(name == &quot;Sulfur Dioxide (SO2)&quot;) %&gt;%
-  filter(year_description == &quot;Winter 2014-15&quot;)</code></pre>
-<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_integer(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_character(),
-##   data_value = col_double(),
-##   message = col_character(),
-##   X16 = col_character()
-## )</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not a multiple of vector length (arg 1)
-
-## Warning in rbind(names(probs), probs_f): 6 parsing failures.
-## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique… an integ… NYC Department of Health and Me… &#39;./data/asthma… file 2 19069 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… row 3 19070 Unique… an integ… Environment &amp; Health Data Portal &#39;./data/asthma… col 4 19070 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… expected 5 19071 Unique… an integ… Available at: http://nyc.gov/he… &#39;./data/asthma…
-## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
-## See problems(...) for more details.</code></pre>
-<pre class="r"><code>ozone= read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
-  filter(name == &quot;Ozone (O3)&quot;) %&gt;%
-  filter(year_description == &quot;Summer 2015&quot;)</code></pre>
-<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_integer(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_character(),
-##   data_value = col_double(),
-##   message = col_character(),
-##   X16 = col_character()
-## )</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not a multiple of vector length (arg 1)
-
-## Warning in rbind(names(probs), probs_f): 6 parsing failures.
-## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique… an integ… NYC Department of Health and Me… &#39;./data/asthma… file 2 19069 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… row 3 19070 Unique… an integ… Environment &amp; Health Data Portal &#39;./data/asthma… col 4 19070 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… expected 5 19071 Unique… an integ… Available at: http://nyc.gov/he… &#39;./data/asthma…
-## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
-## See problems(...) for more details.</code></pre>
-<pre class="r"><code>data = rbind(asthma_air,sulfur_dioxide,ozone)
-=======
     filter(year_description == 2015)
 
 sulfur_dioxide= read.csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
@@ -353,7 +265,6 @@ ozone= read.csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
   filter(year_description == &quot;Summer 2015&quot;)
 
 data = rbind(asthma_air,sulfur_dioxide,ozone)
->>>>>>> e22742c652c36d414b4ed5947723e310bef881c6
   
 
 
@@ -370,40 +281,9 @@ asthma_map = asthma_air1 %&gt;%
   dplyr::select (id = geo_entity_id, asthma = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate)</code></pre>
 <pre class="r"><code>asthma_air = read.csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
   filter(str_detect(year_description, &quot;^20|^An&quot;)) %&gt;%
-<<<<<<< HEAD
-  mutate(year_description = str_remove(year_description, &quot;Annual Average &quot;))</code></pre>
-<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_integer(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_character(),
-##   data_value = col_double(),
-##   message = col_character(),
-##   X16 = col_character()
-## )</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 6 parsing failures.
-## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique… an integ… NYC Department of Health and Me… &#39;./data/asthma… file 2 19069 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… row 3 19070 Unique… an integ… Environment &amp; Health Data Portal &#39;./data/asthma… col 4 19070 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… expected 5 19071 Unique… an integ… Available at: http://nyc.gov/he… &#39;./data/asthma…
-## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
-## See problems(...) for more details.</code></pre>
-<pre class="r"><code>asthma_air1 = asthma_air %&gt;%
-=======
   mutate(year_description = str_remove(year_description, &quot;Annual Average &quot;))
 
 asthma_air1 = asthma_air %&gt;%
->>>>>>> e22742c652c36d414b4ed5947723e310bef881c6
   dplyr::select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %&gt;%
   janitor::clean_names() %&gt;% 
   filter(measure %in% c(&quot;Mean&quot;, &quot;Rate&quot;, &quot;Number&quot;, &quot;Percent&quot;, &quot;Age-Adjusted Percent&quot;, &quot;Age-Adjusted Rate &quot;)) %&gt;%
