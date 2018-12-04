@@ -1,0 +1,101 @@
+---
+title: "Shiny"
+author: "Qi Shao"
+date: "12/3/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(shiny)
+library(tidyverse)
+library(rgdal)
+library(leaflet)
+library(raster)
+library(readxl)
+
+
+```
+##TREE
+
+```{R}
+mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
+
+
+tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
+  janitor::clean_names() 
+
+
+zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
+   dplyr::select(-zipcode_no, uhf42_name) %>%
+   filter(is.na(zipcode) == FALSE)
+
+tree_df =  left_join(tree_df, zipcode_uhf42, by = "zipcode") 
+
+area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %>%
+  filter(is.na(uhf42_code) == FALSE)
+
+tree_df = left_join(tree_df, area, by = "uhf42_code")
+
+
+tree_total_uhf42_1 = tree_df %>%
+  group_by(uhf42_name, health, area, uhf42_code) %>%
+  dplyr::summarize(total = n()) %>%
+  filter(is.na(uhf42_name) == FALSE)
+
+
+tree_total_uhf42_2 = tree_df %>%
+  group_by(uhf42_name, area,uhf42_code) %>%
+  dplyr::summarize(total = n()) %>%
+  mutate(health = "Total_number") %>%
+  filter(is.na(uhf42_name) == FALSE)
+
+tree_total_uhf42 = 
+  bind_rows(tree_total_uhf42_1, tree_total_uhf42_2) %>%
+  group_by(health) %>%
+  mutate(tree_density = total/area, 
+         uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))
+
+```
+
+
+
+```{r}
+mydat2 = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
+
+names(mydat2)
+mydat2$UHFCODE
+proj4string1 =  "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80
++towgs84=0,0,0" 
+mydat2 = spTransform(mydat, proj4string1)
+proj4string(mydat2)
+
+
+total_tree = tree_total_uhf42 %>%
+  filter(health == "Total_number") %>%
+  dplyr::select(UHFCODE= uhf42_code, everything()) %>%
+  arrange(UHFCODE)
+                   
+
+
+### Create five colors for fill
+
+names(mydat2)
+bins <- c(0, 0.00003, 0.00006, 0.00009, 0.00012, Inf)
+pal <- colorBin("Greens", domain = total_tree$tree_density, bins = bins)
+
+leaflet() %>% 
+addProviderTiles("OpenStreetMap.Mapnik") %>%
+setView(lat = 40.7, lng = -74, zoom = 11) %>%
+addPolygons(data = mydat2, fillColor = ~pal(total_tree$tree_density), weight = 1,
+  opacity = 1,
+  color = "white",
+  dashArray = "3",
+  fillOpacity = 0.65, 
+  popup = paste("Region: ", total_tree$uhf42_name, "<br>",
+                          "Number: ", total_tree$total, "<br>")) %>%
+  addLegend(position = "bottomright", pal = pal, values =total_tree$tree_density,
+          title = "Tree density",
+          opacity = 1)
+
+```
