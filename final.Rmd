@@ -17,8 +17,7 @@ library(readxl)
 #import and tidy tree data
 tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
   janitor::clean_names() %>%
-  filter(status == "Alive") %>%
-  select(-status)
+  filter(status == "Alive") 
 
 zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
@@ -54,96 +53,101 @@ ggplot(tree_df) +
 ```{r }
 #tree density
 tree_density = tree_df %>%
-  group_by(uhf42_name, uhf42_code, area, health) %>%
-  dplyr::summarize(health_total = n()) %>%
+  group_by(uhf42_name, uhf42_code, area) %>%
+  dplyr::summarize(tree_total = n()) %>%
   filter(is.na(uhf42_name) == FALSE) %>%
   group_by(uhf42_name) %>%
-  dplyr::mutate(total = sum(health_total),
-                tree_density = total/area,
-                health_tree_density = health_total/area) %>%
+  dplyr::mutate(tree_density = tree_total/area) %>%
   ungroup() %>%
   mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))
 ```
 
 ```{r }
-asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
-  janitor::clean_names()
-
-asthma_em_0to4 = asthma_air %>%
-  filter(name == "Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)",
-         measure == "Rate",
-         year_description == "2015") %>%
-  select(geo_entity_id, geo_entity_name, asthma_em_0to4 = data_value)
-
-asthma_em_5to14 = asthma_air %>%
-  filter(name == "Asthma Emergency Department Visits (Children 5 to 14 Yrs Old)",
-         measure == "Rate",
-         year_description == "2015") %>%
-  select(geo_entity_id, asthma_em_5to14 = data_value) 
-
-so2 = asthma_air %>%
-  filter(name == "Sulfur Dioxide (SO2)",
-         measure == "Mean",
-         year_description == "Winter 2014-15") %>%
-  select(geo_entity_id, so2 = data_value)
-
-poverty = read_csv("./data/poverty/Data.csv") %>%
+#read and tidy data
+asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
+  select(geo_entity_id, geo_entity_name, name, data_value) %>%
+  filter(is.na(geo_entity_id) == FALSE) %>%
+  spread(key = name, value = data_value) %>%
   janitor::clean_names() %>%
-  filter(year_description == "2012-16",
-         measure == "Percent",
-         name == "Poverty") %>%
-  select(geo_entity_id, poverty = data_value) 
+  select(poverty, children_under_5_years_old_in_poverty, everything()) %>%
+  mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
+         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
 
-poverty_under5 = read_csv("./data/poverty/Data.csv") %>%
-  janitor::clean_names() %>%
-  filter(year_description == "2011-15",
-         measure == "Percent",
-         name == "Children under 5 years old in Poverty") %>%
-  select(geo_entity_id, poverty_under5 = data_value) 
-
-tree_density_total = tree_density%>%
-  select(geo_entity_id=uhf42_code,tree_density) %>%
+tree_density_total = tree_density %>%
+  select(geo_entity_id=uhf42_code, tree_density) %>%
   distinct()
 
-final_df = left_join(asthma_em_0to4,asthma_em_5to14) %>%
-  left_join(so2) %>%
-  left_join(poverty) %>%
-  left_join(poverty_under5) %>%
-  left_join(tree_density_total) %>%
-  mutate(asthma_total = asthma_em_0to4+asthma_em_5to14,
-         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total)) 
-  
+final_df = left_join(asthma_air_poverty, tree_density_total)
+```
 
+```{r }
+#SLR:choose the pollutes associated with asthma
+o3_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~ozone_o3, data=final_df))$coefficients[2,4]
+
+o3_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~ozone_o3, data=final_df))$coefficients[2,4]
+
+black_carbon_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~black_carbon, data=final_df))$coefficients[2,4]
+
+black_carbon_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~black_carbon, data=final_df))$coefficients[2,4]
+
+pm2_5_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~fine_particulate_matter_pm2_5, data=final_df))$coefficients[2,4]
+
+pm2_5_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~fine_particulate_matter_pm2_5, data=final_df))$coefficients[2,4]
+
+no_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~nitric_oxide_no, data=final_df))$coefficients[2,4]
+
+no_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~nitric_oxide_no, data=final_df))$coefficients[2,4]
+
+no2_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~nitrogen_dioxide_no2, data=final_df))$coefficients[2,4]
+
+no2_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~nitrogen_dioxide_no2, data=final_df))$coefficients[2,4]
+
+so2_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~sulfur_dioxide_so2, data=final_df))$coefficients[2,4]
+
+so2_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~sulfur_dioxide_so2, data=final_df))$coefficients[2,4]
+
+p_value = data.frame(Pollute = c("Ozone", "Black Carbon", "PM2.5", "NO", "NO2", "SO2"),
+                     P_value1 = c(o3_p1, black_carbon_p1, pm2_5_p1, no_p1, no2_p1, so2_p1),
+                     P_value1 = c(o3_p2, black_carbon_p2, pm2_5_p2, no_p2, no2_p2, so2_p2)) %>%
+  knitr::kable(digits = 3)
+#based on p values, we choose SO2
+```
+
+```{r }
 #MLR
-summary(lm(asthma_em_0to4~tree_density+so2+poverty_under5,data=final_df))
+summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_density+sulfur_dioxide_so2+children_under_5_years_old_in_poverty,data=final_df))
 
-summary(lm(asthma_em_5to14~tree_density+so2+poverty,data=final_df))
+summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_density+sulfur_dioxide_so2+poverty,data=final_df))
 ```
 
 ```{r }
 #asthma and so2
-final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to4:asthma_em_5to14) %>%
-  gather(key = poverty_age, value = poverty, poverty:poverty_under5) %>%
-  filter((asthma_age == "asthma_em_5to14"&poverty_age == "poverty")|(asthma_age == "asthma_em_0to4"& poverty_age == "poverty_under5"))
+final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %>%
+  gather(key = poverty_age, value = poverty, poverty:children_under_5_years_old_in_poverty) %>%
+  filter((asthma_age == "asthma_emergency_department_visits_children_5_to_14_yrs_old"&poverty_age == "poverty")|(asthma_age == "asthma_emergency_department_visits_children_0_to_4_yrs_old"& poverty_age == "children_under_5_years_old_in_poverty"))
 
 ggplot(final_asthma_df) +
-   geom_point(aes(x=so2,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=so2,y=rate,color = asthma_age), method = "lm",se=F)
+   geom_point(aes(x = sulfur_dioxide_so2, y = rate, color = asthma_age))+
+   geom_smooth(aes(x = sulfur_dioxide_so2, y = rate, color = asthma_age), method = "lm", se = F) +
+  theme(legend.position = "bottom")
 
 #asthma and poverty
 ggplot(final_asthma_df) +
    geom_point(aes(x=poverty,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = "lm",se=F)
+   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = "lm",se=F) +
+  theme(legend.position = "bottom")
 
 #asthma and tree
 ggplot(final_asthma_df) +
   geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = "lm",se=F)
+   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = "lm",se=F) +
+  theme(legend.position = "bottom")
 
 #asthma 0-4 and asthma 5-14 in each UHF42
 ggplot(final_asthma_df) +
   geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = "identity",position = "dodge") +
-  coord_flip()
+  coord_flip() +
+  theme(legend.position = "bottom")
 ```
 
 
