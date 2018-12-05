@@ -172,21 +172,29 @@ ggplot(asthma_map) +
 
 ```{r}
 #asthma 0-4 and asthma 5-14 in each UHF42
-ggplot(final_asthma_df) +
+bar = ggplot(final_asthma_df) +
   geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = "identity",position = "dodge") +
   coord_flip()
-
+ggplotly(bar)
 ```
 
 Column {data-width=550}
 -----------------------------------------------------------------------
 ### Chart C
 
-```{r fig.width=8.5, fig.height=3.5}
- plot_so2 = ggplot(final_asthma_df) +
-   geom_point(aes(x=so2,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=so2,y=rate,color = asthma_age), method = "lm",se=F)
-  ggplotly(plot_so2) 
+```{r}
+old = filter(final_asthma_df,asthma_age == "asthma_em_5to14")
+young = filter(final_asthma_df,asthma_age == "asthma_em_0to4")
+fit1 = lm(rate~so2,data = old)
+fit2 = lm(rate~so2,data = young)
+subplot(
+  plot_ly(old, x = ~so2, y = ~rate)%>% 
+    add_markers(alpha = 0.5,name = "age from 5 to 14") %>% 
+    add_lines(y=fitted(fit1),name = "lm for age 5 to 14"),
+  plot_ly(young, x = ~so2, y = ~rate) %>% 
+    add_markers(alpha = 0.5,name = "age from 0 to 4") %>% 
+   add_lines(y=fitted(fit2),name = "lm for age 0 to 4")
+)
 ```
 
 
