@@ -1,2650 +1,337 @@
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
 
 
+
 <title>Dashboard</title>
-
-<meta property="og:title" content="Dashboard" />
-
-<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
-
-<link rel="icon" href="data:image/x-icon;" type="image/x-icon">
-
-
-<script type="text/javascript">
-window.FlexDashboardComponents = [];
-</script>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/stickytableheaders-0.1.19/jquery.stickytableheaders.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.8.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.39.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.39.2/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-
-/*
- Dashboard CSS from Keen IO Dashboards
- (https://github.com/keen/dashboards)
-*/
-
-body {
-  background: #f2f2f2;
-  padding: 60px 0 0 8px; /* padding-top overridden by theme */
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
+</script>
 
-body hr {
-  border-color: #d7d7d7;
-  margin: 10px 0;
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
 }
-
-.navbar-inverse .navbar-nav > li > a,
-.navbar .navbar-brand {
-  text-decoration: none;
-}
-
-.navbar-logo {
-  margin-top: 1px;
-}
-
-.navbar-logo img {
-  margin-right: 12px;
-}
-
-.navbar-author {
-  margin-left: 10px;
-  font-size: 15px;
-}
-
-.navbar .dropdown-menu .fa {
-  min-width: 20px;
-}
-
-.navbar .dropdown-menu {
-  min-width: 150px;
-  max-height: 500px;
-  overflow: auto;
-}
-
-.chart-wrapper,
-.nav-tabs-custom,
-.sbframe-commentary
-{
-  background: #fff;
-  border: 1px solid #e2e2e2;
-  border-radius: 3px;
-  margin-bottom: 8px;
-  margin-right: 8px;
-}
-
-.chart-title {
-  border-bottom: 1px solid #d7d7d7;
-  color: #666;
-  font-size: 14px;
-  font-weight: 300;
-  padding: 7px 10px 4px;
-}
-
-.chart-wrapper .chart-title:empty {
-  display: none;
-}
-
-.chart-wrapper .chart-stage {
-  overflow: hidden;
-  padding: 5px 10px;
-  position: relative;
-}
-
-.chart-wrapper .chart-notes {
-  background: #fbfbfb;
-  border-top: 1px solid #e2e2e2;
-  color: #808080;
-  font-size: 12px;
-  padding: 8px 10px 5px;
-}
-
-/*
- CSS for handling flexbox layout
-*/
-
-#dashboard-container {
-  visibility: hidden;
-}
-
-.tab-content>.dashboard-page-wrapper.active {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.dashboard-page-wrapper {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-
-.dashboard-row-orientation {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-
-.dashboard-row {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-}
-
-.dashboard-row-flex {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-}
-
-.dashboard-column-orientation {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-}
-
-.dashboard-column {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-
-.chart-wrapper-flex {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-
-.chart-stage-flex {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  position: relative;
-}
-
-.chart-shim {
-  position: absolute;
-  left: 8px; top: 8px; right: 8px; bottom: 8px;
-}
-
-.no-padding .chart-shim {
-  left: 0; top: 0; right: 0; bottom: 0;
-}
-
-.flowing-content-shim {
-  overflow: auto;
-  left: 0; top: 0; right: 0; bottom: 0;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.flowing-content-container {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.chart-stage .table-bordered {
-  border: none;
-}
-
-.chart-stage .table-bordered > tbody > tr > th,
-.chart-stage .table-bordered > tfoot > tr > th,
-.chart-stage .table-bordered > tbody > tr > td,
-.chart-stage .table-bordered > tfoot > tr > td {
-  border: none;
-}
-
-.chart-stage .table-bordered > tbody > tr > td {
-  border-top: 1px solid #dddddd;
-}
-
-.chart-stage .table-bordered > thead > tr > th {
-  border: none;
-  border-bottom: 2px solid #dddddd;
-}
-
-.bootstrap-table table>thead {
-  background-color: #fff;
-}
-
-.bootstrap-table table.data,
-.bootstrap-table table.shiny-table {
-  width: inherit !important;
-}
-
-.bootstrap-table table.data>tbody>tr>th,
-.bootstrap-table table.shiny-table>tbody>tr>th {
-  border-top: none;
-  border-bottom: 2px solid #dddddd;
-  padding: 5px;
-}
-
-.bootstrap-table .data td[align=right] {
-  font-family: inherit;
-}
-
-.chart-wrapper form {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.shiny-input-container label {
-  font-weight: normal;
-}
-
-.chart-stage .html-widget {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-.chart-stage .html-widget-static-bound {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-.chart-stage .shiny-bound-output {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* Omit display of empty paragraphs */
-
-.chart-shim>p:empty {
-  display: none;
-}
-
-.chart-stage>p:empty {
-  display: none;
-}
-
-/* Omit display of special knitr options div*/
-
-.chart-stage .knitr-options {
-  display: none;
-}
-
-/* Automatically resizing images */
-
-.image-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0;
-}
-
-.image-container img {
-  opacity: 0;
-  overflow: hidden;
-}
-
-/* Value box */
-
-.value-box {
-  border-radius: 2px;
-  position: relative;
-  display: block;
-  margin-right: 8px;
-  margin-bottom: 8px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-}
-
-.value-box > .inner {
-  padding: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-.value-box .value {
+h1.title {
   font-size: 38px;
-  font-weight: bold;
-  margin: 0 0 3px 0;
-  white-space: nowrap;
-  padding: 0;
 }
-
-.value-box .caption {
-  font-size: 15px;
+h2 {
+  font-size: 30px;
 }
-.value-box .caption > small {
-  display: block;
-  font-size: 13px;
-  margin-top: 5px;
+h3 {
+  font-size: 24px;
 }
-
-.value-box .icon i {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 80px;
-  color: rgba(0, 0, 0, 0.15);
+h4 {
+  font-size: 18px;
 }
-
-.linked-value:hover {
-  cursor: pointer;
+h5 {
+  font-size: 16px;
 }
-
-.value-box.linked-value:hover {
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-}
-
-/* STORYBOARD */
-
-.storyboard-nav button {
-  background: transparent;
-  border: 0;
-  opacity: .3;
-  outline: none;
-  padding: 0;
-}
-
-.storyboard-nav button:hover,
-.storyboard-nav button:hover {
-  opacity: .5;
-}
-
-.storyboard-nav button:disabled,
-.storyboard-nav button:disabled {
-  opacity: .1;
-}
-
-.storyboard-nav .sbnext,
-.storyboard-nav .sbprev {
-  float: left;
-  width: 2%;
-  height: 120px;
-  font-size: 50px;
-}
-
-.storyboard-nav .sbprev {
-  text-align: left;
-  width: 2%;
-}
-
-.storyboard-nav .sbnext {
-  float: right;
-  text-align: right;
-  margin-right: 8px;
-}
-
-.storyboard-nav .sbframelist {
-  margin: 0 auto;
-  width: 94%;
-  height: 120px;
-  overflow: hidden;
-  text-shadow: none;
-  margin-bottom: 8px;
-}
-
-.storyboard-nav .sbframelist ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-.storyboard-nav .sbframelist ul li {
-  float: left;
-  width: 270px;
-  height: 100%;
-  padding: 10px 10px 10px 10px;
-  margin-right: 8px;
-  background: #fff;
-  border: 1px solid #e2e2e2;
-  border-radius: 3px;
-  color: #3a3c47;
-  text-align: left;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.storyboard-nav .sbframelist ul li:last-child {
-  margin-right: 0px;
-}
-
-.storyboard-nav .sbframelist ul li.active {
-  color: #fff;
-  background: #B8B8B8;
-}
-
-.sbframe-commentary {
-  width: 300px;
-  background: #fbfbfb;
-  font-size: 14px;
-}
-
-.sbframe-commentary ul {
-  padding-left: 22px;
-}
-
-.sbframe.active {
-  display: flex;
-}
-
-.sbframe:not(.active) {
-  display: none;
-}
-
-/* NAV TABS */
-
-.nav-tabs-custom > .nav-tabs {
-  margin: 0;
-  border-bottom: 1px solid #d7d7d7;
-  color: #666;
-  font-size: 14px;
-  font-weight: 300;
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
-}
-.nav-tabs-custom > .nav-tabs > li {
-  border-top: 3px solid transparent;
-  margin-bottom: -1px;
-  margin-right: 5px;
-}
-.nav-tabs-custom > .nav-tabs > li > a,
-.nav-tabs-custom > .nav-tabs > li > a:active {
-  color: #666;
-  font-weight: 300;
-  font-size: 14px;
-  border-radius: 0;
-  padding: 3px 10px 5px;
-  text-transform: none;
-}
-
-.nav-tabs-custom > .nav-tabs > li:not(.active) > a {
-  border-bottom-color: transparent;
-}
-
-.nav-tabs-custom > .nav-tabs > li > a.text-muted {
-  color: #999;
-}
-.nav-tabs-custom > .nav-tabs > li > a,
-.nav-tabs-custom > .nav-tabs > li > a:hover {
-  background: transparent;
-  margin: 0;
-}
-.nav-tabs-custom > .nav-tabs > li > a:hover {
-  color: #999;
-}
-.nav-tabs-custom > .nav-tabs > li:not(.active) > a:hover,
-.nav-tabs-custom > .nav-tabs > li:not(.active) > a:focus,
-.nav-tabs-custom > .nav-tabs > li:not(.active) > a:active {
-  border-color: transparent;
-}
-.nav-tabs-custom > .nav-tabs > li.active {
-  border-top-color: #3c8dbc;
-}
-.nav-tabs-custom > .nav-tabs > li.active > a,
-.nav-tabs-custom > .nav-tabs > li.active:hover > a {
-  background-color: #fff;
-  color: #666;
-}
-.nav-tabs-custom > .nav-tabs > li.active > a {
-  border-top-color: transparent;
-  border-left-color: #d7d7d7;
-  border-right-color: #d7d7d7;
-}
-.nav-tabs-custom > .nav-tabs > li:first-of-type {
-  margin-left: 0;
-}
-.nav-tabs-custom > .nav-tabs > li:first-of-type.active > a {
-  border-left-color: transparent;
-}
-.nav-tabs-custom > .nav-tabs.pull-right {
-  float: none !important;
-}
-.nav-tabs-custom > .nav-tabs.pull-right > li {
-  float: right;
-}
-.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type {
-  margin-right: 0;
-}
-.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type > a {
-  border-left-width: 1px;
-}
-.nav-tabs-custom > .nav-tabs.pull-right > li:first-of-type.active > a {
-  border-left-color: #d7d7d7;
-  border-right-color: transparent;
-}
-.nav-tabs-custom > .nav-tabs > li.header {
-  line-height: 35px;
-  padding: 0 10px;
-  font-size: 20px;
-  color: #666;
-}
-.nav-tabs-custom > .nav-tabs > li.header > .fa,
-.nav-tabs-custom > .nav-tabs > li.header > .glyphicon,
-.nav-tabs-custom > .nav-tabs > li.header > .ion {
-  margin-right: 5px;
-}
-.nav-tabs-custom > .tab-content {
-  background: #fff;
-  padding: 0;
-  border-bottom-right-radius: 3px;
-  border-bottom-left-radius: 3px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.nav-tabs-custom > .tab-content > .chart-wrapper {
-  background: #fff;
-  border: none;
-  margin: 0;
-}
-
-
-.nav-tabs-custom > .tab-content > .active {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.nav-tabs-custom .dropdown.open > a:active,
-.nav-tabs-custom .dropdown.open > a:focus {
-  background: transparent;
-  color: #999;
-}
-
-
-@media (max-width: 767px) {
-  .value-box {
-    text-align: center;
-    margin-right: 8px;
-  }
-  .value-box .icon {
-    display: none;
-  }
-}
-
-/* Fixed position sidebar */
-
-.section.sidebar {
-  position: fixed;
-  top: 51px; /* overridden by theme */
-  left: 0;
-  bottom: 0;
-  border-right: 1px solid #e2e2e2;
-  background-color: white; /* overridden by theme */
-  padding-left: 10px;
-  padding-right: 10px;
-  visibility: hidden;
-  overflow: auto;
-}
-
-.section.sidebar form p:first-child {
-  margin-top: 10px;
-}
-
-/* Embedded source code */
-
-#flexdashboard-source-code {
-  display: none;
-}
-
-.featherlight-content #flexdashboard-source-code {
-  display: inline-block;
-}
-
-.featherlight-content {
-  width: 80%;
-  max-width: 800px;
-  padding: 0 !important;
-  border-bottom: none !important;
-}
-
-.featherlight:last-of-type {
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.featherlight-inner {
-  width: 100%;
-}
-
-.featherlight-content pre {
-  margin: 0;
-  border: 0;
-  background: #fff;
+h6 {
   font-size: 12px;
 }
-
-.unselectable {
-  -ms-user-select: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: -moz-none;
-  -o-user-select: none;
-  user-select: none;
-}
-
-#flexdashboard-source-code code {
-  -ms-user-select: text;
-  -webkit-user-select: text;
-  -khtml-user-select: text;
-  -moz-user-select: text;
-  -o-user-select: text;
-  user-select: text;
-}
-
-/* DataTables Tweaks */
-
-.dataTables_filter input[type="search"] {
-  -webkit-appearance: searchfield;
-  outline: none;
-}
-
-.dataTables_wrapper.no-footer
-.dataTables_info {
-  padding-top: 0;
-}
-
-
-table.dataTable thead th {
-  border-bottom: 1px solid #d7d7d7;
-}
-
-.dataTables_wrapper.no-footer .dataTables_scrollBody {
-  border-bottom: 1px solid #d7d7d7;
-}
-
-/* Mobile phone only CSS */
-
-.desktop-layout div.section.mobile {
-  display: none;
-}
-
-.mobile-layout div.section.no-mobile {
-  display: none;
-}
-
-.mobile-figure {
-  display: none;
-}
-
-
-
-body {
-  padding-top: 60px;
-}
-
-.section.sidebar {
-  top: 51px;
-  background-color: rgba(39, 128, 227, 0.1);
-}
-
-.value-box {
-  color: #f9f9f9;
-}
-
-.bg-primary {
-  background-color: rgba(39, 128, 227, 0.7);
-}
-
-.storyboard-nav .sbframelist ul li.active {
-  background-color: rgba(39, 128, 227, 0.7);
-}
-
-.nav-tabs-custom > .nav-tabs > li.active {
-  border-top-color: rgba(39, 128, 227, 0.7);
-}
-
-.bg-info {
-  background-color: rgba(153, 84, 187, 0.7);
-}
-
-.bg-warning {
-  background-color: rgba(255, 117, 24, 0.7);
-}
-
-.bg-danger {
-  background-color: rgba(255, 0, 57, 0.7);
-}
-
-.bg-success {
-  background-color: rgba(63, 182, 24, 0.7);
-}
-
-.chart-title {
-  font-weight: 500;
-}
-
-.nav-tabs-custom > .nav-tabs > li > a,
-.nav-tabs-custom > .nav-tabs > li > a:active {
-  font-weight: 500;
-}
-
-@media only screen and (min-width: 768px) {
-html, body {
-  height: 100%;
-}
-
-#dashboard-container {
-  height: 100%;
-}
+.table th:not([align]) {
+  text-align: left;
 }
 </style>
-
 
 
 </head>
 
 <body>
 
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-<div class="container-fluid">
-<div class="navbar-header">
-
-<button id="navbar-button" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-</button>
-
-<span class="navbar-logo pull-left">
-  
-</span>
-<span class="navbar-brand">
-  Dashboard
-  <span class="navbar-author">
-        </span>
-</span>
-
-</div>
-<div id="navbar" class="navbar-collapse collapse">
-<ul class="nav navbar-nav navbar-left">
-</ul>
-<ul class="nav navbar-nav navbar-right">
-</ul>
-</div><!--/.nav-collapse-->
-</div><!--/.container-->
-</div><!--/.navbar-->
-
-<img class="mobile-figure" data-mobile-figure-id=fig1 src="dashboRD_files/figure-html/unnamed-chunk-1-1.mb.png" />
-<script type="text/javascript">
-
-
-var FlexDashboard = (function () {
-
-  // initialize options
-  var _options = {};
-
-  var FlexDashboard = function() {
-
-    // default options
-    _options = $.extend(_options, {
-      theme: "cosmo",
-      fillPage: false,
-      orientation: 'columns',
-      storyboard: false,
-      defaultFigWidth: 576,
-      defaultFigHeight: 461,
-      defaultFigWidthMobile: 360,
-      defaultFigHeightMobile: 461,
-      isMobile: false,
-      isPortrait: false
-    });
-  };
-
-  function init(options) {
-
-    // extend default options
-    $.extend(true, _options, options);
-
-    // add ids to sections that don't have them (pandoc won't assign ids
-    // to e.g. sections with titles consisting of only chinese characters)
-    var nextId = 1;
-    $('.level1:not([id]),.level2:not([id]),.level3:not([id])').each(function() {
-      $(this).attr('id', 'dashboard-' + nextId++);
-    });
-
-    // find navbar items
-    var navbarItems = $('#flexdashboard-navbar');
-    if (navbarItems.length)
-      navbarItems = JSON.parse(navbarItems.html());
-    addNavbarItems(navbarItems);
-
-    // find the main dashboard container
-    var dashboardContainer = $('#dashboard-container');
-
-    // resolve mobile classes
-    resolveMobileClasses(dashboardContainer);
-
-    // one time global initialization for components
-    componentsInit(dashboardContainer);
-
-    // look for a global sidebar
-    var globalSidebar = dashboardContainer.find(".section.level1.sidebar");
-    if (globalSidebar.length > 0) {
-
-      // global layout for fullscreen displays
-      if (!isMobilePhone()) {
-
-         // hoist it up to the top level
-         globalSidebar.insertBefore(dashboardContainer);
-
-         // lay it out (set width/positions)
-         layoutSidebar(globalSidebar, dashboardContainer);
-
-      // tuck sidebar into first page for mobile phones
-      } else {
-
-        // convert it into a level3 section
-        globalSidebar.removeClass('sidebar');
-        globalSidebar.removeClass('level1');
-        globalSidebar.addClass('level3');
-        var h1 = globalSidebar.children('h1');
-        var h3 = $('<h3></h3>');
-        h3.html(h1.html());
-        h3.insertBefore(h1);
-        h1.remove();
-
-        // move it into the first page
-        var page = dashboardContainer.find('.section.level1').first();
-        if (page.length > 0)
-          page.prepend(globalSidebar);
-      }
-    }
-
-    // look for pages to layout
-    var pages = $('div.section.level1');
-    if (pages.length > 0) {
-
-        // find the navbar and collapse on clicked
-        var navbar = $('#navbar');
-        navbar.on("click", "a[data-toggle!=dropdown]", null, function () {
-           navbar.collapse('hide');
-        });
-
-        // envelop the dashboard container in a tab content div
-        dashboardContainer.wrapInner('<div class="tab-content"></div>');
-
-        pages.each(function(index) {
-
-          // lay it out
-          layoutDashboardPage($(this));
-
-          // add it to the navbar
-          addToNavbar($(this), index === 0);
-
-        });
-
-    } else {
-
-      // remove the navbar and navbar button if we don't
-      // have any navbuttons
-      if (navbarItems.length === 0) {
-        $('#navbar').remove();
-        $('#navbar-button').remove();
-      }
-
-      // add the storyboard class if requested
-      if (_options.storyboard)
-        dashboardContainer.addClass('storyboard');
-
-      // layout the entire page
-      layoutDashboardPage(dashboardContainer);
-    }
-
-    // if we are in shiny we need to trigger a window resize event to
-    // force correct layout of shiny-bound-output elements
-    if (isShinyDoc())
-      $(window).trigger('resize');
-
-    // make main components visible
-    $('.section.sidebar').css('visibility', 'visible');
-    dashboardContainer.css('visibility', 'visible');
-
-    // handle location hash
-    handleLocationHash();
-
-    // intialize prism highlighting
-    initPrismHighlighting();
-
-    // record mobile and orientation state then register a handler
-    // to refresh if it changes
-    _options.isMobile = isMobilePhone();
-    _options.isPortrait = isPortrait();
-    $(window).on('resize', function() {
-      if (_options.isMobile !== isMobilePhone() ||
-          _options.isPortrait !== isPortrait()) {
-        window.location.reload();
-      }
-    });
-
-    // trigger layoutcomplete event
-    dashboardContainer.trigger('flexdashboard:layoutcomplete');
-  }
-
-  function resolveMobileClasses(dashboardContainer) {
-     // add top level layout class
-    dashboardContainer.addClass(isMobilePhone() ? 'mobile-layout' :
-                                                  'desktop-layout');
-
-    // look for .mobile sections and add .no-mobile to their peers
-    var mobileSections = $('.section.mobile');
-    mobileSections.each(function() {
-       var id = $(this).attr('id');
-       var nomobileId = id.replace(/-\d+$/, '');
-       $('#' + nomobileId).addClass('no-mobile');
-    });
-  }
-
-  function addNavbarItems(navbarItems) {
-
-    var navbarLeft = $('ul.navbar-left');
-    var navbarRight = $('ul.navbar-right');
-
-    for (var i = 0; i<navbarItems.length; i++) {
-
-      // get the item
-      var item = navbarItems[i];
-
-      // determine the container
-      var container = null;
-      if (item.align === "left")
-        container = navbarLeft;
-      else
-        container = navbarRight;
-
-      // navbar menu if we have multiple items
-      if (item.items) {
-        var menu = navbarMenu(null, item.icon, item.title, container);
-        for (var j = 0; j<item.items.length; j++) {
-          var subItem = item.items[j];
-          var li = $('<li></li>');
-          li.append(navbarLink(subItem.icon, subItem.title, subItem.href, subItem.target));
-          menu.append(li);
-        }
-      } else {
-        var li = $('<li></li>');
-        li.append(navbarLink(item.icon, item.title, item.href, item.target));
-        container.append(li);
-      }
-    }
-  }
-
-  // create or get a reference to an existing dropdown menu
-  function navbarMenu(id, icon, title, container) {
-    var existingMenu = [];
-    if (id)
-      existingMenu = container.children('#' + id);
-    if (existingMenu.length > 0) {
-      return existingMenu.children('ul');
-    } else {
-      var li = $('<li></li>');
-      if (id)
-        li.attr('id', id);
-      li.addClass('dropdown');
-      // auto add "Share" title on mobile if necessary
-      if (!title && icon && (icon === "fa-share-alt") && isMobilePhone())
-        title = "Share";
-      if (title) {
-        title = title + ' <span class="caret"></span>';
-      }
-      var a = navbarLink(icon, title, "#");
-      a.addClass('dropdown-toggle');
-      a.attr('data-toggle', 'dropdown');
-      a.attr('role', 'button');
-      a.attr('aria-expanded', 'false');
-      li.append(a);
-      var ul = $('<ul class="dropdown-menu"></ul>');
-      ul.attr('role', 'menu');
-      li.append(ul);
-      container.append(li);
-      return ul;
-    }
-  }
-
-  function addToNavbar(page, active) {
-
-    // capture the id and data-icon attribute (if any)
-    var id = page.attr('id');
-    var icon = page.attr('data-icon');
-    var navmenu = page.attr('data-navmenu');
-
-    // get hidden state (transfer this to navbar)
-    var hidden = page.hasClass('hidden');
-    page.removeClass('hidden');
-
-    // sanitize the id for use with bootstrap tabs
-    id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
-    page.attr('id', id);
-
-    // get the wrapper
-    var wrapper = page.closest('.dashboard-page-wrapper');
-
-    // move the id to the wrapper
-    page.removeAttr('id');
-    wrapper.attr('id', id);
-
-    // add the tab-pane class to the wrapper
-    wrapper.addClass('tab-pane');
-    if (active)
-      wrapper.addClass('active');
-
-    // get a reference to the h1, discover it's id and title, then remove it
-    var h1 = wrapper.find('h1').first();
-    var title = h1.html();
-    h1.remove();
-
-    // create a navbar item
-    var li = $('<li></li>');
-    var a = navbarLink(icon, title, '#' + id);
-    a.attr('data-toggle', 'tab');
-    li.append(a);
-
-    // add it to the navbar (or navbar menu if specified)
-    var container = $('ul.navbar-left');
-    if (navmenu) {
-      var menuId = navmenu.replace(/\s+/g, '');
-      var menu = navbarMenu(menuId, null, navmenu, container);
-      menu.append(li);
-    } else {
-      container.append(li);
-    }
-
-    // hide it if requested
-    if (hidden)
-      li.addClass('hidden');
-  }
-
-  function navbarLink(icon, title, href, target) {
-
-    var a = $('<a></a>');
-    if (icon) {
-
-      // get the name of the icon set and icon
-      var dashPos = icon.indexOf("-");
-      var iconSet = icon.substring(0, dashPos);
-      var iconName = icon.substring(dashPos + 1);
-
-      // create the icon
-      var iconElement = $('<span class="' + iconSet + ' ' + icon + '"></span>');
-      if (title)
-        iconElement.css('margin-right', '7px');
-      a.append(iconElement);
-      // if href is null see if we can auto-generate based on icon (e.g. social)
-      if (!href)
-        maybeGenerateLinkFromIcon(iconName, a);
-    }
-    if (title)
-      a.append(title);
-
-    // add the href.
-    if (href) {
-      if (href === "source_embed") {
-        a.attr('href', '#');
-        a.attr('data-featherlight', "#flexdashboard-source-code");
-        a.featherlight({
-            beforeOpen: function(event){
-              $('body').addClass('unselectable');
-            },
-            afterClose: function(event){
-              $('body').removeClass('unselectable');
-            }
-        });
-      } else {
-        a.attr('href', href);
-      }
-    }
-
-    // add the arget
-    if (target)
-      a.attr('target', target);
-
-    return a;
-  }
-
-  // auto generate a link from an icon name (e.g. twitter) when possible
-  function maybeGenerateLinkFromIcon(iconName, a) {
-
-     var serviceLinks = {
-      "twitter": "https://twitter.com/share?text=" + encodeURIComponent(document.title) + "&url="+encodeURIComponent(location.href),
-      "facebook": "https://www.facebook.com/sharer/sharer.php?s=100&p[url]="+encodeURIComponent(location.href),
-      "google-plus": "https://plus.google.com/share?url="+encodeURIComponent(location.href),
-      "linkedin": "https://www.linkedin.com/shareArticle?mini=true&url="+encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title),
-      "pinterest": "https://pinterest.com/pin/create/link/?url="+encodeURIComponent(location.href) + "&description=" + encodeURIComponent(document.title)
-    };
-
-    var makeSocialLink = function(a, href) {
-      a.attr('href', '#');
-      a.on('click', function(e) {
-        e.preventDefault();
-        window.open(href);
-      });
-    };
-
-    $.each(serviceLinks, function(key, value) {
-      if (iconName.indexOf(key) !== -1)
-        makeSocialLink(a, value);
-    });
-  }
-
-  // layout a dashboard page
-  function layoutDashboardPage(page) {
-
-    // use a page wrapper so that free form content above the
-    // dashboard appears at the top rather than the side (as it
-    // would without the wrapper in a column orientation)
-    var wrapper = $('<div class="dashboard-page-wrapper"></div>');
-    page.wrap(wrapper);
-
-    // if there are no level2 or level3 headers synthesize a level3
-    // header to contain the (e.g. frame it, scroll container, etc.)
-    var headers = page.find('h2,h3');
-    if (headers.length === 0)
-      page.wrapInner('<div class="section level3"></div>');
-
-    // hoist up any content before level 2 or level 3 headers
-    var children = page.children();
-    children.each(function(index) {
-      if ($(this).hasClass('level2') || $(this).hasClass('level3'))
-        return false;
-      $(this).insertBefore(page);
-    });
-
-    // determine orientation and fillPage behavior for distinct media
-    var orientation, fillPage, storyboard;
-
-    // media: mobile phone
-    if (isMobilePhone()) {
-
-      // if there is a sidebar we need to ensure it's content
-      // is properly framed as an h3
-      var sidebar = page.find('.section.sidebar');
-      sidebar.removeClass('sidebar');
-      sidebar.wrapInner('<div class="section level3"></div>');
-      var h2 = sidebar.find('h2');
-      var h3 = $('<h3></h3>');
-      h3.html(h2.html());
-      h3.insertBefore(h2);
-      h2.remove();
-
-      // wipeout h2 elements then enclose them in a single h2
-      var level2 = page.find('div.section.level2');
-      level2.each(function() {
-        level2.children('h2').remove();
-        level2.children().unwrap();
-      });
-      page.wrapInner('<div class="section level2"></div>');
-
-      // substitute mobile images
-      if (isPortrait()) {
-        var mobileFigures = $('img.mobile-figure');
-        mobileFigures.each(function() {
-          // get the src (might be base64 encoded)
-          var src = $(this).attr('src');
-
-          // find it's peer
-          var id = $(this).attr('data-mobile-figure-id');
-          var img = $('img[data-figure-id=' + id + "]");
-          img.attr('src', src)
-             .attr('width', _options.defaultFigWidthMobile)
-             .attr('height', _options.defaultFigHeightMobile);
-        });
-      }
-
-      // hoist storyboard commentary into it's own section
-      if (page.hasClass('storyboard')) {
-        var commentaryHR = page.find('div.section.level3 hr');
-        commentaryHR.each(function() {
-          var commentary = $(this).nextAll().detach();
-          var commentarySection = $('<div class="section level3"></div>');
-          commentarySection.append(commentary);
-          commentarySection.insertAfter($(this).closest('div.section.level3'));
-          $(this).remove();
-        });
-      }
-
-      // force a non full screen layout by columns
-      orientation = _options.orientation = 'columns';
-      fillPage = _options.fillPage = false;
-      storyboard = _options.storyboard = false;
-
-    // media: desktop
-    } else {
-
-      // determine orientation
-      orientation = page.attr('data-orientation');
-      if (orientation !== 'rows' && orientation != 'columns')
-        orientation = _options.orientation;
-
-      // determine storyboard mode
-      storyboard = page.hasClass('storyboard');
-
-      // fillPage based on options (force for storyboard)
-      fillPage = _options.fillPage || storyboard;
-
-      // handle sidebar
-      var sidebar = page.find('.section.level2.sidebar');
-      if (sidebar.length > 0)
-        layoutSidebar(sidebar, page);
-    }
-
-    // give it and it's parent divs height: 100% if we are in fillPage mode
-    if (fillPage) {
-      page.addClass('vertical-layout-fill');
-      page.css('height', '100%');
-      page.parents('div').css('height', '100%');
-    } else {
-      page.addClass('vertical-layout-scroll');
-    }
-
-    // perform the layout
-    if (storyboard)
-      layoutPageAsStoryboard(page);
-    else if (orientation === 'rows')
-      layoutPageByRows(page, fillPage);
-    else if (orientation === 'columns')
-      layoutPageByColumns(page, fillPage);
-  }
-
-  function layoutSidebar(sidebar, content) {
-
-    // get it out of the header hierarchy
-    sidebar = sidebar.first();
-    if (sidebar.hasClass('level1')) {
-      sidebar.removeClass('level1');
-      sidebar.children('h1').remove();
-    } else if (sidebar.hasClass('level2')) {
-      sidebar.removeClass('level2');
-      sidebar.children('h2').remove();
-    }
-
-    // determine width
-    var sidebarWidth = isTablet() ? 220 : 250;
-    var dataWidth = parseInt(sidebar.attr('data-width'));
-    if (dataWidth)
-      sidebarWidth = dataWidth;
-
-    // set the width and shift the page right to accomodate the sidebar
-    sidebar.css('width', sidebarWidth + 'px');
-    content.css('padding-left', sidebarWidth + 'px');
-
-    // wrap it's contents in a form
-    sidebar.wrapInner($('<form></form>'));
-  }
-
-  function layoutPageAsStoryboard(page) {
-
-    // create storyboard navigation
-    var nav = $('<div class="storyboard-nav"></div>');
-
-    // add navigation buttons
-    var prev = $('<button class="sbprev"><i class="fa fa-angle-left"></i></button>');
-    nav.append(prev);
-    var next= $('<button class="sbnext"><i class="fa fa-angle-right"></i></button>');
-    nav.append(next);
-
-    // add navigation frame
-    var frameList = $('<div class="sbframelist"></div>');
-    nav.append(frameList);
-    var ul = $('<ul></ul>');
-    frameList.append(ul);
-
-     // find all the level3 sections (those are the storyboard frames)
-    var frames = page.find('div.section.level3');
-    frames.each(function() {
-
-      // mark it
-      $(this).addClass('sbframe');
-
-      // divide it into chart content and (optional) commentary
-      $(this).addClass('dashboard-column-orientation');
-
-      // stuff the chart into it's own div w/ flex
-      $(this).wrapInner('<div class="sbframe-component"></div>');
-      setFlex($(this), 1);
-      var frame = $(this).children('.sbframe-component');
-
-      // extract the title from the h3
-      var li = $('<li></li>');
-      var h3 = frame.children('h3');
-      li.html(h3.html());
-      h3.remove();
-      ul.append(li);
-
-      // extract commentary
-      var hr = frame.children('hr');
-      if (hr.length) {
-        var commentary = hr.nextAll().detach();
-        hr.remove();
-        var commentaryFrame = $('<div class="sbframe-commentary"></div>');
-        commentaryFrame.addClass('flowing-content-shim');
-        commentaryFrame.addClass('flowing-content-container');
-        commentaryFrame.append(commentary);
-        $(this).append(commentaryFrame);
-
-        // look for a data-commentary-width attribute
-        var commentaryWidth = $(this).attr('data-commentary-width');
-        if (commentaryWidth)
-          commentaryFrame.css('width', commentaryWidth + 'px');
-      }
-
-      // layout the chart (force flex)
-      var result = layoutChart(frame, true);
-
-      // ice the notes if there are none
-      if (!result.notes)
-        frame.find('.chart-notes').remove();
-
-      // set flex on chart
-      setFlex(frame, 1);
-    });
-
-    // create a div to hold all the frames
-    var frameContent = $('<div class="sbframe-content"></div>');
-    frameContent.addClass('dashboard-row-orientation');
-    frameContent.append(frames.detach());
-
-    // row orientation to stack nav and frame content
-    page.addClass('dashboard-row-orientation');
-    page.append(nav);
-    page.append(frameContent);
-    setFlex(frameContent, 1);
-
-    // initialize sly
-    var sly = new Sly(frameList, {
-    		horizontal: true,
-    		itemNav: 'basic',
-    		smart: true,
-    		activateOn: 'click',
-    		startAt: 0,
-    		scrollBy: 1,
-    		activatePageOn: 'click',
-    		speed: 200,
-    		moveBy: 600,
-    		dragHandle: true,
-    		dynamicHandle: true,
-    		clickBar: true,
-    		keyboardNavBy: 'items',
-    		next: next,
-    		prev: prev
-    	}).init();
-
-    // make first frame active
-    frames.removeClass('active');
-    frames.first().addClass('active');
-
-    // subscribe to frame changed events
-    sly.on('active', function (eventName, itemIndex) {
-      frames.removeClass('active');
-      frames.eq(itemIndex).addClass('active')
-                          .trigger('shown');
-    });
-  }
-
-  function layoutPageByRows(page, fillPage) {
-
-    // row orientation
-    page.addClass('dashboard-row-orientation');
-
-    // find all the level2 sections (those are the rows)
-    var rows = page.find('div.section.level2');
-
-    // if there are no level2 sections then treat the
-    // entire page as if it's a level 2 section
-    if (rows.length === 0) {
-      page.wrapInner('<div class="section level2"></div>');
-      rows = page.find('div.section.level2');
-    }
-
-    rows.each(function () {
-
-      // flags
-      var haveNotes = false;
-      var haveFlexHeight = true;
-
-      // remove the h2
-      $(this).children('h2').remove();
-
-      // check for a tabset
-      var isTabset = $(this).hasClass('tabset');
-      if (isTabset)
-        layoutTabset($(this));
-
-      // give it row layout semantics if it's not a tabset
-      if (!isTabset)
-        $(this).addClass('dashboard-row');
-
-      // find all of the level 3 subheads
-      var columns = $(this).find('div.section.level3');
-
-      // determine figureSizes sizes
-      var figureSizes = chartFigureSizes(columns);
-
-      // fixup the columns
-      columns.each(function(index) {
-
-        // layout the chart (force flex if we are in a tabset)
-        var result = layoutChart($(this), isTabset);
-
-        // update flexHeight state
-        if (!result.flex)
-          haveFlexHeight = false;
-
-        // update state
-        if (result.notes)
-          haveNotes = true;
-
-        // set the column flex based on the figure width
-        // (value boxes will just get the default figure width)
-        var chartWidth = figureSizes[index].width;
-        setFlex($(this), chartWidth + ' ' + chartWidth + ' 0px');
-
-      });
-
-      // remove empty chart note divs
-      if (isTabset)
-        $(this).find('.chart-notes').filter(function() {
-            return $(this).html() === "&nbsp;";
-        }).remove();
-      if (!haveNotes)
-        $(this).find('.chart-notes').remove();
-
-       // make it a flexbox row
-      if (haveFlexHeight)
-        $(this).addClass('dashboard-row-flex');
-
-      // now we can set the height on all the wrappers (based on maximum
-      // figure height + room for title and notes, or data-height on the
-      // container if specified). However, don't do this if there is
-      // no flex on any of the constituent columns
-      var flexHeight = null;
-      var dataHeight = parseInt($(this).attr('data-height'));
-      if (dataHeight)
-        flexHeight = adjustedHeight(dataHeight, columns.first());
-      else if (haveFlexHeight)
-        flexHeight = maxChartHeight(figureSizes, columns);
-      if (flexHeight) {
-        if (fillPage)
-          setFlex($(this), flexHeight + ' ' + flexHeight + ' 0px');
-        else {
-          $(this).css('height', flexHeight + 'px');
-          setFlex($(this), '0 0 ' + flexHeight + 'px');
-        }
-      }
-
-    });
-  }
-
-  function layoutPageByColumns(page, fillPage) {
-
-    // column orientation
-    page.addClass('dashboard-column-orientation');
-
-    // find all the level2 sections (those are the columns)
-    var columns = page.find('div.section.level2');
-
-    // if there are no level2 sections then treat the
-    // entire page as if it's a level 2 section
-    if (columns.length === 0) {
-      page.wrapInner('<div class="section level2"></div>');
-      columns = page.find('div.section.level2');
-    }
-
-    // layout each column
-    columns.each(function (index) {
-
-      // remove the h2
-      $(this).children('h2').remove();
-
-      // make it a flexbox column
-      $(this).addClass('dashboard-column');
-
-      // check for a tabset
-      var isTabset = $(this).hasClass('tabset');
-      if (isTabset)
-        layoutTabset($(this));
-
-      // find all the h3 elements
-      var rows = $(this).find('div.section.level3');
-
-      // get the figure sizes for the rows
-      var figureSizes = chartFigureSizes(rows);
-
-      // column flex is the max row width (or data-width if specified)
-      var flexWidth;
-      var dataWidth = parseInt($(this).attr('data-width'));
-      if (dataWidth)
-        flexWidth = dataWidth;
-      else
-        flexWidth = maxChartWidth(figureSizes);
-      setFlex($(this), flexWidth + ' ' + flexWidth + ' 0px');
-
-      // layout each chart
-      rows.each(function(index) {
-
-        // perform the layout
-        var result = layoutChart($(this), false);
-
-        // ice the notes if there are none
-        if (!result.notes)
-          $(this).find('.chart-notes').remove();
-
-        // set flex height based on figHeight, then adjust
-        if (result.flex) {
-          var chartHeight = figureSizes[index].height;
-          chartHeight = adjustedHeight(chartHeight, $(this));
-          if (fillPage)
-            setFlex($(this), chartHeight + ' ' + chartHeight + ' 0px');
-          else {
-            $(this).css('height', chartHeight + 'px');
-            setFlex($(this), chartHeight + ' ' + chartHeight + ' ' + chartHeight + 'px');
-          }
-        }
-      });
-    });
-  }
-
-  function chartFigureSizes(charts) {
-
-    // sizes
-    var figureSizes = new Array(charts.length);
-
-    // check each chart
-    charts.each(function(index) {
-
-      // start with default
-      figureSizes[index] = {
-        width: _options.defaultFigWidth,
-        height: _options.defaultFigHeight
-      };
-
-      // look for data-height or data-width then knit options
-      var dataWidth = parseInt($(this).attr('data-width'));
-      var dataHeight = parseInt($(this).attr('data-height'));
-      var knitrOptions = $(this).find('.knitr-options:first');
-      var knitrWidth, knitrHeight;
-      if (knitrOptions) {
-        knitrWidth = parseInt(knitrOptions.attr('data-fig-width'));
-        knitrHeight =  parseInt(knitrOptions.attr('data-fig-height'));
-      }
-
-      // width
-      if (dataWidth)
-        figureSizes[index].width = dataWidth;
-      else if (knitrWidth)
-        figureSizes[index].width = knitrWidth;
-
-      // height
-      if (dataHeight)
-        figureSizes[index].height = dataHeight;
-      else if (knitrHeight)
-        figureSizes[index].height = knitrHeight;
-    });
-
-    // return sizes
-    return figureSizes;
-  }
-
-  function maxChartHeight(figureSizes, charts) {
-
-    // first compute the maximum height
-    var maxHeight = _options.defaultFigHeight;
-    for (var i = 0; i<figureSizes.length; i++)
-      if (figureSizes[i].height > maxHeight)
-        maxHeight = figureSizes[i].height;
-
-    // now add offests for chart title and chart notes
-    if (charts.length)
-      maxHeight = adjustedHeight(maxHeight, charts.first());
-
-    return maxHeight;
-  }
-
-  function adjustedHeight(height, chart) {
-    if (chart.length > 0) {
-      var chartTitle = chart.find('.chart-title');
-      if (chartTitle.length)
-        height += chartTitle.first().outerHeight();
-      var chartNotes = chart.find('.chart-notes');
-      if (chartNotes.length)
-        height += chartNotes.first().outerHeight();
-    }
-    return height;
-  }
-
-  function maxChartWidth(figureSizes) {
-    var maxWidth = _options.defaultFigWidth;
-    for (var i = 0; i<figureSizes.length; i++)
-      if (figureSizes[i].width > maxWidth)
-        maxWidth = figureSizes[i].width;
-    return maxWidth;
-  }
-
-  // layout a chart
-  function layoutChart(chart, forceFlex) {
-
-    // state to return
-    var result = {
-      notes: false,
-      flex: false
-    };
-
-    // extract the title
-    var title = extractTitle(chart);
-
-    // find components that apply to this container
-    var components = componentsFind(chart);
-
-    // if it's a custom component then call it and return
-    var customComponents = componentsCustom(components);
-    if (customComponents.length) {
-      componentsLayout(customComponents, title, chart);
-      result.notes = false;
-      result.flex = forceFlex || componentsFlex(customComponents);
-      return result;
-    }
-
-    // put all the content in a chart wrapper div
-    chart.addClass('chart-wrapper');
-    chart.wrapInner('<div class="chart-stage"></div>');
-    var chartContent = chart.children('.chart-stage');
-
-    // flex the content if appropriate
-    result.flex = forceFlex || componentsFlex(components);
-    if (result.flex) {
-      // add flex classes
-      chart.addClass('chart-wrapper-flex');
-      chartContent.addClass('chart-stage-flex');
-
-      // additional shim to break out of flexbox sizing
-      chartContent.wrapInner('<div class="chart-shim"></div>');
-      chartContent = chartContent.children('.chart-shim');
-    }
-
-    // set custom data-padding attribute
-    var pad = chart.attr('data-padding');
-    if (pad) {
-      if (pad === "0")
-        chart.addClass('no-padding');
-      else {
-        pad = pad + 'px';
-        chartContent.css('left', pad)
-                    .css('top', pad)
-                    .css('right', pad)
-                    .css('bottom', pad)
-      }
-    }
-
-    // call compoents
-    componentsLayout(components, title, chartContent);
-
-    // also activate components on shiny output
-    findShinyOutput(chartContent).on('shiny:value',
-      function(event) {
-        var element = $(event.target);
-        setTimeout(function() {
-
-          // see if we opted out of flex based on our output (for shiny
-          // we can't tell what type of output we have until after the
-          // value is bound)
-          var components = componentsFind(element);
-          var flex = forceFlex || componentsFlex(components);
-          if (!flex) {
-            chart.css('height', "");
-            setFlex(chart, "");
-            chart.removeClass('chart-wrapper-flex');
-            chartContent.removeClass('chart-stage-flex');
-            chartContent.children().unwrap();
-          }
-
-          // perform layout
-          componentsLayout(components, title, element.parent());
-        }, 10);
-      });
-
-    // add the title
-    var chartTitle = $('<div class="chart-title"></div>');
-    chartTitle.html(title);
-    chart.prepend(chartTitle);
-
-    // add the notes section
-    var chartNotes = $('<div class="chart-notes"></div>');
-    chartNotes.html('&nbsp;');
-    chart.append(chartNotes);
-
-    // attempt to extract notes if we have a component
-    if (components.length)
-      result.notes = extractChartNotes(chartContent, chartNotes);
-
-    // return result
-    return result;
-  }
-
-  // build a tabset from a section div with the .tabset class
-  function layoutTabset(tabset) {
-
-    // check for fade option
-    var fade = tabset.hasClass("tabset-fade");
-    var navClass = "nav-tabs";
-
-    // determine the heading level of the tabset and tabs
-    var match = tabset.attr('class').match(/level(\d) /);
-    if (match === null)
-      return;
-    var tabsetLevel = Number(match[1]);
-    var tabLevel = tabsetLevel + 1;
-
-    // find all subheadings immediately below
-    var tabs = tabset.find("div.section.level" + tabLevel);
-    if (!tabs.length)
-      return;
-
-    // create tablist and tab-content elements
-    var tabList = $('<ul class="nav ' + navClass + '" role="tablist"></ul>');
-    $(tabs[0]).before(tabList);
-    var tabContent = $('<div class="tab-content"></div>');
-    $(tabs[0]).before(tabContent);
-
-    // build the tabset
-    tabs.each(function(i) {
-
-      // get the tab div
-      var tab = $(tabs[i]);
-
-      // get the id then sanitize it for use with bootstrap tabs
-      var id = tab.attr('id');
-
-      // sanitize the id for use with bootstrap tabs
-      id = id.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_');
-      tab.attr('id', id);
-
-      // get the heading element within it and grab it's text
-      var heading = tab.find('h' + tabLevel + ':first');
-      var headingText = heading.html();
-
-      // build and append the tab list item
-      var a = $('<a role="tab" data-toggle="tab">' + headingText + '</a>');
-      a.attr('href', '#' + id);
-      a.attr('aria-controls', id);
-      var li = $('<li role="presentation"></li>');
-      li.append(a);
-      if (i === 0)
-        li.attr('class', 'active');
-      tabList.append(li);
-
-      // set it's attributes
-      tab.attr('role', 'tabpanel');
-      tab.addClass('tab-pane');
-      tab.addClass('tabbed-pane');
-      tab.addClass('no-title');
-      if (fade)
-        tab.addClass('fade');
-      if (i === 0) {
-        tab.addClass('active');
-        if (fade)
-          tab.addClass('in');
-      }
-
-      // move it into the tab content div
-      tab.detach().appendTo(tabContent);
-    });
-
-    // add nav-tabs-custom
-    tabset.addClass('nav-tabs-custom');
-
-    // internal layout is dashboard-column with tab-content flexing
-    tabset.addClass('dashboard-column');
-    setFlex(tabContent, 1);
-  }
-
-  // one time global initialization for components
-  function componentsInit(dashboardContainer) {
-    for (var i=0; i<window.FlexDashboardComponents.length; i++) {
-      var component = window.FlexDashboardComponents[i];
-      if (component.init)
-        component.init(dashboardContainer);
-    }
-  }
-
-  // find components that apply within a container
-  function componentsFind(container) {
-
-    // look for components
-    var components = [];
-    for (var i=0; i<window.FlexDashboardComponents.length; i++) {
-      var component = window.FlexDashboardComponents[i];
-      if (component.find(container).length)
-        components.push(component);
-    }
-
-    // if there were none then use a special flowing content component
-    // that just adds a scrollbar in fillPage mode
-    if (components.length == 0) {
-      components.push({
-        find: function(container) {
-          return container;
-        },
-
-        flex: function(fillPage) {
-          return fillPage;
-        },
-
-        layout: function(title, container, element, fillPage) {
-          if (fillPage) {
-            container.addClass('flowing-content-shim');
-            container.addClass('flowing-content-container');
-          }
-        }
-      });
-    }
-
-    return components;
-  }
-
-  // if there is a custom component then pick it out
-  function componentsCustom(components) {
-    var customComponent = [];
-    for (var i=0; i<components.length; i++)
-      if (components[i].type === "custom") {
-        customComponent.push(components[i]);
-        break;
-      }
-    return customComponent;
-  }
-
-  // query all components for flex
-  function componentsFlex(components) {
-
-    // no components at all means no flex
-    if (components.length === 0)
-      return false;
-
-    // otherwise query components (assume true unless we see false)
-    var isMobile = isMobilePhone();
-    for (var i=0; i<components.length; i++)
-      if (components[i].flex && !components[i].flex(_options.fillPage))
-        return false;
-    return true;
-  }
-
-  // layout all components
-  function componentsLayout(components, title, container) {
-    var isMobile = isMobilePhone();
-    for (var i=0; i<components.length; i++) {
-      var element = components[i].find(container);
-      if (components[i].layout) {
-        // call layout (don't call other components if it returns false)
-        var result = components[i].layout(title, container, element, _options.fillPage);
-        if (result === false)
-          return;
-      }
-    }
-  }
-
-  // get a reference to the h3, discover it's inner html, and remove it
-  function extractTitle(container) {
-    var h3 = container.children('h3').first();
-    var title = '';
-    if (!container.hasClass('no-title'))
-      title = h3.html();
-    h3.remove();
-    return title;
-  }
-
-  // extract chart notes
-  function extractChartNotes(chartContent, chartNotes) {
-    // look for a terminating blockquote or image caption
-    var blockquote = chartContent.children('blockquote:last-child');
-    var caption = chartContent.children('div.image-container')
-                              .children('p.caption');
-    if (blockquote.length) {
-      chartNotes.html(blockquote.children('p:first-child').html());
-      blockquote.remove();
-      return true;
-    } else if (caption.length) {
-      chartNotes.html(caption.html());
-      caption.remove();
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  function findShinyOutput(chartContent) {
-    return chartContent.find('.shiny-text-output, .shiny-html-output');
-  }
-
-  // safely detect rendering on a mobile phone
-  function isMobilePhone() {
-    try
-    {
-      return ! window.matchMedia("only screen and (min-width: 768px)").matches;
-    }
-    catch(e) {
-      return false;
-    }
-  }
-
-  function isFillPage() {
-    return _options.fillPage;
-  }
-
-  // detect portrait mode
-  function isPortrait() {
-    return ($(window).width() < $(window).height());
-  }
-
-  // safely detect rendering on a tablet
-  function isTablet() {
-    try
-    {
-      return window.matchMedia("only screen and (min-width: 769px) and (max-width: 992px)").matches;
-    }
-    catch(e) {
-      return false;
-    }
-  }
-
-  // test whether this is a shiny doc
-  function isShinyDoc() {
-    return (typeof(window.Shiny) !== "undefined" && !!window.Shiny.outputBindings);
-  }
-
-  // set flex using vendor specific prefixes
-  function setFlex(el, flex) {
-    el.css('-webkit-box-flex', flex)
-      .css('-webkit-flex', flex)
-      .css('-ms-flex', flex)
-      .css('flex', flex);
-  }
-
-  // support bookmarking of pages
-  function handleLocationHash() {
-
-    // restore tab/page from bookmark
-    var hash = window.location.hash;
-    if (hash.length > 0)
-      $('ul.nav a[href="' + hash + '"]').tab('show');
-    FlexDashboardUtils.manageActiveNavbarMenu();
-
-    // navigate to a tab when the history changes
-    window.addEventListener("popstate", function(e) {
-      var hash = window.location.hash;
-      var activeTab = $('ul.nav a[href="' + hash + '"]');
-      if (activeTab.length) {
-        activeTab.tab('show');
-      } else {
-        $('ul.nav a:first').tab('show');
-      }
-      FlexDashboardUtils.manageActiveNavbarMenu();
-    });
-
-    // add a hash to the URL when the user clicks on a tab/page
-    $('.navbar-nav a[data-toggle="tab"]').on('click', function(e) {
-      var baseUrl = FlexDashboardUtils.urlWithoutHash(window.location.href);
-      var hash = FlexDashboardUtils.urlHash($(this).attr('href'));
-      var href = baseUrl + hash;
-      FlexDashboardUtils.setLocation(href);
-    });
-
-    // handle clicks of other links that should activate pages
-    var navPages = $('ul.navbar-nav li a[data-toggle=tab]');
-    navPages.each(function() {
-      var href =  $(this).attr('href');
-      var links = $('a[href="' + href + '"][data-toggle!=tab]');
-      links.each(function() {
-        $(this).on('click', function(e) {
-          window.FlexDashboardUtils.showPage(href);
-        });
-      });
-    });
-  }
-
-  // tweak Prism highlighting
-  function initPrismHighlighting() {
-
-    if (window.Prism) {
-      Prism.languages.insertBefore('r', 'comment', {
-        'heading': [
-          {
-            // title 1
-        	  // =======
-
-        	  // title 2
-        	  // -------
-        	  pattern: /\w+.*(?:\r?\n|\r)(?:====+|----+)/,
-            alias: 'operator'
-          },
-          {
-            // ### title 3
-            pattern: /(^\s*)###[^#].+/m,
-            lookbehind: true,
-            alias: 'operator'
-          }
-        ]
-      });
-
-      // prism highlight
-      Prism.highlightAll();
-    }
-  }
-
-
-  // get theme color
-  var themeColors = {
-    bootstrap: {
-      primary: "rgba(51, 122, 183, 0.4)",
-      info: "rgb(217, 237, 247)",
-      success: "rgb(223, 240, 216)",
-      warning: "rgb(252, 248, 227)",
-      danger: "rgb(242, 222, 222)"
-    },
-    cerulean: {
-      primary: "rgb(47, 164, 231)",
-      info: "rgb(217, 237, 247)",
-      success: "rgb(223, 240, 216)",
-      warning: "rgb(252, 248, 227)",
-      danger: "rgb(242, 222, 222)"
-    },
-    journal: {
-      primary: "rgba(235, 104, 100, 0.70)",
-      info: "rgb(217, 237, 247)",
-      success: "rgb(223, 240, 216)",
-      warning: "rgb(252, 248, 227)",
-      danger: "rgb(242, 222, 222)"
-    },
-    flatly: {
-      primary: "rgba(44, 62, 80, 0.70)",
-      info: "rgba(52, 152, 219, 0.70)",
-      success: "rgba(24, 188, 156, 0.70)",
-      warning: "rgba(243, 156, 18, 0.70)",
-      danger: "rgba(231, 76, 60, 0.70)"
-    },
-    readable: {
-      primary: "rgba(69, 130, 236, 0.4)",
-      info: "rgb(217, 237, 247)",
-      success: "rgb(223, 240, 216)",
-      warning: "rgb(252, 248, 227)",
-      danger: "rgb(242, 222, 222)"
-    },
-    spacelab: {
-      primary: "rgba(68, 110, 155, 0.25)",
-      info: "rgb(217, 237, 247)",
-      success: "rgb(223, 240, 216)",
-      warning: "rgb(252, 248, 227)",
-      danger: "rgb(242, 222, 222)"
-    },
-    united: {
-      primary: "rgba(221, 72, 20, 0.30)",
-      info: "rgb(217, 237, 247)",
-      success: "rgb(223, 240, 216)",
-      warning: "rgb(252, 248, 227)",
-      danger: "rgb(242, 222, 222)"
-    },
-    cosmo: {
-      primary: "rgba(39, 128, 227, 0.7)",
-      info: "rgba(153, 84, 187, 0.7)",
-      success: "rgba(63, 182, 24, 0.7)",
-      warning: "rgba(255, 117, 24, 0.7)",
-      danger: "rgba(255, 0, 57, 0.7)"
-    },
-    lumen: {
-      primary: "rgba(21, 140, 186, 0.70)",
-      info: "rgba(117, 202, 235, 0.90)",
-      success: "rgba(40, 182, 44, 0.70)",
-      warning: "rgba(255, 133, 27, 0.70)",
-      danger: "rgba(255, 65, 54, 0.70)"
-    },
-    paper: {
-      primary: "rgba(33, 150, 243, 0.35)",
-      info: "rgb(225, 190, 231)",
-      success: "rgb(223, 240, 216)",
-      warning: "rgb(255, 224, 178)",
-      danger: "rgb(249, 189, 187)"
-    },
-    sandstone: {
-      primary: "rgba(50, 93, 136, 0.3)",
-      info: "rgb(217, 237, 247)",
-      success: "rgb(223, 240, 216)",
-      warning: "rgb(252, 248, 227)",
-      danger: "rgb(242, 222, 222)"
-    },
-    simplex: {
-      primary: "rgba(217, 35, 15, 0.25)",
-      info: "rgb(217, 237, 247)",
-      success: "rgb(223, 240, 216)",
-      warning: "rgb(252, 248, 227)",
-      danger: "rgb(242, 222, 222)"
-    },
-    yeti: {
-      primary: "rgba(0, 140, 186, 0.298039)",
-      info: "rgb(217, 237, 247)",
-      success: "rgb(223, 240, 216)",
-      warning: "rgb(252, 248, 227)",
-      danger: "rgb(242, 222, 222)"
-    }
-  }
-  function themeColor(color) {
-    return themeColors[_options.theme][color];
-  }
-
-  FlexDashboard.prototype = {
-    constructor: FlexDashboard,
-    init: init,
-    isMobilePhone: isMobilePhone,
-    isFillPage: isFillPage,
-    themeColor: themeColor
-  };
-
-  return FlexDashboard;
-
-})();
-
-// utils
-window.FlexDashboardUtils = {
-  resizableImage: function(img) {
-    var src = img.attr('src');
-    var url = 'url("' + src + '")';
-    img.parent().css('background', url)
-                .css('background-size', 'contain')
-                .css('background-repeat', 'no-repeat')
-                .css('background-position', 'center')
-                .addClass('image-container');
-  },
-  setLocation: function(href) {
-    if (history && history.pushState) {
-      history.pushState(null, null, href);
-    } else {
-      window.location.replace(href);
-    }
-    setTimeout(function() {
-        window.scrollTo(0, 0);
-    }, 10);
-    this.manageActiveNavbarMenu();
-  },
-  showPage: function(href) {
-    $('ul.navbar-nav li a[href="' + href + '"]').tab('show');
-    var baseUrl = this.urlWithoutHash(window.location.href);
-    var loc = baseUrl + href;
-    this.setLocation(loc);
-  },
-  showLinkedValue: function(href) {
-    // check for a page link
-    if ($('ul.navbar-nav li a[data-toggle=tab][href="' + href + '"]').length > 0)
-      this.showPage(href);
-    else
-      window.open(href);
-  },
-  urlWithoutHash: function(url) {
-    var hashLoc = url.indexOf('#');
-    if (hashLoc != -1)
-      return url.substring(0, hashLoc);
-    else
-      return url;
-  },
-  urlHash: function(url) {
-    var hashLoc = url.indexOf('#');
-    if (hashLoc != -1)
-      return url.substring(hashLoc);
-    else
-      return "";
-  },
-  manageActiveNavbarMenu: function () {
-    // remove active from anyone currently active
-    $('.navbar ul.nav').find('li').removeClass('active');
-    // find the active tab
-    var activeTab = $('.dashboard-page-wrapper.tab-pane.active');
-    if (activeTab.length > 0) {
-      var tabId = activeTab.attr('id');
-      if (tabId)
-        $(".navbar ul.nav a[href='#" + tabId + "']").parents('li').addClass('active');
-    }
-  }
-};
-
-window.FlexDashboard = new FlexDashboard();
-
-// empty content
-window.FlexDashboardComponents.push({
-  find: function(container) {
-    if (container.find('p').length == 0)
-      return container;
-    else
-      return $();
-  }
-})
-
-// plot image
-window.FlexDashboardComponents.push({
-
-  find: function(container) {
-    return container.children('p')
-                    .children('img:only-child');
-  },
-
-  layout: function(title, container, element, fillPage) {
-    FlexDashboardUtils.resizableImage(element);
-  }
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
 });
-
-// plot image (figure style)
-window.FlexDashboardComponents.push({
-
-  find: function(container) {
-    return container.children('div.figure').children('img');
-  },
-
-  layout: function(title, container, element, fillPage) {
-    FlexDashboardUtils.resizableImage(element);
-  }
-});
-
-// htmlwidget
-window.FlexDashboardComponents.push({
-
-  init: function(dashboardContainer) {
-    // trigger "shown" after initial layout to force static htmlwidgets
-    // in runtime: shiny to be resized after the dom has been transformed
-    dashboardContainer.on('flexdashboard:layoutcomplete', function(event) {
-      setTimeout(function() {
-        dashboardContainer.trigger('shown');
-      }, 200);
-    });
-  },
-
-  find: function(container) {
-    return container.children('div[id^="htmlwidget-"],div.html-widget');
-  }
-});
-
-// gauge
-window.FlexDashboardComponents.push({
-
-  find: function(container) {
-    return container.children('div.html-widget.gauge');
-  },
-
-  flex: function(fillPage) {
-    return false;
-  },
-
-  layout: function(title, container, element, fillPage) {
-
-
-  }
-
-});
-
-// shiny output
-window.FlexDashboardComponents.push({
-  find: function(container) {
-    return container.children('div[class^="shiny-"]');
-  }
-});
-
-// datatables
-window.FlexDashboardComponents.push({
-  find: function(container) {
-    return container.find('.datatables');
-  },
-  flex: function(fillPage) {
-    return fillPage;
-  }
-});
-
-// bootstrap table
-window.FlexDashboardComponents.push({
-
-  find: function(container) {
-    var bsTable = container.find('table.table');
-    if (bsTable.length !== 0)
-      return bsTable;
-    else
-      return container.find('tr.header').parent('thead').parent('table');
-  },
-
-  flex: function(fillPage) {
-    return fillPage;
-  },
-
-  layout: function(title, container, element, fillPage) {
-
-    // alias variables
-    var bsTable = element;
-
-    // fixup xtable generated tables with a proper thead
-    var headerRow = bsTable.find('tbody > tr:first-child > th').parent();
-    if (headerRow.length > 0) {
-      var thead = $('<thead></thead>');
-      bsTable.prepend(thead);
-      headerRow.detach().appendTo(thead);
-    }
-
-    // improve appearance
-    container.addClass('bootstrap-table');
-
-    // for fill page provide scrolling w/ sticky headers
-    if (fillPage) {
-      // force scrollbar on overflow
-      container.addClass('flowing-content-shim');
-
-      // stable table headers when scrolling
-      bsTable.stickyTableHeaders({
-        scrollableArea: container
-      });
-    }
-  }
-});
-
-// embedded shiny app
-window.FlexDashboardComponents.push({
-
-  find: function(container) {
-    return container.find('iframe.shiny-frame');
-  },
-
-  flex: function(fillPage) {
-    return fillPage;
-  },
-
-  layout: function(title, container, element, fillPage) {
-    if (fillPage) {
-      element.attr('height', '100%');
-    } else {
-      // provide default height if necessary
-      var height = element.get(0).style.height;
-      if (!height)
-        height = element.attr('height');
-      if (!height)
-        element.attr('height', 500);
-    }
-  }
-});
-
-// shiny fillRow or fillCol
-window.FlexDashboardComponents.push({
-
-  find: function(container) {
-    return container.find('.flexfill-container');
-  },
-
-  flex: function(fillPage) {
-    return fillPage;
-  },
-
-  layout: function(title, container, element, fillPage) {
-    if (fillPage)
-      element.css('height', '100%');
-    else {
-      // provide default height if necessary
-      var height = element.get(0).style.height;
-      if (height === "100%" || height === "auto" || height === "initial" ||
-          height === "inherit" || !height) {
-        element.css('height', 500);
-      }
-    }
-  }
-});
-
-// valueBox
-window.FlexDashboardComponents.push({
-
-  type: "custom",
-
-  find: function(container) {
-    if (container.find('span.value-output, .shiny-valuebox-output').length)
-      return container;
-    else
-      return $();
-  },
-
-  flex: function(fillPage) {
-    return false;
-  },
-
-  layout: function(title, container, element, fillPage) {
-
-    // alias variables
-    var chartTitle = title;
-    var valueBox = element;
-
-    // add value-box class to container
-    container.addClass('value-box');
-
-    // value paragraph
-    var value = $('<p class="value"></p>');
-
-    // if we have shiny-text-output then just move it in
-    var valueOutputSpan = [];
-    var shinyOutput = valueBox.find('.shiny-valuebox-output').detach();
-    if (shinyOutput.length) {
-      valueBox.children().remove();
-      shinyOutput.html("&mdash;");
-      value.append(shinyOutput);
-    } else {
-      // extract the value (remove leading vector index)
-      var chartValue = valueBox.text().trim();
-      chartValue = chartValue.replace("[1] ", "");
-      valueOutputSpan = valueBox.find('span.value-output').detach();
-      valueBox.children().remove();
-      value.text(chartValue);
-    }
-
-    // caption
-    var caption = $('<p class="caption"></p>');
-    caption.html(chartTitle);
-
-    // build inner div for value box and add it
-    var inner = $('<div class="inner"></div>');
-    inner.append(value);
-    inner.append(caption);
-    valueBox.append(inner);
-
-    // add icon if specified
-    var icon = $('<div class="icon"><i></i></div>');
-    valueBox.append(icon);
-    function setIcon(chartIcon) {
-      var iconLib = "";
-      var components = chartIcon.split("-");
-      if (components.length > 1)
-        iconLib = components[0];
-      icon.children('i').attr('class', iconLib + ' ' + chartIcon);
-    }
-    var chartIcon = valueBox.attr('data-icon');
-    if (chartIcon)
-      setIcon(chartIcon);
-
-    // set color based on data-background if necessary
-    var dataBackground = valueBox.attr('data-background');
-    if (dataBackground)
-      valueBox.css('background-color', bgColor);
-    else {
-      // default to bg-primary if no other background is specified
-      if (!valueBox.hasClass('bg-primary') &&
-          !valueBox.hasClass('bg-info') &&
-          !valueBox.hasClass('bg-warning') &&
-          !valueBox.hasClass('bg-success') &&
-          !valueBox.hasClass('bg-danger')) {
-        valueBox.addClass('bg-primary');
-      }
-    }
-
-    // handle data attributes in valueOutputSpan
-    function handleValueOutput(valueOutput) {
-
-      // caption
-      var dataCaption = valueOutput.attr('data-caption');
-      if (dataCaption)
-        caption.html(dataCaption);
-
-      // icon
-      var dataIcon = valueOutput.attr('data-icon');
-      if (dataIcon)
-        setIcon(dataIcon);
-
-      // color
-      var dataColor = valueOutput.attr('data-color');
-      if (dataColor) {
-        if (dataColor.indexOf('bg-') === 0) {
-          valueBox.css('background-color', '');
-          if (!valueBox.hasClass(dataColor)) {
-             valueBox.removeClass('bg-primary bg-info bg-warning bg-danger bg-success');
-             valueBox.addClass(dataColor);
-          }
-        } else {
-          valueBox.removeClass('bg-primary bg-info bg-warning bg-danger bg-success');
-          valueBox.css('background-color', dataColor);
-        }
-      }
-
-      // url
-      var dataHref = valueOutput.attr('data-href');
-      if (dataHref) {
-        valueBox.addClass('linked-value');
-        valueBox.off('click.value-box');
-        valueBox.on('click.value-box', function(e) {
-          window.FlexDashboardUtils.showLinkedValue(dataHref);
-        });
-      }
-    }
-
-    // check for a valueOutputSpan
-    if (valueOutputSpan.length > 0) {
-      handleValueOutput(valueOutputSpan);
-    }
-
-    // if we have a shinyOutput then bind a listener to handle
-    // new valueOutputSpan values
-    shinyOutput.on('shiny:value',
-      function(event) {
-        var element = $(event.target);
-        setTimeout(function() {
-          var valueOutputSpan = element.find('span.value-output');
-          if (valueOutputSpan.length > 0)
-            handleValueOutput(valueOutputSpan);
-        }, 10);
-      }
-    );
-  }
-});
-
-
 </script>
 
-<div id="dashboard-container">
 
-<p>```</p>
-<div id="column" class="section level2" data-width="650">
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="datasource.html">Data Source</a>
+</li>
+<li>
+  <a href="dashboRD.html">Dashboard</a>
+</li>
+<li>
+  <a href="shiny_treemap.html">Shiny</a>
+</li>
+<li>
+  <a href="youtube.html">
+    <span class="fab fa fab fa-youtube"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/Adashaw77/p8105_final_project/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Dashboard</h1>
+
+</div>
+
+
+<div id="column" class="section level2 tabset" data-width="650">
 <h2>Column</h2>
 <div id="chart-a" class="section level3">
 <h3>Chart A</h3>
-<div class="knitr-options" data-fig-width="576" data-fig-height="460">
-
+<pre class="r"><code>ggplot(asthma_map) +
+    geom_map(aes(map_id = id, fill = asthma), color = &quot;white&quot;, map = map_data) +
+    scale_fill_gradient(high = &quot;darkgreen&quot;,low = &quot;lightgreen&quot;) +
+    expand_limits(map_data)</code></pre>
+<p><img src="dashboRD_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
-<p><img src="dashboRD_files/figure-html/unnamed-chunk-1-1.png" width="576" data-figure-id=fig1 /></p>
-</div>
-</div>
-<div id="column-1" class="section level2" data-width="350">
-<h2>Column</h2>
 <div id="chart-b" class="section level3">
 <h3>Chart B</h3>
-<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+<pre class="r"><code>ax = list(
+  title = &quot;&quot;,
+  zeroline = FALSE,
+  showline = FALSE,
+  showticklabels = FALSE,
+  showgrid = FALSE
+)
+#asthma 0-4 and asthma 5-14 in each UHF42
+final_asthma_df %&gt;% 
+  mutate(asthma_age = str_replace(asthma_age,&quot;asthma_em_&quot;,&quot;children &quot;)) %&gt;% 
+plot_ly(x= ~rate, y= ~geo_entity_name, color = ~asthma_age, type = &#39;bar&#39;, orientation = &#39;h&#39;) %&gt;%
+  layout(
+         yaxis = ax,
+         xaxis = list(title = &quot;rate&quot;) 
+  )</code></pre>
+<pre><code>## Warning in RColorBrewer::brewer.pal(N, &quot;Set2&quot;): minimal value for n is 3, returning requested palette with 3 different levels
 
+## Warning in RColorBrewer::brewer.pal(N, &quot;Set2&quot;): minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
+<div id="htmlwidget-7e6393350e895a4b38c8" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7e6393350e895a4b38c8">{"x":{"visdat":{"13f8ba8d469c":["function () ","plotlyVisDat"]},"cur_data":"13f8ba8d469c","attrs":{"13f8ba8d469c":{"x":{},"y":{},"orientation":"h","color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":false,"type":"category","categoryorder":"array","categoryarray":["Greenwich Village - SoHo","South Beach - Tottenville","Bensonhurst - Bay Ridge","Bayside - Little Neck","Borough Park","Upper East Side","Willowbrook","Gramercy Park - Murray Hill","Greenpoint","Coney Island - Sheepshead Bay","Lower Manhattan","Sunset Park","Flushing - Clearview","Fresh Meadows","Chelsea - Clinton","Ridgewood - Forest Hills","Long Island City - Astoria","Downtown - Heights - Slope","Upper West Side","Southeast Queens","Southwest Queens","Stapleton - St. George","Rockaways","West Queens","Canarsie - Flatlands","Port Richmond","Kingsbridge - Riverdale","Jamaica","Washington Heights","East Flatbush - Flatbush","Union Square - Lower East Side","Northeast Bronx","Williamsburg - Bushwick","Pelham - Throgs Neck","Bedford Stuyvesant - Crown Heights","East New York","Fordham - Bronx Pk","Crotona -Tremont","Central Harlem - Morningside Heights","East Harlem","High Bridge - Morrisania","Hunts Point - Mott Haven"]},"xaxis":{"domain":[0,1],"automargin":true,"title":"rate"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[250.8,407.8,636,478.5,737.6,846.6,876.5,91.2,124.5,509,554.4,93.7,70.2,326.7,271.5,61,114.2,438.9,299.9,643.5,714.6,166.6,67.3,98.5,74.1,43.4,323.9,70,128.6,198.8,129.8,59.9,155.5,141.8,205.1,347.4,203.3,199.2,261,199.4,72.3,54],"y":["Kingsbridge - Riverdale","Northeast Bronx","Fordham - Bronx Pk","Pelham - Throgs Neck","Crotona -Tremont","High Bridge - Morrisania","Hunts Point - Mott Haven","Greenpoint","Downtown - Heights - Slope","Bedford Stuyvesant - Crown Heights","East New York","Sunset Park","Borough Park","East Flatbush - Flatbush","Canarsie - Flatlands","Bensonhurst - Bay Ridge","Coney Island - Sheepshead Bay","Williamsburg - Bushwick","Washington Heights","Central Harlem - Morningside Heights","East Harlem","Upper West Side","Upper East Side","Chelsea - Clinton","Gramercy Park - Murray Hill","Greenwich Village - SoHo","Union Square - Lower East Side","Lower Manhattan","Long Island City - Astoria","West Queens","Flushing - Clearview","Bayside - Little Neck","Ridgewood - Forest Hills","Fresh Meadows","Southwest Queens","Jamaica","Southeast Queens","Rockaways","Port Richmond","Stapleton - St. George","Willowbrook","South Beach - Tottenville"],"orientation":"h","type":"bar","name":"children 0to4","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[237.4,357.5,508.6,349.2,514.7,556,563.7,94.8,157.3,416.9,376.3,114.1,38.2,290.7,186.1,36,89.8,372.5,258.3,611.8,655.1,132.7,59.8,167.9,97.8,29.1,307.3,135.9,151.1,187.1,82.9,44.7,114,117.1,131.6,202,125.9,186.6,203.7,158.1,58.8,39.1],"y":["Kingsbridge - Riverdale","Northeast Bronx","Fordham - Bronx Pk","Pelham - Throgs Neck","Crotona -Tremont","High Bridge - Morrisania","Hunts Point - Mott Haven","Greenpoint","Downtown - Heights - Slope","Bedford Stuyvesant - Crown Heights","East New York","Sunset Park","Borough Park","East Flatbush - Flatbush","Canarsie - Flatlands","Bensonhurst - Bay Ridge","Coney Island - Sheepshead Bay","Williamsburg - Bushwick","Washington Heights","Central Harlem - Morningside Heights","East Harlem","Upper West Side","Upper East Side","Chelsea - Clinton","Gramercy Park - Murray Hill","Greenwich Village - SoHo","Union Square - Lower East Side","Lower Manhattan","Long Island City - Astoria","West Queens","Flushing - Clearview","Bayside - Little Neck","Ridgewood - Forest Hills","Fresh Meadows","Southwest Queens","Jamaica","Southeast Queens","Rockaways","Port Richmond","Stapleton - St. George","Willowbrook","South Beach - Tottenville"],"orientation":"h","type":"bar","name":"children 5to14","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
 </div>
 </div>
+<div id="column-1" class="section level2" data-width="550">
+<h2>Column</h2>
 <div id="chart-c" class="section level3">
 <h3>Chart C</h3>
-<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+<pre class="r"><code>old = filter(final_asthma_df,asthma_age == &quot;asthma_em_5to14&quot;)
+young = filter(final_asthma_df,asthma_age == &quot;asthma_em_0to4&quot;)
+fit1 = lm(rate~so2,data = old)
+fit2 = lm(rate~so2,data = young)
+subplot(
+  plot_ly(old, x = ~so2, y = ~rate)%&gt;% 
+    add_markers(alpha = 0.5,name = &quot;age from 5 to 14&quot;) %&gt;% 
+    add_lines(y=fitted(fit1),name = &quot;lm for age 5 to 14&quot;),
+  plot_ly(young, x = ~so2, y = ~rate) %&gt;% 
+    add_markers(alpha = 0.5,name = &quot;age from 0 to 4&quot;) %&gt;% 
+   add_lines(y=fitted(fit2),name = &quot;lm for age 0 to 4&quot;)
+)</code></pre>
+<div id="htmlwidget-4d228ceeae01e54b590d" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4d228ceeae01e54b590d">{"x":{"data":[{"x":[1,1.11,1.54,0.96,1.35,1.2,0.82,0.58,0.46,0.52,0.47,0.43,0.48,0.49,0.4,0.43,0.43,0.58,1.5,1.09,1,1.4,1.49,1.13,1.28,0.88,0.97,0.55,0.79,0.78,0.74,0.57,0.58,0.57,0.45,0.43,0.41,0.31,0.31,0.35,0.28,0.22],"y":[237.4,357.5,508.6,349.2,514.7,556,563.7,94.8,157.3,416.9,376.3,114.1,38.2,290.7,186.1,36,89.8,372.5,258.3,611.8,655.1,132.7,59.8,167.9,97.8,29.1,307.3,135.9,151.1,187.1,82.9,44.7,114,117.1,131.6,202,125.9,186.6,203.7,158.1,58.8,39.1],"type":"scatter","mode":"markers","name":"age from 5 to 14","marker":{"color":"rgba(31,119,180,0.498)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,0.498)"},"error_x":{"color":"rgba(31,119,180,0.498)"},"line":{"color":"rgba(31,119,180,0.498)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.22,0.28,0.31,0.31,0.35,0.4,0.41,0.43,0.43,0.43,0.43,0.45,0.46,0.47,0.48,0.49,0.52,0.55,0.57,0.57,0.58,0.58,0.58,0.74,0.78,0.79,0.82,0.88,0.96,0.97,1,1,1.09,1.11,1.13,1.2,1.28,1.35,1.4,1.49,1.5,1.54],"y":[126.635387308132,138.041943396113,143.745221440104,143.745221440104,151.349592165425,160.855055572076,162.756148253406,166.558333616067,166.558333616067,166.558333616067,166.558333616067,170.360518978727,172.261611660057,174.162704341388,176.063797022718,177.964889704048,183.668167748039,189.371445792029,193.17363115469,193.17363115469,195.07472383602,195.07472383602,195.07472383602,225.492206737303,233.096577462624,234.997670143955,240.700948187945,252.107504275926,267.316245726568,269.217338407898,274.920616451889,274.920616451889,292.030450583861,295.832635946521,299.634821309182,312.942470078493,328.151211529135,341.458860298447,350.964323705098,368.07415783707,369.9752505184,377.579621243721],"type":"scatter","mode":"lines","name":"lm for age 5 to 14","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[1,1.11,1.54,0.96,1.35,1.2,0.82,0.58,0.46,0.52,0.47,0.43,0.48,0.49,0.4,0.43,0.43,0.58,1.5,1.09,1,1.4,1.49,1.13,1.28,0.88,0.97,0.55,0.79,0.78,0.74,0.57,0.58,0.57,0.45,0.43,0.41,0.31,0.31,0.35,0.28,0.22],"y":[250.8,407.8,636,478.5,737.6,846.6,876.5,91.2,124.5,509,554.4,93.7,70.2,326.7,271.5,61,114.2,438.9,299.9,643.5,714.6,166.6,67.3,98.5,74.1,43.4,323.9,70,128.6,198.8,129.8,59.9,155.5,141.8,205.1,347.4,203.3,199.2,261,199.4,72.3,54],"type":"scatter","mode":"markers","name":"age from 0 to 4","marker":{"color":"rgba(44,160,44,0.498)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,0.498)"},"error_x":{"color":"rgba(44,160,44,0.498)"},"line":{"color":"rgba(44,160,44,0.498)"},"xaxis":"x2","yaxis":"y2","frame":null},{"x":[0.22,0.28,0.31,0.31,0.35,0.4,0.41,0.43,0.43,0.43,0.43,0.45,0.46,0.47,0.48,0.49,0.52,0.55,0.57,0.57,0.58,0.58,0.58,0.74,0.78,0.79,0.82,0.88,0.96,0.97,1,1,1.09,1.11,1.13,1.2,1.28,1.35,1.4,1.49,1.5,1.54],"y":[161.377227722772,174.874257425743,181.622772277228,181.622772277228,190.620792079208,201.868316831683,204.117821782178,208.616831683168,208.616831683168,208.616831683168,208.616831683168,213.115841584158,215.365346534653,217.614851485148,219.864356435644,222.113861386139,228.862376237624,235.610891089109,240.109900990099,240.109900990099,242.359405940594,242.359405940594,242.359405940594,278.351485148515,287.349504950495,289.59900990099,296.347524752475,309.844554455446,327.840594059406,330.090099009901,336.838613861385,336.838613861386,357.084158415842,361.583168316832,366.082178217822,381.828712871287,399.824752475248,415.571287128713,426.818811881188,447.064356435644,449.313861386139,458.311881188119],"type":"scatter","mode":"lines","name":"lm for age 0 to 4","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x2","yaxis":"y2","frame":null}],"layout":{"xaxis":{"domain":[0,0.48],"automargin":true,"anchor":"y"},"xaxis2":{"domain":[0.52,1],"automargin":true,"anchor":"y2"},"yaxis2":{"domain":[0,1],"automargin":true,"anchor":"x2"},"yaxis":{"domain":[0,1],"automargin":true,"anchor":"x"},"margin":{"b":40,"l":60,"t":25,"r":10},"hovermode":"closest","showlegend":true},"attrs":{"13f8b52b285f0":{"x":{},"y":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"markers","alpha":0.5,"name":"age from 5 to 14","inherit":true},"13f8b52b285f0.1":{"x":{},"y":[274.920616451889,295.832635946521,377.579621243721,267.316245726568,341.458860298447,312.942470078493,240.700948187945,195.07472383602,172.261611660057,183.668167748039,174.162704341388,166.558333616067,176.063797022718,177.964889704048,160.855055572076,166.558333616067,166.558333616067,195.07472383602,369.9752505184,292.030450583861,274.920616451889,350.964323705098,368.07415783707,299.634821309182,328.151211529135,252.107504275926,269.217338407898,189.371445792029,234.997670143955,233.096577462624,225.492206737303,193.17363115469,195.07472383602,193.17363115469,170.360518978727,166.558333616067,162.756148253406,143.745221440104,143.745221440104,151.349592165425,138.041943396113,126.635387308132],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines","name":"lm for age 5 to 14","inherit":true},"13f8b467779fa":{"x":{},"y":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"markers","alpha":0.5,"name":"age from 0 to 4","inherit":true},"13f8b467779fa.1":{"x":{},"y":[336.838613861385,361.583168316832,458.311881188119,327.840594059406,415.571287128713,381.828712871287,296.347524752475,242.359405940594,215.365346534653,228.862376237624,217.614851485148,208.616831683168,219.864356435644,222.113861386139,201.868316831683,208.616831683168,208.616831683168,242.359405940594,449.313861386139,357.084158415842,336.838613861386,426.818811881188,447.064356435644,366.082178217822,399.824752475248,309.844554455446,330.090099009901,235.610891089109,289.59900990099,287.349504950495,278.351485148515,240.109900990099,242.359405940594,240.109900990099,213.115841584158,208.616831683168,204.117821782178,181.622772277228,181.622772277228,190.620792079208,174.874257425743,161.377227722772],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines","name":"lm for age 0 to 4","inherit":true}},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"subplot":true,"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+</div>
+<div id="chart-d" class="section level3 tabset">
+<h3>Chart D</h3>
+<pre class="r"><code>#asthma and poverty
+poverty = ggplot(final_asthma_df) +
+   geom_point(aes(x=poverty,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)+theme(legend.position = &quot;none&quot;)
+  ggplotly(poverty)</code></pre>
+<div id="htmlwidget-25b2103639c83bec5bce" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-25b2103639c83bec5bce">{"x":{"data":[{"x":[20.5,21.42,43.33,33.51,53.67,47.4,54.53,46.48,18.68,37.21,40.84,45.41,39.73,23.28,19.16,19.26,26.55,45.01,30.09,40.77,44.26,5.82,2.65,9.11,2.98,1.06,28.81,2.69,20.21,23.62,12.93,8,14.29,17.14,20.67,23.18,9.73,24.78,36.14,27.15,9.88,8.3],"y":[250.8,407.8,636,478.5,737.6,846.6,876.5,91.2,124.5,509,554.4,93.7,70.2,326.7,271.5,61,114.2,438.9,299.9,643.5,714.6,166.6,67.3,98.5,74.1,43.4,323.9,70,128.6,198.8,129.8,59.9,155.5,141.8,205.1,347.4,203.3,199.2,261,199.4,72.3,54],"text":["poverty: 20.50<br />rate: 250.8<br />asthma_age: asthma_em_0to4","poverty: 21.42<br />rate: 407.8<br />asthma_age: asthma_em_0to4","poverty: 43.33<br />rate: 636.0<br />asthma_age: asthma_em_0to4","poverty: 33.51<br />rate: 478.5<br />asthma_age: asthma_em_0to4","poverty: 53.67<br />rate: 737.6<br />asthma_age: asthma_em_0to4","poverty: 47.40<br />rate: 846.6<br />asthma_age: asthma_em_0to4","poverty: 54.53<br />rate: 876.5<br />asthma_age: asthma_em_0to4","poverty: 46.48<br />rate:  91.2<br />asthma_age: asthma_em_0to4","poverty: 18.68<br />rate: 124.5<br />asthma_age: asthma_em_0to4","poverty: 37.21<br />rate: 509.0<br />asthma_age: asthma_em_0to4","poverty: 40.84<br />rate: 554.4<br />asthma_age: asthma_em_0to4","poverty: 45.41<br />rate:  93.7<br />asthma_age: asthma_em_0to4","poverty: 39.73<br />rate:  70.2<br />asthma_age: asthma_em_0to4","poverty: 23.28<br />rate: 326.7<br />asthma_age: asthma_em_0to4","poverty: 19.16<br />rate: 271.5<br />asthma_age: asthma_em_0to4","poverty: 19.26<br />rate:  61.0<br />asthma_age: asthma_em_0to4","poverty: 26.55<br />rate: 114.2<br />asthma_age: asthma_em_0to4","poverty: 45.01<br />rate: 438.9<br />asthma_age: asthma_em_0to4","poverty: 30.09<br />rate: 299.9<br />asthma_age: asthma_em_0to4","poverty: 40.77<br />rate: 643.5<br />asthma_age: asthma_em_0to4","poverty: 44.26<br />rate: 714.6<br />asthma_age: asthma_em_0to4","poverty:  5.82<br />rate: 166.6<br />asthma_age: asthma_em_0to4","poverty:  2.65<br />rate:  67.3<br />asthma_age: asthma_em_0to4","poverty:  9.11<br />rate:  98.5<br />asthma_age: asthma_em_0to4","poverty:  2.98<br />rate:  74.1<br />asthma_age: asthma_em_0to4","poverty:  1.06<br />rate:  43.4<br />asthma_age: asthma_em_0to4","poverty: 28.81<br />rate: 323.9<br />asthma_age: asthma_em_0to4","poverty:  2.69<br />rate:  70.0<br />asthma_age: asthma_em_0to4","poverty: 20.21<br />rate: 128.6<br />asthma_age: asthma_em_0to4","poverty: 23.62<br />rate: 198.8<br />asthma_age: asthma_em_0to4","poverty: 12.93<br />rate: 129.8<br />asthma_age: asthma_em_0to4","poverty:  8.00<br />rate:  59.9<br />asthma_age: asthma_em_0to4","poverty: 14.29<br />rate: 155.5<br />asthma_age: asthma_em_0to4","poverty: 17.14<br />rate: 141.8<br />asthma_age: asthma_em_0to4","poverty: 20.67<br />rate: 205.1<br />asthma_age: asthma_em_0to4","poverty: 23.18<br />rate: 347.4<br />asthma_age: asthma_em_0to4","poverty:  9.73<br />rate: 203.3<br />asthma_age: asthma_em_0to4","poverty: 24.78<br />rate: 199.2<br />asthma_age: asthma_em_0to4","poverty: 36.14<br />rate: 261.0<br />asthma_age: asthma_em_0to4","poverty: 27.15<br />rate: 199.4<br />asthma_age: asthma_em_0to4","poverty:  9.88<br />rate:  72.3<br />asthma_age: asthma_em_0to4","poverty:  8.30<br />rate:  54.0<br />asthma_age: asthma_em_0to4"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"asthma_em_0to4","legendgroup":"asthma_em_0to4","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[16.26,15.53,32.71,23.47,41.42,39.28,42.21,24.55,15.9,26.45,29.82,32.37,27.25,17.76,12.69,15.43,20.05,31.49,25,29.95,33.82,11.23,6.67,12.35,8.86,8.8,21.55,10.85,15.53,17.97,15.93,7.83,12.35,13.6,14.42,14.81,7.07,19.16,21.97,18.99,9.39,7.73],"y":[237.4,357.5,508.6,349.2,514.7,556,563.7,94.8,157.3,416.9,376.3,114.1,38.2,290.7,186.1,36,89.8,372.5,258.3,611.8,655.1,132.7,59.8,167.9,97.8,29.1,307.3,135.9,151.1,187.1,82.9,44.7,114,117.1,131.6,202,125.9,186.6,203.7,158.1,58.8,39.1],"text":["poverty: 16.26<br />rate: 237.4<br />asthma_age: asthma_em_5to14","poverty: 15.53<br />rate: 357.5<br />asthma_age: asthma_em_5to14","poverty: 32.71<br />rate: 508.6<br />asthma_age: asthma_em_5to14","poverty: 23.47<br />rate: 349.2<br />asthma_age: asthma_em_5to14","poverty: 41.42<br />rate: 514.7<br />asthma_age: asthma_em_5to14","poverty: 39.28<br />rate: 556.0<br />asthma_age: asthma_em_5to14","poverty: 42.21<br />rate: 563.7<br />asthma_age: asthma_em_5to14","poverty: 24.55<br />rate:  94.8<br />asthma_age: asthma_em_5to14","poverty: 15.90<br />rate: 157.3<br />asthma_age: asthma_em_5to14","poverty: 26.45<br />rate: 416.9<br />asthma_age: asthma_em_5to14","poverty: 29.82<br />rate: 376.3<br />asthma_age: asthma_em_5to14","poverty: 32.37<br />rate: 114.1<br />asthma_age: asthma_em_5to14","poverty: 27.25<br />rate:  38.2<br />asthma_age: asthma_em_5to14","poverty: 17.76<br />rate: 290.7<br />asthma_age: asthma_em_5to14","poverty: 12.69<br />rate: 186.1<br />asthma_age: asthma_em_5to14","poverty: 15.43<br />rate:  36.0<br />asthma_age: asthma_em_5to14","poverty: 20.05<br />rate:  89.8<br />asthma_age: asthma_em_5to14","poverty: 31.49<br />rate: 372.5<br />asthma_age: asthma_em_5to14","poverty: 25.00<br />rate: 258.3<br />asthma_age: asthma_em_5to14","poverty: 29.95<br />rate: 611.8<br />asthma_age: asthma_em_5to14","poverty: 33.82<br />rate: 655.1<br />asthma_age: asthma_em_5to14","poverty: 11.23<br />rate: 132.7<br />asthma_age: asthma_em_5to14","poverty:  6.67<br />rate:  59.8<br />asthma_age: asthma_em_5to14","poverty: 12.35<br />rate: 167.9<br />asthma_age: asthma_em_5to14","poverty:  8.86<br />rate:  97.8<br />asthma_age: asthma_em_5to14","poverty:  8.80<br />rate:  29.1<br />asthma_age: asthma_em_5to14","poverty: 21.55<br />rate: 307.3<br />asthma_age: asthma_em_5to14","poverty: 10.85<br />rate: 135.9<br />asthma_age: asthma_em_5to14","poverty: 15.53<br />rate: 151.1<br />asthma_age: asthma_em_5to14","poverty: 17.97<br />rate: 187.1<br />asthma_age: asthma_em_5to14","poverty: 15.93<br />rate:  82.9<br />asthma_age: asthma_em_5to14","poverty:  7.83<br />rate:  44.7<br />asthma_age: asthma_em_5to14","poverty: 12.35<br />rate: 114.0<br />asthma_age: asthma_em_5to14","poverty: 13.60<br />rate: 117.1<br />asthma_age: asthma_em_5to14","poverty: 14.42<br />rate: 131.6<br />asthma_age: asthma_em_5to14","poverty: 14.81<br />rate: 202.0<br />asthma_age: asthma_em_5to14","poverty:  7.07<br />rate: 125.9<br />asthma_age: asthma_em_5to14","poverty: 19.16<br />rate: 186.6<br />asthma_age: asthma_em_5to14","poverty: 21.97<br />rate: 203.7<br />asthma_age: asthma_em_5to14","poverty: 18.99<br />rate: 158.1<br />asthma_age: asthma_em_5to14","poverty:  9.39<br />rate:  58.8<br />asthma_age: asthma_em_5to14","poverty:  7.73<br />rate:  39.1<br />asthma_age: asthma_em_5to14"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,191,196,1)"}},"hoveron":"points","name":"asthma_em_5to14","legendgroup":"asthma_em_5to14","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1.06,1.73683544303797,2.41367088607595,3.09050632911392,3.7673417721519,4.44417721518987,5.12101265822785,5.79784810126582,6.4746835443038,7.15151898734177,7.82835443037975,8.50518987341772,9.1820253164557,9.85886075949367,10.5356962025316,11.2125316455696,11.8893670886076,12.5662025316456,13.2430379746835,13.9198734177215,14.5967088607595,15.2735443037975,15.9503797468354,16.6272151898734,17.3040506329114,17.9808860759494,18.6577215189873,19.3345569620253,20.0113924050633,20.6882278481013,21.3650632911392,22.0418987341772,22.7187341772152,23.3955696202532,24.0724050632911,24.7492405063291,25.4260759493671,26.1029113924051,26.779746835443,27.456582278481,28.133417721519,28.810253164557,29.4870886075949,30.1639240506329,30.8407594936709,31.5175949367089,32.1944303797468,32.8712658227848,33.5481012658228,34.2249367088608,34.9017721518987,35.5786075949367,36.2554430379747,36.9322784810127,37.6091139240506,38.2859493670886,38.9627848101266,39.6396202531646,40.3164556962025,40.9932911392405,41.6701265822785,42.3469620253165,43.0237974683544,43.7006329113924,44.3774683544304,45.0543037974684,45.7311392405063,46.4079746835443,47.0848101265823,47.7616455696203,48.4384810126582,49.1153164556962,49.7921518987342,50.4689873417722,51.1458227848101,51.8226582278481,52.4994936708861,53.1763291139241,53.853164556962,54.53],"y":[3.79700968201914,11.5185522667062,19.2400948513931,26.9616374360802,34.6831800207672,42.4047226054542,50.1262651901412,57.8478077748282,65.5693503595152,73.2908929442022,81.0124355288892,88.7339781135762,96.4555206982632,104.17706328295,111.898605867637,119.620148452324,127.341691037011,135.063233621698,142.784776206385,150.506318791072,158.227861375759,165.949403960446,173.670946545133,181.39248912982,189.114031714507,196.835574299194,204.557116883881,212.278659468568,220.000202053255,227.721744637942,235.443287222629,243.164829807316,250.886372392003,258.60791497669,266.329457561377,274.051000146064,281.772542730751,289.494085315438,297.215627900125,304.937170484812,312.658713069499,320.380255654186,328.101798238873,335.82334082356,343.544883408247,351.266425992934,358.987968577621,366.709511162308,374.431053746995,382.152596331682,389.874138916369,397.595681501056,405.317224085743,413.03876667043,420.760309255117,428.481851839804,436.203394424491,443.924937009178,451.646479593865,459.368022178552,467.089564763239,474.811107347926,482.532649932613,490.2541925173,497.975735101987,505.697277686674,513.418820271361,521.140362856048,528.861905440735,536.583448025422,544.304990610109,552.026533194796,559.748075779483,567.46961836417,575.191160948857,582.912703533544,590.634246118231,598.355788702918,606.077331287605,613.798873872292],"text":["poverty:  1.060000<br />rate:   3.79701<br />asthma_age: asthma_em_0to4","poverty:  1.736835<br />rate:  11.51855<br />asthma_age: asthma_em_0to4","poverty:  2.413671<br />rate:  19.24009<br />asthma_age: asthma_em_0to4","poverty:  3.090506<br />rate:  26.96164<br />asthma_age: asthma_em_0to4","poverty:  3.767342<br />rate:  34.68318<br />asthma_age: asthma_em_0to4","poverty:  4.444177<br />rate:  42.40472<br />asthma_age: asthma_em_0to4","poverty:  5.121013<br />rate:  50.12627<br />asthma_age: asthma_em_0to4","poverty:  5.797848<br />rate:  57.84781<br />asthma_age: asthma_em_0to4","poverty:  6.474684<br />rate:  65.56935<br />asthma_age: asthma_em_0to4","poverty:  7.151519<br />rate:  73.29089<br />asthma_age: asthma_em_0to4","poverty:  7.828354<br />rate:  81.01244<br />asthma_age: asthma_em_0to4","poverty:  8.505190<br />rate:  88.73398<br />asthma_age: asthma_em_0to4","poverty:  9.182025<br />rate:  96.45552<br />asthma_age: asthma_em_0to4","poverty:  9.858861<br />rate: 104.17706<br />asthma_age: asthma_em_0to4","poverty: 10.535696<br />rate: 111.89861<br />asthma_age: asthma_em_0to4","poverty: 11.212532<br />rate: 119.62015<br />asthma_age: asthma_em_0to4","poverty: 11.889367<br />rate: 127.34169<br />asthma_age: asthma_em_0to4","poverty: 12.566203<br />rate: 135.06323<br />asthma_age: asthma_em_0to4","poverty: 13.243038<br />rate: 142.78478<br />asthma_age: asthma_em_0to4","poverty: 13.919873<br />rate: 150.50632<br />asthma_age: asthma_em_0to4","poverty: 14.596709<br />rate: 158.22786<br />asthma_age: asthma_em_0to4","poverty: 15.273544<br />rate: 165.94940<br />asthma_age: asthma_em_0to4","poverty: 15.950380<br />rate: 173.67095<br />asthma_age: asthma_em_0to4","poverty: 16.627215<br />rate: 181.39249<br />asthma_age: asthma_em_0to4","poverty: 17.304051<br />rate: 189.11403<br />asthma_age: asthma_em_0to4","poverty: 17.980886<br />rate: 196.83557<br />asthma_age: asthma_em_0to4","poverty: 18.657722<br />rate: 204.55712<br />asthma_age: asthma_em_0to4","poverty: 19.334557<br />rate: 212.27866<br />asthma_age: asthma_em_0to4","poverty: 20.011392<br />rate: 220.00020<br />asthma_age: asthma_em_0to4","poverty: 20.688228<br />rate: 227.72174<br />asthma_age: asthma_em_0to4","poverty: 21.365063<br />rate: 235.44329<br />asthma_age: asthma_em_0to4","poverty: 22.041899<br />rate: 243.16483<br />asthma_age: asthma_em_0to4","poverty: 22.718734<br />rate: 250.88637<br />asthma_age: asthma_em_0to4","poverty: 23.395570<br />rate: 258.60791<br />asthma_age: asthma_em_0to4","poverty: 24.072405<br />rate: 266.32946<br />asthma_age: asthma_em_0to4","poverty: 24.749241<br />rate: 274.05100<br />asthma_age: asthma_em_0to4","poverty: 25.426076<br />rate: 281.77254<br />asthma_age: asthma_em_0to4","poverty: 26.102911<br />rate: 289.49409<br />asthma_age: asthma_em_0to4","poverty: 26.779747<br />rate: 297.21563<br />asthma_age: asthma_em_0to4","poverty: 27.456582<br />rate: 304.93717<br />asthma_age: asthma_em_0to4","poverty: 28.133418<br />rate: 312.65871<br />asthma_age: asthma_em_0to4","poverty: 28.810253<br />rate: 320.38026<br />asthma_age: asthma_em_0to4","poverty: 29.487089<br />rate: 328.10180<br />asthma_age: asthma_em_0to4","poverty: 30.163924<br />rate: 335.82334<br />asthma_age: asthma_em_0to4","poverty: 30.840759<br />rate: 343.54488<br />asthma_age: asthma_em_0to4","poverty: 31.517595<br />rate: 351.26643<br />asthma_age: asthma_em_0to4","poverty: 32.194430<br />rate: 358.98797<br />asthma_age: asthma_em_0to4","poverty: 32.871266<br />rate: 366.70951<br />asthma_age: asthma_em_0to4","poverty: 33.548101<br />rate: 374.43105<br />asthma_age: asthma_em_0to4","poverty: 34.224937<br />rate: 382.15260<br />asthma_age: asthma_em_0to4","poverty: 34.901772<br />rate: 389.87414<br />asthma_age: asthma_em_0to4","poverty: 35.578608<br />rate: 397.59568<br />asthma_age: asthma_em_0to4","poverty: 36.255443<br />rate: 405.31722<br />asthma_age: asthma_em_0to4","poverty: 36.932278<br />rate: 413.03877<br />asthma_age: asthma_em_0to4","poverty: 37.609114<br />rate: 420.76031<br />asthma_age: asthma_em_0to4","poverty: 38.285949<br />rate: 428.48185<br />asthma_age: asthma_em_0to4","poverty: 38.962785<br />rate: 436.20339<br />asthma_age: asthma_em_0to4","poverty: 39.639620<br />rate: 443.92494<br />asthma_age: asthma_em_0to4","poverty: 40.316456<br />rate: 451.64648<br />asthma_age: asthma_em_0to4","poverty: 40.993291<br />rate: 459.36802<br />asthma_age: asthma_em_0to4","poverty: 41.670127<br />rate: 467.08956<br />asthma_age: asthma_em_0to4","poverty: 42.346962<br />rate: 474.81111<br />asthma_age: asthma_em_0to4","poverty: 43.023797<br />rate: 482.53265<br />asthma_age: asthma_em_0to4","poverty: 43.700633<br />rate: 490.25419<br />asthma_age: asthma_em_0to4","poverty: 44.377468<br />rate: 497.97574<br />asthma_age: asthma_em_0to4","poverty: 45.054304<br />rate: 505.69728<br />asthma_age: asthma_em_0to4","poverty: 45.731139<br />rate: 513.41882<br />asthma_age: asthma_em_0to4","poverty: 46.407975<br />rate: 521.14036<br />asthma_age: asthma_em_0to4","poverty: 47.084810<br />rate: 528.86191<br />asthma_age: asthma_em_0to4","poverty: 47.761646<br />rate: 536.58345<br />asthma_age: asthma_em_0to4","poverty: 48.438481<br />rate: 544.30499<br />asthma_age: asthma_em_0to4","poverty: 49.115316<br />rate: 552.02653<br />asthma_age: asthma_em_0to4","poverty: 49.792152<br />rate: 559.74808<br />asthma_age: asthma_em_0to4","poverty: 50.468987<br />rate: 567.46962<br />asthma_age: asthma_em_0to4","poverty: 51.145823<br />rate: 575.19116<br />asthma_age: asthma_em_0to4","poverty: 51.822658<br />rate: 582.91270<br />asthma_age: asthma_em_0to4","poverty: 52.499494<br />rate: 590.63425<br />asthma_age: asthma_em_0to4","poverty: 53.176329<br />rate: 598.35579<br />asthma_age: asthma_em_0to4","poverty: 53.853165<br />rate: 606.07733<br />asthma_age: asthma_em_0to4","poverty: 54.530000<br />rate: 613.79887<br />asthma_age: asthma_em_0to4"],"type":"scatter","mode":"lines","name":"asthma_em_0to4","line":{"width":3.77952755905512,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","legendgroup":"asthma_em_0to4","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[6.67,7.11987341772152,7.56974683544304,8.01962025316456,8.46949367088608,8.9193670886076,9.36924050632911,9.81911392405063,10.2689873417722,10.7188607594937,11.1687341772152,11.6186075949367,12.0684810126582,12.5183544303797,12.9682278481013,13.4181012658228,13.8679746835443,14.3178481012658,14.7677215189873,15.2175949367089,15.6674683544304,16.1173417721519,16.5672151898734,17.0170886075949,17.4669620253165,17.916835443038,18.3667088607595,18.816582278481,19.2664556962025,19.716329113924,20.1662025316456,20.6160759493671,21.0659493670886,21.5158227848101,21.9656962025316,22.4155696202532,22.8654430379747,23.3153164556962,23.7651898734177,24.2150632911392,24.6649367088608,25.1148101265823,25.5646835443038,26.0145569620253,26.4644303797468,26.9143037974683,27.3641772151899,27.8140506329114,28.2639240506329,28.7137974683544,29.1636708860759,29.6135443037975,30.063417721519,30.5132911392405,30.963164556962,31.4130379746835,31.8629113924051,32.3127848101266,32.7626582278481,33.2125316455696,33.6624050632911,34.1122784810127,34.5621518987342,35.0120253164557,35.4618987341772,35.9117721518987,36.3616455696203,36.8115189873418,37.2613924050633,37.7112658227848,38.1611392405063,38.6110126582278,39.0608860759494,39.5107594936709,39.9606329113924,40.4105063291139,40.8603797468354,41.310253164557,41.7601265822785,42.21],"y":[41.6546163188666,48.0052320785972,54.3558478383279,60.7064635980586,67.0570793577893,73.4076951175199,79.7583108772506,86.1089266369813,92.459542396712,98.8101581564427,105.160773916173,111.511389675904,117.862005435635,124.212621195365,130.563236955096,136.913852714827,143.264468474557,149.615084234288,155.965699994019,162.316315753749,168.66693151348,175.017547273211,181.368163032941,187.718778792672,194.069394552403,200.420010312134,206.770626071864,213.121241831595,219.471857591326,225.822473351056,232.173089110787,238.523704870518,244.874320630248,251.224936389979,257.57555214971,263.92616790944,270.276783669171,276.627399428902,282.978015188632,289.328630948363,295.679246708094,302.029862467824,308.380478227555,314.731093987286,321.081709747016,327.432325506747,333.782941266478,340.133557026208,346.484172785939,352.83478854567,359.185404305401,365.536020065131,371.886635824862,378.237251584593,384.587867344323,390.938483104054,397.289098863785,403.639714623515,409.990330383246,416.340946142977,422.691561902707,429.042177662438,435.392793422169,441.743409181899,448.09402494163,454.444640701361,460.795256461091,467.145872220822,473.496487980553,479.847103740283,486.197719500014,492.548335259745,498.898951019476,505.249566779206,511.600182538937,517.950798298668,524.301414058398,530.652029818129,537.00264557786,543.35326133759],"text":["poverty:  6.670000<br />rate:  41.65462<br />asthma_age: asthma_em_5to14","poverty:  7.119873<br />rate:  48.00523<br />asthma_age: asthma_em_5to14","poverty:  7.569747<br />rate:  54.35585<br />asthma_age: asthma_em_5to14","poverty:  8.019620<br />rate:  60.70646<br />asthma_age: asthma_em_5to14","poverty:  8.469494<br />rate:  67.05708<br />asthma_age: asthma_em_5to14","poverty:  8.919367<br />rate:  73.40770<br />asthma_age: asthma_em_5to14","poverty:  9.369241<br />rate:  79.75831<br />asthma_age: asthma_em_5to14","poverty:  9.819114<br />rate:  86.10893<br />asthma_age: asthma_em_5to14","poverty: 10.268987<br />rate:  92.45954<br />asthma_age: asthma_em_5to14","poverty: 10.718861<br />rate:  98.81016<br />asthma_age: asthma_em_5to14","poverty: 11.168734<br />rate: 105.16077<br />asthma_age: asthma_em_5to14","poverty: 11.618608<br />rate: 111.51139<br />asthma_age: asthma_em_5to14","poverty: 12.068481<br />rate: 117.86201<br />asthma_age: asthma_em_5to14","poverty: 12.518354<br />rate: 124.21262<br />asthma_age: asthma_em_5to14","poverty: 12.968228<br />rate: 130.56324<br />asthma_age: asthma_em_5to14","poverty: 13.418101<br />rate: 136.91385<br />asthma_age: asthma_em_5to14","poverty: 13.867975<br />rate: 143.26447<br />asthma_age: asthma_em_5to14","poverty: 14.317848<br />rate: 149.61508<br />asthma_age: asthma_em_5to14","poverty: 14.767722<br />rate: 155.96570<br />asthma_age: asthma_em_5to14","poverty: 15.217595<br />rate: 162.31632<br />asthma_age: asthma_em_5to14","poverty: 15.667468<br />rate: 168.66693<br />asthma_age: asthma_em_5to14","poverty: 16.117342<br />rate: 175.01755<br />asthma_age: asthma_em_5to14","poverty: 16.567215<br />rate: 181.36816<br />asthma_age: asthma_em_5to14","poverty: 17.017089<br />rate: 187.71878<br />asthma_age: asthma_em_5to14","poverty: 17.466962<br />rate: 194.06939<br />asthma_age: asthma_em_5to14","poverty: 17.916835<br />rate: 200.42001<br />asthma_age: asthma_em_5to14","poverty: 18.366709<br />rate: 206.77063<br />asthma_age: asthma_em_5to14","poverty: 18.816582<br />rate: 213.12124<br />asthma_age: asthma_em_5to14","poverty: 19.266456<br />rate: 219.47186<br />asthma_age: asthma_em_5to14","poverty: 19.716329<br />rate: 225.82247<br />asthma_age: asthma_em_5to14","poverty: 20.166203<br />rate: 232.17309<br />asthma_age: asthma_em_5to14","poverty: 20.616076<br />rate: 238.52370<br />asthma_age: asthma_em_5to14","poverty: 21.065949<br />rate: 244.87432<br />asthma_age: asthma_em_5to14","poverty: 21.515823<br />rate: 251.22494<br />asthma_age: asthma_em_5to14","poverty: 21.965696<br />rate: 257.57555<br />asthma_age: asthma_em_5to14","poverty: 22.415570<br />rate: 263.92617<br />asthma_age: asthma_em_5to14","poverty: 22.865443<br />rate: 270.27678<br />asthma_age: asthma_em_5to14","poverty: 23.315316<br />rate: 276.62740<br />asthma_age: asthma_em_5to14","poverty: 23.765190<br />rate: 282.97802<br />asthma_age: asthma_em_5to14","poverty: 24.215063<br />rate: 289.32863<br />asthma_age: asthma_em_5to14","poverty: 24.664937<br />rate: 295.67925<br />asthma_age: asthma_em_5to14","poverty: 25.114810<br />rate: 302.02986<br />asthma_age: asthma_em_5to14","poverty: 25.564684<br />rate: 308.38048<br />asthma_age: asthma_em_5to14","poverty: 26.014557<br />rate: 314.73109<br />asthma_age: asthma_em_5to14","poverty: 26.464430<br />rate: 321.08171<br />asthma_age: asthma_em_5to14","poverty: 26.914304<br />rate: 327.43233<br />asthma_age: asthma_em_5to14","poverty: 27.364177<br />rate: 333.78294<br />asthma_age: asthma_em_5to14","poverty: 27.814051<br />rate: 340.13356<br />asthma_age: asthma_em_5to14","poverty: 28.263924<br />rate: 346.48417<br />asthma_age: asthma_em_5to14","poverty: 28.713797<br />rate: 352.83479<br />asthma_age: asthma_em_5to14","poverty: 29.163671<br />rate: 359.18540<br />asthma_age: asthma_em_5to14","poverty: 29.613544<br />rate: 365.53602<br />asthma_age: asthma_em_5to14","poverty: 30.063418<br />rate: 371.88664<br />asthma_age: asthma_em_5to14","poverty: 30.513291<br />rate: 378.23725<br />asthma_age: asthma_em_5to14","poverty: 30.963165<br />rate: 384.58787<br />asthma_age: asthma_em_5to14","poverty: 31.413038<br />rate: 390.93848<br />asthma_age: asthma_em_5to14","poverty: 31.862911<br />rate: 397.28910<br />asthma_age: asthma_em_5to14","poverty: 32.312785<br />rate: 403.63971<br />asthma_age: asthma_em_5to14","poverty: 32.762658<br />rate: 409.99033<br />asthma_age: asthma_em_5to14","poverty: 33.212532<br />rate: 416.34095<br />asthma_age: asthma_em_5to14","poverty: 33.662405<br />rate: 422.69156<br />asthma_age: asthma_em_5to14","poverty: 34.112278<br />rate: 429.04218<br />asthma_age: asthma_em_5to14","poverty: 34.562152<br />rate: 435.39279<br />asthma_age: asthma_em_5to14","poverty: 35.012025<br />rate: 441.74341<br />asthma_age: asthma_em_5to14","poverty: 35.461899<br />rate: 448.09402<br />asthma_age: asthma_em_5to14","poverty: 35.911772<br />rate: 454.44464<br />asthma_age: asthma_em_5to14","poverty: 36.361646<br />rate: 460.79526<br />asthma_age: asthma_em_5to14","poverty: 36.811519<br />rate: 467.14587<br />asthma_age: asthma_em_5to14","poverty: 37.261392<br />rate: 473.49649<br />asthma_age: asthma_em_5to14","poverty: 37.711266<br />rate: 479.84710<br />asthma_age: asthma_em_5to14","poverty: 38.161139<br />rate: 486.19772<br />asthma_age: asthma_em_5to14","poverty: 38.611013<br />rate: 492.54834<br />asthma_age: asthma_em_5to14","poverty: 39.060886<br />rate: 498.89895<br />asthma_age: asthma_em_5to14","poverty: 39.510759<br />rate: 505.24957<br />asthma_age: asthma_em_5to14","poverty: 39.960633<br />rate: 511.60018<br />asthma_age: asthma_em_5to14","poverty: 40.410506<br />rate: 517.95080<br />asthma_age: asthma_em_5to14","poverty: 40.860380<br />rate: 524.30141<br />asthma_age: asthma_em_5to14","poverty: 41.310253<br />rate: 530.65203<br />asthma_age: asthma_em_5to14","poverty: 41.760127<br />rate: 537.00265<br />asthma_age: asthma_em_5to14","poverty: 42.210000<br />rate: 543.35326<br />asthma_age: asthma_em_5to14"],"type":"scatter","mode":"lines","name":"asthma_em_5to14","line":{"width":3.77952755905512,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","legendgroup":"asthma_em_5to14","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-1.6135,57.2035],"tickmode":"array","ticktext":["0","20","40"],"tickvals":[0,20,40],"categoryorder":"array","categoryarray":["0","20","40"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":"poverty","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-39.8381398338799,920.135149515899],"tickmode":"array","ticktext":["0","250","500","750"],"tickvals":[0,250,500,750],"categoryorder":"array","categoryarray":["0","250","500","750"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"rate","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"source":"A","attrs":{"13f8b664d2d40":{"x":{},"y":{},"colour":{},"type":"scatter"},"13f8b54d5f938":{"x":{},"y":{},"colour":{}}},"cur_data":"13f8b664d2d40","visdat":{"13f8b664d2d40":["function (y) ","x"],"13f8b54d5f938":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+</div>
+<div id="chart-e" class="section level3">
+<h3>Chart E</h3>
+<pre class="r"><code>#asthma and tree
+tree_plot = ggplot(final_asthma_df) +
+  geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)+theme(legend.position = &quot;none&quot;)
+ggplotly(tree_plot)</code></pre>
+<div id="htmlwidget-7b1ea9c4c68834697fa1" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7b1ea9c4c68834697fa1">{"x":{"data":[{"x":[4.0190130993353e-05,8.42472810783797e-05,7.18180428119286e-05,5.68843715794079e-05,9.23311397283071e-05,0.000105320673806046,7.91690032507609e-05,7.20437387347412e-05,0.000111945356974606,0.00011590827118077,0.000104350605203923,5.76327348455246e-05,0.000119888557214045,8.56572228757076e-05,5.06891819460009e-05,8.54682811754067e-05,7.89665924393885e-05,0.000108408692172888,9.4405313796122e-05,0.000119844526441952,6.75071328765612e-05,0.000154517248877046,0.000103585234107665,7.38605186488866e-05,0.000103792142891128,0.000115931978611577,0.000103889740934575,3.96786207943386e-05,7.48926008694609e-05,8.20964154621717e-05,8.71902943603749e-05,9.16442568887388e-05,9.26602043485946e-05,9.82649805080605e-05,9.16241158309108e-05,9.26539906714068e-05,9.61085139307553e-05,4.30438781578407e-05,5.38598686793412e-05,5.52065666528178e-05,3.95296121389152e-05,7.95835773773418e-05],"y":[250.8,407.8,636,478.5,737.6,846.6,876.5,91.2,124.5,509,554.4,93.7,70.2,326.7,271.5,61,114.2,438.9,299.9,643.5,714.6,166.6,67.3,98.5,74.1,43.4,323.9,70,128.6,198.8,129.8,59.9,155.5,141.8,205.1,347.4,203.3,199.2,261,199.4,72.3,54],"text":["tree_density: 4.019013e-05<br />rate: 250.8<br />asthma_age: asthma_em_0to4","tree_density: 8.424728e-05<br />rate: 407.8<br />asthma_age: asthma_em_0to4","tree_density: 7.181804e-05<br />rate: 636.0<br />asthma_age: asthma_em_0to4","tree_density: 5.688437e-05<br />rate: 478.5<br />asthma_age: asthma_em_0to4","tree_density: 9.233114e-05<br />rate: 737.6<br />asthma_age: asthma_em_0to4","tree_density: 1.053207e-04<br />rate: 846.6<br />asthma_age: asthma_em_0to4","tree_density: 7.916900e-05<br />rate: 876.5<br />asthma_age: asthma_em_0to4","tree_density: 7.204374e-05<br />rate:  91.2<br />asthma_age: asthma_em_0to4","tree_density: 1.119454e-04<br />rate: 124.5<br />asthma_age: asthma_em_0to4","tree_density: 1.159083e-04<br />rate: 509.0<br />asthma_age: asthma_em_0to4","tree_density: 1.043506e-04<br />rate: 554.4<br />asthma_age: asthma_em_0to4","tree_density: 5.763273e-05<br />rate:  93.7<br />asthma_age: asthma_em_0to4","tree_density: 1.198886e-04<br />rate:  70.2<br />asthma_age: asthma_em_0to4","tree_density: 8.565722e-05<br />rate: 326.7<br />asthma_age: asthma_em_0to4","tree_density: 5.068918e-05<br />rate: 271.5<br />asthma_age: asthma_em_0to4","tree_density: 8.546828e-05<br />rate:  61.0<br />asthma_age: asthma_em_0to4","tree_density: 7.896659e-05<br />rate: 114.2<br />asthma_age: asthma_em_0to4","tree_density: 1.084087e-04<br />rate: 438.9<br />asthma_age: asthma_em_0to4","tree_density: 9.440531e-05<br />rate: 299.9<br />asthma_age: asthma_em_0to4","tree_density: 1.198445e-04<br />rate: 643.5<br />asthma_age: asthma_em_0to4","tree_density: 6.750713e-05<br />rate: 714.6<br />asthma_age: asthma_em_0to4","tree_density: 1.545172e-04<br />rate: 166.6<br />asthma_age: asthma_em_0to4","tree_density: 1.035852e-04<br />rate:  67.3<br />asthma_age: asthma_em_0to4","tree_density: 7.386052e-05<br />rate:  98.5<br />asthma_age: asthma_em_0to4","tree_density: 1.037921e-04<br />rate:  74.1<br />asthma_age: asthma_em_0to4","tree_density: 1.159320e-04<br />rate:  43.4<br />asthma_age: asthma_em_0to4","tree_density: 1.038897e-04<br />rate: 323.9<br />asthma_age: asthma_em_0to4","tree_density: 3.967862e-05<br />rate:  70.0<br />asthma_age: asthma_em_0to4","tree_density: 7.489260e-05<br />rate: 128.6<br />asthma_age: asthma_em_0to4","tree_density: 8.209642e-05<br />rate: 198.8<br />asthma_age: asthma_em_0to4","tree_density: 8.719029e-05<br />rate: 129.8<br />asthma_age: asthma_em_0to4","tree_density: 9.164426e-05<br />rate:  59.9<br />asthma_age: asthma_em_0to4","tree_density: 9.266020e-05<br />rate: 155.5<br />asthma_age: asthma_em_0to4","tree_density: 9.826498e-05<br />rate: 141.8<br />asthma_age: asthma_em_0to4","tree_density: 9.162412e-05<br />rate: 205.1<br />asthma_age: asthma_em_0to4","tree_density: 9.265399e-05<br />rate: 347.4<br />asthma_age: asthma_em_0to4","tree_density: 9.610851e-05<br />rate: 203.3<br />asthma_age: asthma_em_0to4","tree_density: 4.304388e-05<br />rate: 199.2<br />asthma_age: asthma_em_0to4","tree_density: 5.385987e-05<br />rate: 261.0<br />asthma_age: asthma_em_0to4","tree_density: 5.520657e-05<br />rate: 199.4<br />asthma_age: asthma_em_0to4","tree_density: 3.952961e-05<br />rate:  72.3<br />asthma_age: asthma_em_0to4","tree_density: 7.958358e-05<br />rate:  54.0<br />asthma_age: asthma_em_0to4"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"asthma_em_0to4","legendgroup":"asthma_em_0to4","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[4.0190130993353e-05,8.42472810783797e-05,7.18180428119286e-05,5.68843715794079e-05,9.23311397283071e-05,0.000105320673806046,7.91690032507609e-05,7.20437387347412e-05,0.000111945356974606,0.00011590827118077,0.000104350605203923,5.76327348455246e-05,0.000119888557214045,8.56572228757076e-05,5.06891819460009e-05,8.54682811754067e-05,7.89665924393885e-05,0.000108408692172888,9.4405313796122e-05,0.000119844526441952,6.75071328765612e-05,0.000154517248877046,0.000103585234107665,7.38605186488866e-05,0.000103792142891128,0.000115931978611577,0.000103889740934575,3.96786207943386e-05,7.48926008694609e-05,8.20964154621717e-05,8.71902943603749e-05,9.16442568887388e-05,9.26602043485946e-05,9.82649805080605e-05,9.16241158309108e-05,9.26539906714068e-05,9.61085139307553e-05,4.30438781578407e-05,5.38598686793412e-05,5.52065666528178e-05,3.95296121389152e-05,7.95835773773418e-05],"y":[237.4,357.5,508.6,349.2,514.7,556,563.7,94.8,157.3,416.9,376.3,114.1,38.2,290.7,186.1,36,89.8,372.5,258.3,611.8,655.1,132.7,59.8,167.9,97.8,29.1,307.3,135.9,151.1,187.1,82.9,44.7,114,117.1,131.6,202,125.9,186.6,203.7,158.1,58.8,39.1],"text":["tree_density: 4.019013e-05<br />rate: 237.4<br />asthma_age: asthma_em_5to14","tree_density: 8.424728e-05<br />rate: 357.5<br />asthma_age: asthma_em_5to14","tree_density: 7.181804e-05<br />rate: 508.6<br />asthma_age: asthma_em_5to14","tree_density: 5.688437e-05<br />rate: 349.2<br />asthma_age: asthma_em_5to14","tree_density: 9.233114e-05<br />rate: 514.7<br />asthma_age: asthma_em_5to14","tree_density: 1.053207e-04<br />rate: 556.0<br />asthma_age: asthma_em_5to14","tree_density: 7.916900e-05<br />rate: 563.7<br />asthma_age: asthma_em_5to14","tree_density: 7.204374e-05<br />rate:  94.8<br />asthma_age: asthma_em_5to14","tree_density: 1.119454e-04<br />rate: 157.3<br />asthma_age: asthma_em_5to14","tree_density: 1.159083e-04<br />rate: 416.9<br />asthma_age: asthma_em_5to14","tree_density: 1.043506e-04<br />rate: 376.3<br />asthma_age: asthma_em_5to14","tree_density: 5.763273e-05<br />rate: 114.1<br />asthma_age: asthma_em_5to14","tree_density: 1.198886e-04<br />rate:  38.2<br />asthma_age: asthma_em_5to14","tree_density: 8.565722e-05<br />rate: 290.7<br />asthma_age: asthma_em_5to14","tree_density: 5.068918e-05<br />rate: 186.1<br />asthma_age: asthma_em_5to14","tree_density: 8.546828e-05<br />rate:  36.0<br />asthma_age: asthma_em_5to14","tree_density: 7.896659e-05<br />rate:  89.8<br />asthma_age: asthma_em_5to14","tree_density: 1.084087e-04<br />rate: 372.5<br />asthma_age: asthma_em_5to14","tree_density: 9.440531e-05<br />rate: 258.3<br />asthma_age: asthma_em_5to14","tree_density: 1.198445e-04<br />rate: 611.8<br />asthma_age: asthma_em_5to14","tree_density: 6.750713e-05<br />rate: 655.1<br />asthma_age: asthma_em_5to14","tree_density: 1.545172e-04<br />rate: 132.7<br />asthma_age: asthma_em_5to14","tree_density: 1.035852e-04<br />rate:  59.8<br />asthma_age: asthma_em_5to14","tree_density: 7.386052e-05<br />rate: 167.9<br />asthma_age: asthma_em_5to14","tree_density: 1.037921e-04<br />rate:  97.8<br />asthma_age: asthma_em_5to14","tree_density: 1.159320e-04<br />rate:  29.1<br />asthma_age: asthma_em_5to14","tree_density: 1.038897e-04<br />rate: 307.3<br />asthma_age: asthma_em_5to14","tree_density: 3.967862e-05<br />rate: 135.9<br />asthma_age: asthma_em_5to14","tree_density: 7.489260e-05<br />rate: 151.1<br />asthma_age: asthma_em_5to14","tree_density: 8.209642e-05<br />rate: 187.1<br />asthma_age: asthma_em_5to14","tree_density: 8.719029e-05<br />rate:  82.9<br />asthma_age: asthma_em_5to14","tree_density: 9.164426e-05<br />rate:  44.7<br />asthma_age: asthma_em_5to14","tree_density: 9.266020e-05<br />rate: 114.0<br />asthma_age: asthma_em_5to14","tree_density: 9.826498e-05<br />rate: 117.1<br />asthma_age: asthma_em_5to14","tree_density: 9.162412e-05<br />rate: 131.6<br />asthma_age: asthma_em_5to14","tree_density: 9.265399e-05<br />rate: 202.0<br />asthma_age: asthma_em_5to14","tree_density: 9.610851e-05<br />rate: 125.9<br />asthma_age: asthma_em_5to14","tree_density: 4.304388e-05<br />rate: 186.6<br />asthma_age: asthma_em_5to14","tree_density: 5.385987e-05<br />rate: 203.7<br />asthma_age: asthma_em_5to14","tree_density: 5.520657e-05<br />rate: 158.1<br />asthma_age: asthma_em_5to14","tree_density: 3.952961e-05<br />rate:  58.8<br />asthma_age: asthma_em_5to14","tree_density: 7.958358e-05<br />rate:  39.1<br />asthma_age: asthma_em_5to14"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,191,196,1)"}},"hoveron":"points","name":"asthma_em_5to14","legendgroup":"asthma_em_5to14","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[3.95296121389152e-05,4.09851518444612e-05,4.24406915500071e-05,4.38962312555531e-05,4.53517709610991e-05,4.6807310666645e-05,4.8262850372191e-05,4.97183900777369e-05,5.11739297832829e-05,5.26294694888288e-05,5.40850091943748e-05,5.55405488999208e-05,5.69960886054667e-05,5.84516283110127e-05,5.99071680165586e-05,6.13627077221046e-05,6.28182474276506e-05,6.42737871331965e-05,6.57293268387425e-05,6.71848665442884e-05,6.86404062498344e-05,7.00959459553804e-05,7.15514856609263e-05,7.30070253664723e-05,7.44625650720182e-05,7.59181047775642e-05,7.73736444831101e-05,7.88291841886561e-05,8.02847238942021e-05,8.1740263599748e-05,8.3195803305294e-05,8.46513430108399e-05,8.61068827163859e-05,8.75624224219319e-05,8.90179621274778e-05,9.04735018330238e-05,9.19290415385697e-05,9.33845812441157e-05,9.48401209496616e-05,9.62956606552076e-05,9.77512003607536e-05,9.92067400662995e-05,0.000100662279771845,0.000102117819477391,0.000103573359182937,0.000105028898888483,0.000106484438594029,0.000107939978299575,0.000109395518005121,0.000110851057710667,0.000112306597416213,0.000113762137121759,0.000115217676827305,0.000116673216532851,0.000118128756238397,0.000119584295943943,0.000121039835649489,0.000122495375355035,0.000123950915060581,0.000125406454766127,0.000126861994471673,0.000128317534177219,0.000129773073882765,0.000131228613588311,0.000132684153293857,0.000134139692999403,0.000135595232704948,0.000137050772410494,0.00013850631211604,0.000139961851821586,0.000141417391527132,0.000142872931232678,0.000144328470938224,0.00014578401064377,0.000147239550349316,0.000148695090054862,0.000150150629760408,0.000151606169465954,0.0001530617091715,0.000154517248877046],"y":[238.729727140721,240.036604895577,241.343482650433,242.650360405289,243.957238160145,245.264115915001,246.570993669857,247.877871424712,249.184749179568,250.491626934424,251.79850468928,253.105382444136,254.412260198992,255.719137953848,257.026015708704,258.332893463559,259.639771218415,260.946648973271,262.253526728127,263.560404482983,264.867282237839,266.174159992695,267.481037747551,268.787915502407,270.094793257262,271.401671012118,272.708548766974,274.01542652183,275.322304276686,276.629182031542,277.936059786398,279.242937541254,280.549815296109,281.856693050965,283.163570805821,284.470448560677,285.777326315533,287.084204070389,288.391081825245,289.697959580101,291.004837334957,292.311715089812,293.618592844668,294.925470599524,296.23234835438,297.539226109236,298.846103864092,300.152981618948,301.459859373804,302.766737128659,304.073614883515,305.380492638371,306.687370393227,307.994248148083,309.301125902939,310.608003657795,311.914881412651,313.221759167506,314.528636922362,315.835514677218,317.142392432074,318.44927018693,319.756147941786,321.063025696642,322.369903451498,323.676781206354,324.983658961209,326.290536716065,327.597414470921,328.904292225777,330.211169980633,331.518047735489,332.824925490345,334.131803245201,335.438681000056,336.745558754912,338.052436509768,339.359314264624,340.66619201948,341.973069774336],"text":["tree_density: 3.952961e-05<br />rate: 238.7297<br />asthma_age: asthma_em_0to4","tree_density: 4.098515e-05<br />rate: 240.0366<br />asthma_age: asthma_em_0to4","tree_density: 4.244069e-05<br />rate: 241.3435<br />asthma_age: asthma_em_0to4","tree_density: 4.389623e-05<br />rate: 242.6504<br />asthma_age: asthma_em_0to4","tree_density: 4.535177e-05<br />rate: 243.9572<br />asthma_age: asthma_em_0to4","tree_density: 4.680731e-05<br />rate: 245.2641<br />asthma_age: asthma_em_0to4","tree_density: 4.826285e-05<br />rate: 246.5710<br />asthma_age: asthma_em_0to4","tree_density: 4.971839e-05<br />rate: 247.8779<br />asthma_age: asthma_em_0to4","tree_density: 5.117393e-05<br />rate: 249.1847<br />asthma_age: asthma_em_0to4","tree_density: 5.262947e-05<br />rate: 250.4916<br />asthma_age: asthma_em_0to4","tree_density: 5.408501e-05<br />rate: 251.7985<br />asthma_age: asthma_em_0to4","tree_density: 5.554055e-05<br />rate: 253.1054<br />asthma_age: asthma_em_0to4","tree_density: 5.699609e-05<br />rate: 254.4123<br />asthma_age: asthma_em_0to4","tree_density: 5.845163e-05<br />rate: 255.7191<br />asthma_age: asthma_em_0to4","tree_density: 5.990717e-05<br />rate: 257.0260<br />asthma_age: asthma_em_0to4","tree_density: 6.136271e-05<br />rate: 258.3329<br />asthma_age: asthma_em_0to4","tree_density: 6.281825e-05<br />rate: 259.6398<br />asthma_age: asthma_em_0to4","tree_density: 6.427379e-05<br />rate: 260.9466<br />asthma_age: asthma_em_0to4","tree_density: 6.572933e-05<br />rate: 262.2535<br />asthma_age: asthma_em_0to4","tree_density: 6.718487e-05<br />rate: 263.5604<br />asthma_age: asthma_em_0to4","tree_density: 6.864041e-05<br />rate: 264.8673<br />asthma_age: asthma_em_0to4","tree_density: 7.009595e-05<br />rate: 266.1742<br />asthma_age: asthma_em_0to4","tree_density: 7.155149e-05<br />rate: 267.4810<br />asthma_age: asthma_em_0to4","tree_density: 7.300703e-05<br />rate: 268.7879<br />asthma_age: asthma_em_0to4","tree_density: 7.446257e-05<br />rate: 270.0948<br />asthma_age: asthma_em_0to4","tree_density: 7.591810e-05<br />rate: 271.4017<br />asthma_age: asthma_em_0to4","tree_density: 7.737364e-05<br />rate: 272.7085<br />asthma_age: asthma_em_0to4","tree_density: 7.882918e-05<br />rate: 274.0154<br />asthma_age: asthma_em_0to4","tree_density: 8.028472e-05<br />rate: 275.3223<br />asthma_age: asthma_em_0to4","tree_density: 8.174026e-05<br />rate: 276.6292<br />asthma_age: asthma_em_0to4","tree_density: 8.319580e-05<br />rate: 277.9361<br />asthma_age: asthma_em_0to4","tree_density: 8.465134e-05<br />rate: 279.2429<br />asthma_age: asthma_em_0to4","tree_density: 8.610688e-05<br />rate: 280.5498<br />asthma_age: asthma_em_0to4","tree_density: 8.756242e-05<br />rate: 281.8567<br />asthma_age: asthma_em_0to4","tree_density: 8.901796e-05<br />rate: 283.1636<br />asthma_age: asthma_em_0to4","tree_density: 9.047350e-05<br />rate: 284.4704<br />asthma_age: asthma_em_0to4","tree_density: 9.192904e-05<br />rate: 285.7773<br />asthma_age: asthma_em_0to4","tree_density: 9.338458e-05<br />rate: 287.0842<br />asthma_age: asthma_em_0to4","tree_density: 9.484012e-05<br />rate: 288.3911<br />asthma_age: asthma_em_0to4","tree_density: 9.629566e-05<br />rate: 289.6980<br />asthma_age: asthma_em_0to4","tree_density: 9.775120e-05<br />rate: 291.0048<br />asthma_age: asthma_em_0to4","tree_density: 9.920674e-05<br />rate: 292.3117<br />asthma_age: asthma_em_0to4","tree_density: 1.006623e-04<br />rate: 293.6186<br />asthma_age: asthma_em_0to4","tree_density: 1.021178e-04<br />rate: 294.9255<br />asthma_age: asthma_em_0to4","tree_density: 1.035734e-04<br />rate: 296.2323<br />asthma_age: asthma_em_0to4","tree_density: 1.050289e-04<br />rate: 297.5392<br />asthma_age: asthma_em_0to4","tree_density: 1.064844e-04<br />rate: 298.8461<br />asthma_age: asthma_em_0to4","tree_density: 1.079400e-04<br />rate: 300.1530<br />asthma_age: asthma_em_0to4","tree_density: 1.093955e-04<br />rate: 301.4599<br />asthma_age: asthma_em_0to4","tree_density: 1.108511e-04<br />rate: 302.7667<br />asthma_age: asthma_em_0to4","tree_density: 1.123066e-04<br />rate: 304.0736<br />asthma_age: asthma_em_0to4","tree_density: 1.137621e-04<br />rate: 305.3805<br />asthma_age: asthma_em_0to4","tree_density: 1.152177e-04<br />rate: 306.6874<br />asthma_age: asthma_em_0to4","tree_density: 1.166732e-04<br />rate: 307.9942<br />asthma_age: asthma_em_0to4","tree_density: 1.181288e-04<br />rate: 309.3011<br />asthma_age: asthma_em_0to4","tree_density: 1.195843e-04<br />rate: 310.6080<br />asthma_age: asthma_em_0to4","tree_density: 1.210398e-04<br />rate: 311.9149<br />asthma_age: asthma_em_0to4","tree_density: 1.224954e-04<br />rate: 313.2218<br />asthma_age: asthma_em_0to4","tree_density: 1.239509e-04<br />rate: 314.5286<br />asthma_age: asthma_em_0to4","tree_density: 1.254065e-04<br />rate: 315.8355<br />asthma_age: asthma_em_0to4","tree_density: 1.268620e-04<br />rate: 317.1424<br />asthma_age: asthma_em_0to4","tree_density: 1.283175e-04<br />rate: 318.4493<br />asthma_age: asthma_em_0to4","tree_density: 1.297731e-04<br />rate: 319.7561<br />asthma_age: asthma_em_0to4","tree_density: 1.312286e-04<br />rate: 321.0630<br />asthma_age: asthma_em_0to4","tree_density: 1.326842e-04<br />rate: 322.3699<br />asthma_age: asthma_em_0to4","tree_density: 1.341397e-04<br />rate: 323.6768<br />asthma_age: asthma_em_0to4","tree_density: 1.355952e-04<br />rate: 324.9837<br />asthma_age: asthma_em_0to4","tree_density: 1.370508e-04<br />rate: 326.2905<br />asthma_age: asthma_em_0to4","tree_density: 1.385063e-04<br />rate: 327.5974<br />asthma_age: asthma_em_0to4","tree_density: 1.399619e-04<br />rate: 328.9043<br />asthma_age: asthma_em_0to4","tree_density: 1.414174e-04<br />rate: 330.2112<br />asthma_age: asthma_em_0to4","tree_density: 1.428729e-04<br />rate: 331.5180<br />asthma_age: asthma_em_0to4","tree_density: 1.443285e-04<br />rate: 332.8249<br />asthma_age: asthma_em_0to4","tree_density: 1.457840e-04<br />rate: 334.1318<br />asthma_age: asthma_em_0to4","tree_density: 1.472396e-04<br />rate: 335.4387<br />asthma_age: asthma_em_0to4","tree_density: 1.486951e-04<br />rate: 336.7456<br />asthma_age: asthma_em_0to4","tree_density: 1.501506e-04<br />rate: 338.0524<br />asthma_age: asthma_em_0to4","tree_density: 1.516062e-04<br />rate: 339.3593<br />asthma_age: asthma_em_0to4","tree_density: 1.530617e-04<br />rate: 340.6662<br />asthma_age: asthma_em_0to4","tree_density: 1.545172e-04<br />rate: 341.9731<br />asthma_age: asthma_em_0to4"],"type":"scatter","mode":"lines","name":"asthma_em_0to4","line":{"width":3.77952755905512,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","legendgroup":"asthma_em_0to4","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[3.95296121389152e-05,4.09851518444612e-05,4.24406915500071e-05,4.38962312555531e-05,4.53517709610991e-05,4.6807310666645e-05,4.8262850372191e-05,4.97183900777369e-05,5.11739297832829e-05,5.26294694888288e-05,5.40850091943748e-05,5.55405488999208e-05,5.69960886054667e-05,5.84516283110127e-05,5.99071680165586e-05,6.13627077221046e-05,6.28182474276506e-05,6.42737871331965e-05,6.57293268387425e-05,6.71848665442884e-05,6.86404062498344e-05,7.00959459553804e-05,7.15514856609263e-05,7.30070253664723e-05,7.44625650720182e-05,7.59181047775642e-05,7.73736444831101e-05,7.88291841886561e-05,8.02847238942021e-05,8.1740263599748e-05,8.3195803305294e-05,8.46513430108399e-05,8.61068827163859e-05,8.75624224219319e-05,8.90179621274778e-05,9.04735018330238e-05,9.19290415385697e-05,9.33845812441157e-05,9.48401209496616e-05,9.62956606552076e-05,9.77512003607536e-05,9.92067400662995e-05,0.000100662279771845,0.000102117819477391,0.000103573359182937,0.000105028898888483,0.000106484438594029,0.000107939978299575,0.000109395518005121,0.000110851057710667,0.000112306597416213,0.000113762137121759,0.000115217676827305,0.000116673216532851,0.000118128756238397,0.000119584295943943,0.000121039835649489,0.000122495375355035,0.000123950915060581,0.000125406454766127,0.000126861994471673,0.000128317534177219,0.000129773073882765,0.000131228613588311,0.000132684153293857,0.000134139692999403,0.000135595232704948,0.000137050772410494,0.00013850631211604,0.000139961851821586,0.000141417391527132,0.000142872931232678,0.000144328470938224,0.00014578401064377,0.000147239550349316,0.000148695090054862,0.000150150629760408,0.000151606169465954,0.0001530617091715,0.000154517248877046],"y":[205.295179806647,205.975682784877,206.656185763108,207.336688741339,208.017191719569,208.6976946978,209.378197676031,210.058700654261,210.739203632492,211.419706610723,212.100209588954,212.780712567184,213.461215545415,214.141718523646,214.822221501876,215.502724480107,216.183227458338,216.863730436568,217.544233414799,218.22473639303,218.90523937126,219.585742349491,220.266245327722,220.946748305952,221.627251284183,222.307754262414,222.988257240645,223.668760218875,224.349263197106,225.029766175337,225.710269153567,226.390772131798,227.071275110029,227.751778088259,228.43228106649,229.112784044721,229.793287022951,230.473790001182,231.154292979413,231.834795957644,232.515298935874,233.195801914105,233.876304892336,234.556807870566,235.237310848797,235.917813827028,236.598316805258,237.278819783489,237.95932276172,238.63982573995,239.320328718181,240.000831696412,240.681334674643,241.361837652873,242.042340631104,242.722843609335,243.403346587565,244.083849565796,244.764352544027,245.444855522257,246.125358500488,246.805861478719,247.486364456949,248.16686743518,248.847370413411,249.527873391642,250.208376369872,250.888879348103,251.569382326334,252.249885304564,252.930388282795,253.610891261026,254.291394239256,254.971897217487,255.652400195718,256.332903173948,257.013406152179,257.69390913041,258.374412108641,259.054915086871],"text":["tree_density: 3.952961e-05<br />rate: 205.2952<br />asthma_age: asthma_em_5to14","tree_density: 4.098515e-05<br />rate: 205.9757<br />asthma_age: asthma_em_5to14","tree_density: 4.244069e-05<br />rate: 206.6562<br />asthma_age: asthma_em_5to14","tree_density: 4.389623e-05<br />rate: 207.3367<br />asthma_age: asthma_em_5to14","tree_density: 4.535177e-05<br />rate: 208.0172<br />asthma_age: asthma_em_5to14","tree_density: 4.680731e-05<br />rate: 208.6977<br />asthma_age: asthma_em_5to14","tree_density: 4.826285e-05<br />rate: 209.3782<br />asthma_age: asthma_em_5to14","tree_density: 4.971839e-05<br />rate: 210.0587<br />asthma_age: asthma_em_5to14","tree_density: 5.117393e-05<br />rate: 210.7392<br />asthma_age: asthma_em_5to14","tree_density: 5.262947e-05<br />rate: 211.4197<br />asthma_age: asthma_em_5to14","tree_density: 5.408501e-05<br />rate: 212.1002<br />asthma_age: asthma_em_5to14","tree_density: 5.554055e-05<br />rate: 212.7807<br />asthma_age: asthma_em_5to14","tree_density: 5.699609e-05<br />rate: 213.4612<br />asthma_age: asthma_em_5to14","tree_density: 5.845163e-05<br />rate: 214.1417<br />asthma_age: asthma_em_5to14","tree_density: 5.990717e-05<br />rate: 214.8222<br />asthma_age: asthma_em_5to14","tree_density: 6.136271e-05<br />rate: 215.5027<br />asthma_age: asthma_em_5to14","tree_density: 6.281825e-05<br />rate: 216.1832<br />asthma_age: asthma_em_5to14","tree_density: 6.427379e-05<br />rate: 216.8637<br />asthma_age: asthma_em_5to14","tree_density: 6.572933e-05<br />rate: 217.5442<br />asthma_age: asthma_em_5to14","tree_density: 6.718487e-05<br />rate: 218.2247<br />asthma_age: asthma_em_5to14","tree_density: 6.864041e-05<br />rate: 218.9052<br />asthma_age: asthma_em_5to14","tree_density: 7.009595e-05<br />rate: 219.5857<br />asthma_age: asthma_em_5to14","tree_density: 7.155149e-05<br />rate: 220.2662<br />asthma_age: asthma_em_5to14","tree_density: 7.300703e-05<br />rate: 220.9467<br />asthma_age: asthma_em_5to14","tree_density: 7.446257e-05<br />rate: 221.6273<br />asthma_age: asthma_em_5to14","tree_density: 7.591810e-05<br />rate: 222.3078<br />asthma_age: asthma_em_5to14","tree_density: 7.737364e-05<br />rate: 222.9883<br />asthma_age: asthma_em_5to14","tree_density: 7.882918e-05<br />rate: 223.6688<br />asthma_age: asthma_em_5to14","tree_density: 8.028472e-05<br />rate: 224.3493<br />asthma_age: asthma_em_5to14","tree_density: 8.174026e-05<br />rate: 225.0298<br />asthma_age: asthma_em_5to14","tree_density: 8.319580e-05<br />rate: 225.7103<br />asthma_age: asthma_em_5to14","tree_density: 8.465134e-05<br />rate: 226.3908<br />asthma_age: asthma_em_5to14","tree_density: 8.610688e-05<br />rate: 227.0713<br />asthma_age: asthma_em_5to14","tree_density: 8.756242e-05<br />rate: 227.7518<br />asthma_age: asthma_em_5to14","tree_density: 8.901796e-05<br />rate: 228.4323<br />asthma_age: asthma_em_5to14","tree_density: 9.047350e-05<br />rate: 229.1128<br />asthma_age: asthma_em_5to14","tree_density: 9.192904e-05<br />rate: 229.7933<br />asthma_age: asthma_em_5to14","tree_density: 9.338458e-05<br />rate: 230.4738<br />asthma_age: asthma_em_5to14","tree_density: 9.484012e-05<br />rate: 231.1543<br />asthma_age: asthma_em_5to14","tree_density: 9.629566e-05<br />rate: 231.8348<br />asthma_age: asthma_em_5to14","tree_density: 9.775120e-05<br />rate: 232.5153<br />asthma_age: asthma_em_5to14","tree_density: 9.920674e-05<br />rate: 233.1958<br />asthma_age: asthma_em_5to14","tree_density: 1.006623e-04<br />rate: 233.8763<br />asthma_age: asthma_em_5to14","tree_density: 1.021178e-04<br />rate: 234.5568<br />asthma_age: asthma_em_5to14","tree_density: 1.035734e-04<br />rate: 235.2373<br />asthma_age: asthma_em_5to14","tree_density: 1.050289e-04<br />rate: 235.9178<br />asthma_age: asthma_em_5to14","tree_density: 1.064844e-04<br />rate: 236.5983<br />asthma_age: asthma_em_5to14","tree_density: 1.079400e-04<br />rate: 237.2788<br />asthma_age: asthma_em_5to14","tree_density: 1.093955e-04<br />rate: 237.9593<br />asthma_age: asthma_em_5to14","tree_density: 1.108511e-04<br />rate: 238.6398<br />asthma_age: asthma_em_5to14","tree_density: 1.123066e-04<br />rate: 239.3203<br />asthma_age: asthma_em_5to14","tree_density: 1.137621e-04<br />rate: 240.0008<br />asthma_age: asthma_em_5to14","tree_density: 1.152177e-04<br />rate: 240.6813<br />asthma_age: asthma_em_5to14","tree_density: 1.166732e-04<br />rate: 241.3618<br />asthma_age: asthma_em_5to14","tree_density: 1.181288e-04<br />rate: 242.0423<br />asthma_age: asthma_em_5to14","tree_density: 1.195843e-04<br />rate: 242.7228<br />asthma_age: asthma_em_5to14","tree_density: 1.210398e-04<br />rate: 243.4033<br />asthma_age: asthma_em_5to14","tree_density: 1.224954e-04<br />rate: 244.0838<br />asthma_age: asthma_em_5to14","tree_density: 1.239509e-04<br />rate: 244.7644<br />asthma_age: asthma_em_5to14","tree_density: 1.254065e-04<br />rate: 245.4449<br />asthma_age: asthma_em_5to14","tree_density: 1.268620e-04<br />rate: 246.1254<br />asthma_age: asthma_em_5to14","tree_density: 1.283175e-04<br />rate: 246.8059<br />asthma_age: asthma_em_5to14","tree_density: 1.297731e-04<br />rate: 247.4864<br />asthma_age: asthma_em_5to14","tree_density: 1.312286e-04<br />rate: 248.1669<br />asthma_age: asthma_em_5to14","tree_density: 1.326842e-04<br />rate: 248.8474<br />asthma_age: asthma_em_5to14","tree_density: 1.341397e-04<br />rate: 249.5279<br />asthma_age: asthma_em_5to14","tree_density: 1.355952e-04<br />rate: 250.2084<br />asthma_age: asthma_em_5to14","tree_density: 1.370508e-04<br />rate: 250.8889<br />asthma_age: asthma_em_5to14","tree_density: 1.385063e-04<br />rate: 251.5694<br />asthma_age: asthma_em_5to14","tree_density: 1.399619e-04<br />rate: 252.2499<br />asthma_age: asthma_em_5to14","tree_density: 1.414174e-04<br />rate: 252.9304<br />asthma_age: asthma_em_5to14","tree_density: 1.428729e-04<br />rate: 253.6109<br />asthma_age: asthma_em_5to14","tree_density: 1.443285e-04<br />rate: 254.2914<br />asthma_age: asthma_em_5to14","tree_density: 1.457840e-04<br />rate: 254.9719<br />asthma_age: asthma_em_5to14","tree_density: 1.472396e-04<br />rate: 255.6524<br />asthma_age: asthma_em_5to14","tree_density: 1.486951e-04<br />rate: 256.3329<br />asthma_age: asthma_em_5to14","tree_density: 1.501506e-04<br />rate: 257.0134<br />asthma_age: asthma_em_5to14","tree_density: 1.516062e-04<br />rate: 257.6939<br />asthma_age: asthma_em_5to14","tree_density: 1.530617e-04<br />rate: 258.3744<br />asthma_age: asthma_em_5to14","tree_density: 1.545172e-04<br />rate: 259.0549<br />asthma_age: asthma_em_5to14"],"type":"scatter","mode":"lines","name":"asthma_em_5to14","line":{"width":3.77952755905512,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","legendgroup":"asthma_em_5to14","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[3.37802303020087e-05,0.000160266630713952],"tickmode":"array","ticktext":["0.00004","0.00008","0.00012","0.00016"],"tickvals":[4e-05,8e-05,0.00012,0.00016],"categoryorder":"array","categoryarray":["0.00004","0.00008","0.00012","0.00016"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":"tree_density","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-13.27,918.87],"tickmode":"array","ticktext":["0","250","500","750"],"tickvals":[0,250,500,750],"categoryorder":"array","categoryarray":["0","250","500","750"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"rate","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"source":"A","attrs":{"13f8b2abfce71":{"x":{},"y":{},"colour":{},"type":"scatter"},"13f8b168a72a4":{"x":{},"y":{},"colour":{}}},"cur_data":"13f8b2abfce71","visdat":{"13f8b2abfce71":["function (y) ","x"],"13f8b168a72a4":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+</div>
+</div>
 
-</div>
-</div>
-</div>
+
+
 
 </div>
 
 <script>
 
-$(document).ready(function () {
-
-  // add bootstrap table styles to pandoc tables
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
-
-  // initialize mathjax
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-  document.getElementsByTagName("head")[0].appendChild(script);
-
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
 });
+
+
 </script>
 
-<script type="text/javascript">
-$(document).ready(function () {
-  FlexDashboard.init({
-    theme: "cosmo",
-    fillPage: true,
-    orientation: "columns",
-    storyboard: false,
-    defaultFigWidth: 576,
-    defaultFigHeight: 460,
-    defaultFigWidthMobile: 360,
-    defaultFigHeightMobile: 460
-  });
-});
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
 </script>
 
 </body>

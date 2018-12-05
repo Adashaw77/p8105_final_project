@@ -15,7 +15,5 @@ navbar:
       href: youtube.html
     - icon: fa-github fa-lg
       href: https://github.com/Adashaw77/p8105_final_project/
-
-      
 output:
   html_document
