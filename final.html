@@ -197,10 +197,7 @@ $(document).ready(function () {
   <a href="dashboRD.html">Dashboard</a>
 </li>
 <li>
-  <a href="shiny_treemap.html">Shiny</a>
-</li>
-<li>
-  <a href="youtube.html">
+  <a href="map.Rmd">
     <span class="fab fa fab fa-youtube"></span>
      
   </a>
@@ -227,6 +224,7 @@ $(document).ready(function () {
 </div>
 
 
+<<<<<<< HEAD
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## -- Attaching packages ------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
 <pre><code>## √ ggplot2 3.1.0     √ purrr   0.2.5
@@ -237,6 +235,10 @@ $(document).ready(function () {
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(dplyr)
+=======
+<pre class="r"><code>library(tidyverse)
+library(dplyr)
+>>>>>>> 907ad19e05f771cd556003d31898d0a3e6ce3b84
 library(readr)
 library(ggplot2)
 library(readxl)</code></pre>
@@ -246,9 +248,9 @@ tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
   filter(status == &quot;Alive&quot;) </code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
-##   zipcode = col_integer(),
+##   zipcode = col_double(),
 ##   boroname = col_character(),
-##   tree_dbh = col_integer(),
+##   tree_dbh = col_double(),
 ##   status = col_character(),
 ##   health = col_character(),
 ##   spc_common = col_character(),
@@ -264,7 +266,7 @@ tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;)
 
 mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;E:\Master\Data Science\Assignments\Final\p8105_final_project\UHF42\UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+## Source: &quot;/Users/ada/Documents/Ada Documents/Master in Columbia/Courses/Data Science/R programming/homework/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
 ## with 43 features
 ## It has 8 fields</code></pre>
 <pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
@@ -296,11 +298,64 @@ tree_density = tree_df %&gt;%
   dplyr::mutate(tree_density = tree_total/area) %&gt;%
   ungroup() %&gt;%
   mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))</code></pre>
+<<<<<<< HEAD
 <pre class="r"><code>#read and tidy data
 asthma_air_poverty = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
   select(geo_entity_id, geo_entity_name, name, data_value) %&gt;%
   filter(is.na(geo_entity_id) == FALSE) %&gt;%
   spread(key = name, value = data_value) %&gt;%
+=======
+<pre class="r"><code>asthma_air = read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
+  janitor::clean_names()</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Unique Id` = col_double(),
+##   indicator_id = col_double(),
+##   geo_type_id = col_double(),
+##   measurement_type_id = col_double(),
+##   internal_id = col_double(),
+##   subtopic_id = col_double(),
+##   name = col_character(),
+##   Measure = col_character(),
+##   geo_type_name = col_character(),
+##   description = col_character(),
+##   geo_entity_id = col_double(),
+##   geo_entity_name = col_character(),
+##   year_description = col_character(),
+##   data_value = col_double(),
+##   message = col_logical(),
+##   X16 = col_logical()
+## )</code></pre>
+<pre><code>## Warning: 776 parsing failures.
+##   row     col           expected                                                                    actual                         file
+## 11240 message 1/0/T/F/TRUE/FALSE Estimate is based on small numbers so should be interpreted with caution. &#39;./data/asthma_air/Data.csv&#39;
+## 11242 message 1/0/T/F/TRUE/FALSE Estimate is based on small numbers so should be interpreted with caution. &#39;./data/asthma_air/Data.csv&#39;
+## 11282 message 1/0/T/F/TRUE/FALSE Estimate is based on small numbers so should be interpreted with caution. &#39;./data/asthma_air/Data.csv&#39;
+## 11284 message 1/0/T/F/TRUE/FALSE Estimate is based on small numbers so should be interpreted with caution. &#39;./data/asthma_air/Data.csv&#39;
+## 11324 message 1/0/T/F/TRUE/FALSE Estimate is based on small numbers so should be interpreted with caution. &#39;./data/asthma_air/Data.csv&#39;
+## ..... ....... .................. ......................................................................... ............................
+## See problems(...) for more details.</code></pre>
+<pre class="r"><code>asthma_em_0to4 = asthma_air %&gt;%
+  filter(name == &quot;Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)&quot;,
+         measure == &quot;Rate&quot;,
+         year_description == &quot;2015&quot;) %&gt;%
+  select(geo_entity_id, geo_entity_name, asthma_em_0to4 = data_value)
+
+asthma_em_5to14 = asthma_air %&gt;%
+  filter(name == &quot;Asthma Emergency Department Visits (Children 5 to 14 Yrs Old)&quot;,
+         measure == &quot;Rate&quot;,
+         year_description == &quot;2015&quot;) %&gt;%
+  select(geo_entity_id, asthma_em_5to14 = data_value) 
+
+so2 = asthma_air %&gt;%
+  filter(name == &quot;Sulfur Dioxide (SO2)&quot;,
+         measure == &quot;Mean&quot;,
+         year_description == &quot;Winter 2014-15&quot;) %&gt;%
+  select(geo_entity_id, so2 = data_value)
+
+poverty = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
+>>>>>>> 907ad19e05f771cd556003d31898d0a3e6ce3b84
   janitor::clean_names() %&gt;%
   select(poverty, children_under_5_years_old_in_poverty, everything()) %&gt;%
   mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
@@ -308,23 +363,67 @@ asthma_air_poverty = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `Unique Id` = col_character(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
+##   indicator_id = col_double(),
+##   geo_type_id = col_double(),
+##   measurement_type_id = col_double(),
+##   internal_id = col_double(),
+##   subtopic_id = col_double(),
 ##   name = col_character(),
 ##   Measure = col_character(),
 ##   geo_type_name = col_character(),
 ##   description = col_character(),
-##   geo_entity_id = col_integer(),
+##   geo_entity_id = col_double(),
 ##   geo_entity_name = col_character(),
 ##   year_description = col_character(),
 ##   data_value = col_double(),
+<<<<<<< HEAD
 ##   message = col_character()
 ## )</code></pre>
 <pre class="r"><code>tree_density_total = tree_density %&gt;%
   select(geo_entity_id=uhf42_code, tree_density) %&gt;%
+=======
+##   message = col_logical(),
+##   X16 = col_logical()
+## )</code></pre>
+<pre><code>## Warning: 3 parsing failures.
+## row col   expected    actual                      file
+## 841  -- 16 columns 1 columns &#39;./data/poverty/Data.csv&#39;
+## 842  -- 16 columns 1 columns &#39;./data/poverty/Data.csv&#39;
+## 843  -- 16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
+<pre class="r"><code>poverty_under5 = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(year_description == &quot;2011-15&quot;,
+         measure == &quot;Percent&quot;,
+         name == &quot;Children under 5 years old in Poverty&quot;) %&gt;%
+  select(geo_entity_id, poverty_under5 = data_value) </code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Unique Id` = col_character(),
+##   indicator_id = col_double(),
+##   geo_type_id = col_double(),
+##   measurement_type_id = col_double(),
+##   internal_id = col_double(),
+##   subtopic_id = col_double(),
+##   name = col_character(),
+##   Measure = col_character(),
+##   geo_type_name = col_character(),
+##   description = col_character(),
+##   geo_entity_id = col_double(),
+##   geo_entity_name = col_character(),
+##   year_description = col_character(),
+##   data_value = col_double(),
+##   message = col_logical(),
+##   X16 = col_logical()
+## )</code></pre>
+<pre><code>## Warning: 3 parsing failures.
+## row col   expected    actual                      file
+## 841  -- 16 columns 1 columns &#39;./data/poverty/Data.csv&#39;
+## 842  -- 16 columns 1 columns &#39;./data/poverty/Data.csv&#39;
+## 843  -- 16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
+<pre class="r"><code>tree_density_total = tree_density%&gt;%
+  select(geo_entity_id=uhf42_code,tree_density) %&gt;%
+>>>>>>> 907ad19e05f771cd556003d31898d0a3e6ce3b84
   distinct()
 
 final_df = left_join(asthma_air_poverty, tree_density_total)</code></pre>
