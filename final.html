@@ -243,14 +243,16 @@ library(readxl)</code></pre>
 <pre class="r"><code>#import and tidy tree data
 tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
   janitor::clean_names() %&gt;%
-  filter(status == &quot;Alive&quot;)</code></pre>
+  filter(status == &quot;Alive&quot;) %&gt;%
+  select(-status)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
+##   zipcode = col_integer(),
+##   boroname = col_character(),
+##   tree_dbh = col_integer(),
 ##   status = col_character(),
 ##   health = col_character(),
-##   zipcode = col_integer(),
-##   zip_city = col_character(),
-##   boroname = col_character(),
+##   spc_common = col_character(),
 ##   Latitude = col_double(),
 ##   longitude = col_double()
 ## )</code></pre>
@@ -270,6 +272,20 @@ mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
   filter(is.na(uhf42_code) == FALSE)
 
 tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)</code></pre>
+<pre class="r"><code>#among 652,173 trees, only 361 trees have diameter larger than 70, so we make plots without them.
+
+#density plot of tree_dbh
+ggplot(tree_df) +
+  geom_density(aes(x = tree_dbh, fill = boroname, alpha = 0.5))+ 
+  scale_x_continuous(limits = c(0, 50))</code></pre>
+<pre><code>## Warning: Removed 361 rows containing non-finite values (stat_density).</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>#violin plot of tree_dbh
+ggplot(tree_df) +
+  geom_violin(aes(x = boroname, y = tree_dbh, fill = boroname))+ 
+  scale_y_continuous(limits = c(0, 50))</code></pre>
+<pre><code>## Warning: Removed 361 rows containing non-finite values (stat_ydensity).</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
 <pre class="r"><code>#tree density
 tree_density = tree_df %&gt;%
   group_by(uhf42_name, uhf42_code, area, health) %&gt;%
@@ -456,22 +472,22 @@ final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to
 ggplot(final_asthma_df) +
    geom_point(aes(x=so2,y=rate,color=asthma_age))+
    geom_smooth(aes(x=so2,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>#asthma and poverty
 ggplot(final_asthma_df) +
    geom_point(aes(x=poverty,y=rate,color=asthma_age))+
    geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
 <pre class="r"><code>#asthma and tree
 ggplot(final_asthma_df) +
   geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
    geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
 <pre class="r"><code>#asthma 0-4 and asthma 5-14 in each UHF42
 ggplot(final_asthma_df) +
   geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = &quot;identity&quot;,position = &quot;dodge&quot;) +
   coord_flip()</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
 
 
 

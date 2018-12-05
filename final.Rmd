@@ -17,7 +17,8 @@ library(readxl)
 #import and tidy tree data
 tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
   janitor::clean_names() %>%
-  filter(status == "Alive")
+  filter(status == "Alive") %>%
+  select(-status)
 
 zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
@@ -32,6 +33,20 @@ area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %>%
   filter(is.na(uhf42_code) == FALSE)
 
 tree_df = left_join(tree_df, area, by = "uhf42_code")
+```
+
+```{r }
+#among 652,173 trees, only 361 trees have diameter larger than 70, so we make plots without them.
+
+#density plot of tree_dbh
+ggplot(tree_df) +
+  geom_density(aes(x = tree_dbh, fill = boroname, alpha = 0.5))+ 
+  scale_x_continuous(limits = c(0, 50))
+
+#violin plot of tree_dbh
+ggplot(tree_df) +
+  geom_violin(aes(x = boroname, y = tree_dbh, fill = boroname))+ 
+  scale_y_continuous(limits = c(0, 50))
 ```
 
 ```{r }
@@ -101,8 +116,6 @@ final_df = left_join(asthma_em_0to4,asthma_em_5to14) %>%
 summary(lm(asthma_em_0to4~tree_density+so2+poverty_under5,data=final_df))
 
 summary(lm(asthma_em_5to14~tree_density+so2+poverty,data=final_df))
-
-
 ```
 
 ```{r }
@@ -129,7 +142,6 @@ ggplot(final_asthma_df) +
 ggplot(final_asthma_df) +
   geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = "identity",position = "dodge") +
   coord_flip()
-
 ```
 
 
