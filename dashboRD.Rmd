@@ -5,7 +5,7 @@ output:
     vertical_layout: fill
 ---
 
-```{r dashboard setup, include=FALSE}
+```{r dashboard, include=FALSE}
 
 library(flexdashboard)
 library(tidyverse)

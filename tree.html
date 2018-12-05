@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Baoyi Shi" />
+
+
+<title>tree</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="datasource.html">Data Source</a>
+</li>
+<li>
+  <a href="dashboRD.html">Dashboard</a>
+</li>
+<li>
+  <a href="shiny_treemap.html">Shiny</a>
+</li>
+<li>
+  <a href="youtube.html">
+    <span class="fab fa fab fa-youtube"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/Adashaw77/p8105_final_project/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">tree</h1>
+<h4 class="author"><em>Baoyi Shi</em></h4>
+<h4 class="date"><em>2018年12月2日</em></h4>
+
+</div>
+
+
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages -------------------------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## v ggplot2 3.0.0     v purrr   0.2.5
+## v tibble  1.4.2     v dplyr   0.7.8
+## v tidyr   0.8.1     v stringr 1.3.1
+## v readr   1.1.1     v forcats 0.3.0</code></pre>
+<pre><code>## -- Conflicts ----------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr)
+library(readr)
+library(readxl)
+library(ggplot2)
+library(readxl)</code></pre>
+<pre class="r"><code>#import and tidy tree data
+tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(status == &quot;Alive&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   zipcode = col_integer(),
+##   boroname = col_character(),
+##   tree_dbh = col_integer(),
+##   status = col_character(),
+##   health = col_character(),
+##   spc_common = col_character(),
+##   Latitude = col_double(),
+##   longitude = col_double()
+## )</code></pre>
+<pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
+   select(-zipcode_no, uhf42_name) %&gt;%
+   filter(is.na(zipcode) == FALSE)
+
+tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;) 
+
+mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/wuxinyao/Desktop/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+## with 43 features
+## It has 8 fields</code></pre>
+<pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
+  filter(is.na(uhf42_code) == FALSE)
+
+tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)</code></pre>
+<pre class="r"><code>#tree density
+tree_density = tree_df %&gt;%
+  group_by(uhf42_name, area, health) %&gt;%
+  dplyr::summarize(health_total = n()) %&gt;%
+  filter(is.na(uhf42_name) == FALSE) %&gt;%
+  group_by(uhf42_name) %&gt;%
+  dplyr::mutate(total = sum(health_total),
+                tree_density = total/area,
+                health_tree_density = health_total/area) %&gt;%
+  ungroup() %&gt;%
+  mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))</code></pre>
+<pre class="r"><code>#proportion of each health status in UHF42
+ggplot(aes(x = uhf42_name), data = tree_df) +
+  geom_bar(position=&quot;fill&quot;, aes(fill = health)) +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) </code></pre>
+<p><img src="tree_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>#import tree data, retain only trees alive and good to health
+tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(status == &quot;Alive&quot;, health == &quot;Good&quot;) </code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   zipcode = col_integer(),
+##   boroname = col_character(),
+##   tree_dbh = col_integer(),
+##   status = col_character(),
+##   health = col_character(),
+##   spc_common = col_character(),
+##   Latitude = col_double(),
+##   longitude = col_double()
+## )</code></pre>
+<pre class="r"><code>#compute the total tree number of each boro
+tree_df %&gt;%
+  group_by(boroname) %&gt;%
+  dplyr::summarise(total = n()) </code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   boroname       total
+##   &lt;chr&gt;          &lt;int&gt;
+## 1 Bronx          66603
+## 2 Brooklyn      138212
+## 3 Manhattan      47358
+## 4 Queens        194008
+## 5 Staten Island  82669</code></pre>
+<pre class="r"><code>ggplot(aes(x = latitude, y = longitude), data = tree_df) +
+  geom_hex()</code></pre>
+<p><img src="tree_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
+  dplyr::select(-zipcode_no, -uhf42_code) %&gt;%
+   filter(is.na(zipcode) == FALSE)
+
+tree_total_uhf42 = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;) %&gt;%
+  group_by(uhf42_name) %&gt;%
+  dplyr::summarize(total = n()) %&gt;%
+  filter(is.na(uhf42_name) == FALSE) %&gt;%
+  mutate(uhf42_name = forcats::fct_reorder(uhf42_name, total))</code></pre>
+<pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
+ dplyr::select(-zipcode_no, -uhf42_code) %&gt;%
+   filter(is.na(zipcode) == FALSE)
+
+mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/wuxinyao/Desktop/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+## with 43 features
+## It has 8 fields</code></pre>
+<pre class="r"><code>area = mydat$SHAPE_Area
+
+tree_total_uhf42 = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;) %&gt;%
+  group_by(uhf42_name) %&gt;%
+  dplyr::summarize(total = n()) %&gt;%
+  mutate(area = mydat$SHAPE_Area) %&gt;%
+  filter(is.na(uhf42_name) == FALSE) %&gt;%
+  mutate(tree_density = total/area, 
+         uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))
+
+ggplot(aes(x = uhf42_name, y = tree_density), data = tree_total_uhf42) +
+  geom_bar(stat = &quot;identity&quot;, aes(fill = uhf42_name)) +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1)) +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="tree_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>asthma_pollute = read_csv(&quot;./data/asthma_air/Data.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Unique Id` = col_integer(),
+##   indicator_id = col_integer(),
+##   geo_type_id = col_integer(),
+##   measurement_type_id = col_integer(),
+##   internal_id = col_integer(),
+##   subtopic_id = col_integer(),
+##   name = col_character(),
+##   Measure = col_character(),
+##   geo_type_name = col_character(),
+##   description = col_character(),
+##   geo_entity_id = col_integer(),
+##   geo_entity_name = col_character(),
+##   year_description = col_character(),
+##   data_value = col_double(),
+##   message = col_character(),
+##   X16 = col_character()
+## )</code></pre>
+<pre class="r"><code>pm2.5 = asthma_pollute %&gt;%
+  filter(name == &quot;Fine Particulate Matter (PM2.5)&quot;, Measure == &quot;Mean&quot;, year_description == &quot;Annual Average 2015&quot;) %&gt;%
+  dplyr::rename(uhf42_name = geo_entity_name) %&gt;%
+ dplyr::select(uhf42_name, pm2.5_data = data_value)
+
+pm2.5_tree = left_join(pm2.5, tree_total_uhf42)</code></pre>
+<pre><code>## Joining, by = &quot;uhf42_name&quot;</code></pre>
+<pre class="r"><code>summary(lm(pm2.5_data ~ tree_density, data = pm2.5_tree))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = pm2.5_data ~ tree_density, data = pm2.5_tree)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.16211 -0.78772  0.07474  0.67277  2.37512 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      9.4003     0.2183  43.066   &lt;2e-16 ***
+## tree_density -3450.6430  1613.3085  -2.139   0.0386 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9982 on 40 degrees of freedom
+## Multiple R-squared:  0.1026, Adjusted R-squared:  0.0802 
+## F-statistic: 4.575 on 1 and 40 DF,  p-value: 0.0386</code></pre>
+<pre class="r"><code>ggplot(aes(x = tree_density, y = pm2.5_data), data = pm2.5_tree) +
+  geom_point()+
+  geom_smooth()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="tree_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>asthma_hos_children = asthma_pollute %&gt;%
+  filter(name == &quot;Asthma Hospitalizations (Children 0 to 4 Yrs Old)&quot;, Measure == &quot;Rate&quot;, year_description == &quot;2015&quot;) %&gt;%
+  dplyr::rename(uhf42_name = geo_entity_name) %&gt;%
+ dplyr::select(uhf42_name, asthma_hos_children = data_value)
+
+asthma_hos_children_tree = left_join(asthma_hos_children, tree_total_uhf42)</code></pre>
+<pre><code>## Joining, by = &quot;uhf42_name&quot;</code></pre>
+<pre class="r"><code>summary(lm(asthma_hos_children ~ tree_density, data = asthma_hos_children_tree))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_hos_children ~ tree_density, data = asthma_hos_children_tree)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -50.08 -34.92 -17.46  12.20 120.81 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      46.11      10.15   4.541 5.04e-05 ***
+## tree_density 112781.70   75051.39   1.503    0.141    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 46.44 on 40 degrees of freedom
+## Multiple R-squared:  0.05344,    Adjusted R-squared:  0.02977 
+## F-statistic: 2.258 on 1 and 40 DF,  p-value: 0.1408</code></pre>
+<pre class="r"><code>ggplot(aes(x = tree_density, y = asthma_hos_children), data = asthma_hos_children_tree) +
+  geom_point()+
+  geom_smooth()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="tree_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre class="r"><code>asthma_pm = left_join(pm2.5, asthma_hos_children)</code></pre>
+<pre><code>## Joining, by = &quot;uhf42_name&quot;</code></pre>
+<pre class="r"><code>summary(lm(asthma_hos_children ~ tree_density, data = asthma_hos_children_tree))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_hos_children ~ tree_density, data = asthma_hos_children_tree)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -50.08 -34.92 -17.46  12.20 120.81 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      46.11      10.15   4.541 5.04e-05 ***
+## tree_density 112781.70   75051.39   1.503    0.141    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 46.44 on 40 degrees of freedom
+## Multiple R-squared:  0.05344,    Adjusted R-squared:  0.02977 
+## F-statistic: 2.258 on 1 and 40 DF,  p-value: 0.1408</code></pre>
+<pre class="r"><code>ggplot(aes(x = tree_density, y = asthma_hos_children), data = asthma_hos_children_tree) +
+  geom_point()+
+  geom_smooth()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="tree_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

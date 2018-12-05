@@ -38,10 +38,7 @@ ozone= read_csv("./data/asthma_air/Data.csv") %>%
 poverty= read_csv("./data/poverty/Data.csv") %>%
   filter(year_description == "2011-15" )
 
-smoke = read_csv("./data/smoking_exer/Data.csv") %>%
-  filter(year_description == "2015" )
-
-data = rbind(asthma_air,sulfur_dioxide,ozone, poverty, smoke)
+data = rbind(asthma_air,sulfur_dioxide,ozone, poverty)
   
 asthma_air1 = data %>%
   select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
