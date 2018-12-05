@@ -257,11 +257,7 @@ tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;)
 
 mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-<<<<<<< HEAD
 ## Source: &quot;/Users/wuxinyao/Desktop/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
-=======
-## Source: &quot;/Users/ada/Documents/Ada Documents/Master in Columbia/Courses/Data Science/R programming/homework/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
->>>>>>> 3185ce3af04f04a09af30cdc42949b83718e848d
 ## with 43 features
 ## It has 8 fields</code></pre>
 <pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
@@ -320,11 +316,7 @@ tree_density = tree_df %&gt;%
 <pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
 ## a multiple of vector length (arg 1)</code></pre>
 <pre><code>## Warning: 6 parsing failures.
-<<<<<<< HEAD
-## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique… an integ… NYC Department of Health and Me… &#39;./data/asthma… file 2 19069 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… row 3 19070 Unique… an integ… Environment &amp; Health Data Portal &#39;./data/asthma… col 4 19070 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… expected 5 19071 Unique… an integ… Available at: http://nyc.gov/he… &#39;./data/asthma…
-=======
 ## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique~ an integ~ NYC Department of Health and Me~ &#39;./data/asthma~ file 2 19069 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/asthma~ row 3 19070 Unique~ an integ~ Environment &amp; Health Data Portal &#39;./data/asthma~ col 4 19070 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/asthma~ expected 5 19071 Unique~ an integ~ Available at: http://nyc.gov/he~ &#39;./data/asthma~
->>>>>>> 1da9a709c9f8b721532eae4b07434279b20dd188
 ## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
 ## See problems(...) for more details.</code></pre>
 <pre class="r"><code>asthma_em_0to4 = asthma_air %&gt;%
@@ -405,15 +397,9 @@ poverty = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
 
 ## Warning in rbind(names(probs), probs_f): 3 parsing failures.
 ## row # A tibble: 3 x 5 col     row col   expected   actual    file                      expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;                     actual 1   841 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; file 2   842 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; row 3   843 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
-<<<<<<< HEAD
-<pre class="r"><code>aaaa=tree_density%&gt;%
-  filter(health == &quot;Good&quot;) %&gt;%
-  select(geo_entity_id=uhf42_code,tree_density,health_tree_density)
-=======
 <pre class="r"><code>tree_density_total = tree_density%&gt;%
   select(geo_entity_id=uhf42_code,tree_density) %&gt;%
   distinct()
->>>>>>> 1da9a709c9f8b721532eae4b07434279b20dd188
 
 final_df = left_join(asthma_em_0to4,asthma_em_5to14) %&gt;%
   left_join(so2) %&gt;%
@@ -473,21 +459,6 @@ summary(lm(asthma_em_0to4~tree_density+so2+poverty_under5,data=final_df))</code>
 ## Multiple R-squared:  0.6789, Adjusted R-squared:  0.6535 
 ## F-statistic: 26.78 on 3 and 38 DF,  p-value: 1.771e-09</code></pre>
 <pre class="r"><code>#asthma and so2
-<<<<<<< HEAD
-ggplot(data=final_df)+
-  geom_point(aes(x=so2,y=asthma_em_0to4))+
-  geom_smooth(aes(x=so2,y=asthma_em_0to4),method = &quot;lm&quot;,se=F)+
-  geom_point(aes(x=so2,y=asthma_em_5to14))+
-  geom_smooth(aes(x=so2,y=asthma_em_5to14),method = &quot;lm&quot;,se=F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<pre class="r"><code>#asthma and poverty
-ggplot(data=final_df)+
-  geom_point(aes(x=poverty_under5,y=asthma_em_0to4))+
-  geom_smooth(aes(x=poverty_under5,y=asthma_em_0to4),method = &quot;lm&quot;,se=F)+
-  geom_point(aes(x=poverty,y=asthma_em_5to14))+
-  geom_smooth(aes(x=poverty,y=asthma_em_5to14),method = &quot;lm&quot;,se=F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
-=======
 final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to4:asthma_em_5to14) %&gt;%
   gather(key = poverty_age, value = poverty, poverty:poverty_under5) %&gt;%
   filter((asthma_age == &quot;asthma_em_5to14&quot;&amp;poverty_age == &quot;poverty&quot;)|(asthma_age == &quot;asthma_em_0to4&quot;&amp; poverty_age == &quot;poverty_under5&quot;))
@@ -511,7 +482,6 @@ ggplot(final_asthma_df) +
   geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = &quot;identity&quot;,position = &quot;dodge&quot;) +
   coord_flip()</code></pre>
 <p><img src="final_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
->>>>>>> 1da9a709c9f8b721532eae4b07434279b20dd188
 
 
 
