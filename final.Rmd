@@ -41,12 +41,14 @@ tree_df = left_join(tree_df, area, by = "uhf42_code")
 #density plot of tree_dbh
 ggplot(tree_df) +
   geom_density(aes(x = tree_dbh, fill = boroname, alpha = 0.5))+ 
-  scale_x_continuous(limits = c(0, 50))
+  scale_x_continuous(limits = c(0, 50)) +
+  theme(legend.position = "bottom")
 
 #violin plot of tree_dbh
 ggplot(tree_df) +
   geom_violin(aes(x = boroname, y = tree_dbh, fill = boroname))+ 
-  scale_y_continuous(limits = c(0, 50))
+  scale_y_continuous(limits = c(0, 50)) +
+  theme(legend.position = "bottom")
 ```
 
 ```{r }

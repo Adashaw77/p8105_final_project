@@ -5,26 +5,70 @@ date: "12/3/2018"
 output: html_document
 ---
 
-```{r shiny setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE}
+library(shiny)
+library(tidyverse)
+library(rgdal)
+library(leaflet)
+library(raster)
+
+
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
+mydat = rgdal::readOGR("./new_map/nynta.shp")
+mydat2 = rgdal::readOGR("./new_map/nynta.shp")
+summary(mydat2)
+summary(mydat)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+proj4string = "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0"
+proj4string1 = "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80
++towgs84=0,0,0"
+
+mydat2 = spTransform(mydat, proj4string1)
+
+bins <- c(0, 50000000, 100000000, 150000000, 200000000, Inf)
+pal <- colorBin("YlOrRd", domain = mydat2$Shape_Area, bins = bins)
+
+leaflet() %>% 
+addProviderTiles("OpenStreetMap.Mapnik") %>%
+setView(lat = 40.7, lng = -74, zoom = 9) %>%
+addPolygons(data = mydat2, fillColor = ~pal(Shape_Area), weight = 2,
+  opacity = 1,
+  color = "white",
+  dashArray = "3",
+  fillOpacity = 0.7)
+
+
+
+names(mydat2)
 ```
 
-## Including Plots
+uk
 
-You can also embed plots, for example:
+```{r}
+UK <- getData("GADM", country = "GB", level = 2)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+### Create dummy data
+set.seed(111)
+mydf <- data.frame(place = unique(UK$NAME_2),
+                   value = sample.int(n = 1000000, size = n_distinct(UK$NAME_2), replace = TRUE))
+
+### Create five colors for fill
+mypal <- colorQuantile(palette = "RdYlBu", domain = mydf$value, n = 5, reverse = TRUE)
+
+leaflet() %>% 
+addProviderTiles("OpenStreetMap.Mapnik") %>%
+setView(lat = 55, lng = -3, zoom = 6) %>%
+addPolygons(data = UK,
+            stroke = FALSE, smoothFactor = 0.2, fillOpacity = 0.3,
+            fillColor = ~mypal(mydf$value),
+            popup = paste("Region: ", UK$NAME_2, "<br>",
+                          "Value: ", mydf$value, "<br>")) %>%
+addLegend(position = "bottomright", pal = mypal, values = mydf$value,
+          title = "UK value",
+          opacity = 1)
+
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

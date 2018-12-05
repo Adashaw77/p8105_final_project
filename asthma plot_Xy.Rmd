@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(rvest)
 library(httr)
+library(plotly)
 library(patchwork)
 ```
 #Data
@@ -109,13 +110,13 @@ O3= asthma_air1 %>%
 
 ##### SO2 vs.astma
 ```{r}
-
  SO2 =  ggplot(asthma_air1)+
   geom_point(aes(x = sulfur_dioxide_so2_mean, y =asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "children_0_to_4_yrs_old"))+
   geom_smooth(aes(x = sulfur_dioxide_so2_mean, y = asthma_hospitalizations_children_0_to_4_yrs_old_rate,color = "children_0_to_4_yrs_old"),method = lm,se =FALSE) +
   geom_point(aes(x = sulfur_dioxide_so2_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "children_5_to_14_yrs_old"))+
   geom_smooth(aes(x = sulfur_dioxide_so2_mean, y = asthma_hospitalizations_children_5_to_14_yrs_old_rate,color = "children_5_to_14_yrs_old"),method = lm,se =FALSE) +
   theme(legend.position ="bottom")
+ggplotly(SO2)
 ```
 
 

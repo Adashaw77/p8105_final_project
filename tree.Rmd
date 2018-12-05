@@ -83,7 +83,7 @@ ggplot(aes(x = latitude, y = longitude), data = tree_df) +
 ```{r warning=F}
 zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
-   select(-zipcode_no, -uhf42_code) %>%
+  dplyr::select(-zipcode_no, -uhf42_code) %>%
    filter(is.na(zipcode) == FALSE)
 
 tree_total_uhf42 = left_join(tree_df, zipcode_uhf42, by = "zipcode") %>%
@@ -96,7 +96,7 @@ tree_total_uhf42 = left_join(tree_df, zipcode_uhf42, by = "zipcode") %>%
 ```{r warning=F}
 zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
-   select(-zipcode_no, -uhf42_code) %>%
+ dplyr::select(-zipcode_no, -uhf42_code) %>%
    filter(is.na(zipcode) == FALSE)
 
 mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
@@ -122,7 +122,7 @@ asthma_pollute = read_csv("./data/asthma_air/Data.csv")
 pm2.5 = asthma_pollute %>%
   filter(name == "Fine Particulate Matter (PM2.5)", Measure == "Mean", year_description == "Annual Average 2015") %>%
   dplyr::rename(uhf42_name = geo_entity_name) %>%
-  select(uhf42_name, pm2.5_data = data_value)
+ dplyr::select(uhf42_name, pm2.5_data = data_value)
 
 pm2.5_tree = left_join(pm2.5, tree_total_uhf42)
 
@@ -135,7 +135,7 @@ ggplot(aes(x = tree_density, y = pm2.5_data), data = pm2.5_tree) +
 asthma_hos_children = asthma_pollute %>%
   filter(name == "Asthma Hospitalizations (Children 0 to 4 Yrs Old)", Measure == "Rate", year_description == "2015") %>%
   dplyr::rename(uhf42_name = geo_entity_name) %>%
-  select(uhf42_name, asthma_hos_children = data_value)
+ dplyr::select(uhf42_name, asthma_hos_children = data_value)
 
 asthma_hos_children_tree = left_join(asthma_hos_children, tree_total_uhf42)
 
