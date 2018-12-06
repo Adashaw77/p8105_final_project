@@ -233,7 +233,7 @@ $(document).ready(function () {
 <div id="motivation" class="section level2">
 <h2>motivation</h2>
 <p>Over the past decades, the prevalence of asthma has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Asthma is the most prevalent chronic disease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presence of extra mucus in narrow airways. Data on the influence of green spaces on asthma in children are inconstant. Previous research that did in Kaunas, Lithuania showed a positive association between the level of the surrounding greenness and risk of asthma in children. Their study suggested that high exposure to green spaces may increase the risk of allergic conditions and the prevalence of asthma through the effect of pollen. Another ecological design study did in New York City observed an inverse association between street tree density and the prevalence of asthma. Others have reported no relationships between greenery densities, canopy cover and asthma.</p>
-<p>Our goal was to investigate the association between tree densities and asthma among children in New York City, including variables like poverties, smoking, air quality factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2).</p>
+<p>Our goal was to investigate the association between tree densities and asthma among children in New York City, including variables like poverties and air quality factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2).</p>
 </div>
 <div id="related-work" class="section level2">
 <h2>related work</h2>
@@ -242,8 +242,302 @@ $(document).ready(function () {
 <div id="initial-questions" class="section level2">
 <h2>Initial Questions</h2>
 <p>Our initial questions was whether there is an association between tree densities and asthma among children in New York City based on 42 different neighborhoods.</p>
-<p>Furthermore, we investigated the relationships between asthma and other factors, like air qualities, factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2)), poverties, and smoking. Trades of asthma changes were considered for two different sample groups (children from 0 to 4 years old and children from 5 to 14 years old) from 1998 to 2016.</p>
-<p>We were also interested in the association between tree densities in 42 different neighborhoods and air quality factors.</p>
+<p>Furthermore, we investigated the relationships between asthma and other factors, like poverties and air qualities, factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2)). We were also interested in the association between tree densities in 42 different neighborhoods and air quality factors.</p>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>Our GitHub repo of the steps in this analysis can be found <a href="https://github.com/Adashaw77/p8105_final_project/blob/master/final.Rmd">here</a>.</p>
+<p>The original tree data includes variables: zip code of each neighborhoods, boroname, tree’s diameter, status(alive and dead), health, spc_common (tree species) and tree’s latitude and longitude.</p>
+<p>The asthma dataset has a total 16 variables and it includes important variables like neighborhoods, asthma rate for children from 0 to 4 years old and children from 5 to 14 years old, so2 level, poverty percent, percent of the children under 5 years living in the poverty areas, tree’s density and total asthma rate.</p>
+<div id="source" class="section level3">
+<h3>source</h3>
+<p>All data about asthma, poverty and air qualities was retrieved from NYC health (<a href="http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx" class="uri">http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx</a>)</p>
+<p>All data related to trees was retrieved from NYC open data (<a href="https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35" class="uri">https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35</a>)</p>
+<p>All neighborhood data was retrieved from (<a href="http://www.infoshare.org/misc/UHF.pdf" class="uri">http://www.infoshare.org/misc/UHF.pdf</a>)</p>
+</div>
+<div id="scraping-method-cleaning" class="section level3">
+<h3>scraping method, cleaning</h3>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
+## ✔ tibble  1.4.2     ✔ dplyr   0.7.8
+## ✔ tidyr   0.8.2     ✔ stringr 1.3.1
+## ✔ readr   1.1.1     ✔ forcats 0.3.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr)
+library(readr)
+library(ggplot2)
+library(readxl)</code></pre>
+<pre class="r"><code>#import and tidy tree data
+tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(status == &quot;Alive&quot;) %&gt;%
+  select(-status)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   zipcode = col_integer(),
+##   boroname = col_character(),
+##   tree_dbh = col_integer(),
+##   status = col_character(),
+##   health = col_character(),
+##   spc_common = col_character(),
+##   Latitude = col_double(),
+##   longitude = col_double()
+## )</code></pre>
+<pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
+   select(-zipcode_no, uhf42_name) %&gt;%
+   filter(is.na(zipcode) == FALSE)
+
+tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;) 
+
+mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/jingweiren/Desktop/p8105/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+## with 43 features
+## It has 8 fields</code></pre>
+<pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
+  filter(is.na(uhf42_code) == FALSE)
+
+tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)
+
+#tree density element is added
+tree_density = tree_df %&gt;%
+  group_by(uhf42_name, uhf42_code, area, health) %&gt;%
+  dplyr::summarize(health_total = n()) %&gt;%
+  filter(is.na(uhf42_name) == FALSE) %&gt;%
+  group_by(uhf42_name) %&gt;%
+  dplyr::mutate(total = sum(health_total),
+                tree_density = total/area,
+                health_tree_density = health_total/area) %&gt;%
+  ungroup() %&gt;%
+  mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))</code></pre>
+<pre class="r"><code># import and tidy astham data
+
+asthma_air = read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
+  janitor::clean_names()</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Unique Id` = col_integer(),
+##   indicator_id = col_integer(),
+##   geo_type_id = col_integer(),
+##   measurement_type_id = col_integer(),
+##   internal_id = col_integer(),
+##   subtopic_id = col_integer(),
+##   name = col_character(),
+##   Measure = col_character(),
+##   geo_type_name = col_character(),
+##   description = col_character(),
+##   geo_entity_id = col_integer(),
+##   geo_entity_name = col_character(),
+##   year_description = col_character(),
+##   data_value = col_double(),
+##   message = col_character(),
+##   X16 = col_character()
+## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
+## a multiple of vector length (arg 1)</code></pre>
+<pre><code>## Warning: 6 parsing failures.
+## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique… an integ… NYC Department of Health and Me… &#39;./data/asthma… file 2 19069 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… row 3 19070 Unique… an integ… Environment &amp; Health Data Portal &#39;./data/asthma… col 4 19070 &lt;NA&gt;    16 colum… 1 columns                        &#39;./data/asthma… expected 5 19071 Unique… an integ… Available at: http://nyc.gov/he… &#39;./data/asthma…
+## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
+## See problems(...) for more details.</code></pre>
+<pre class="r"><code>asthma_em_0to4 = asthma_air %&gt;%
+  filter(name == &quot;Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)&quot;,
+         measure == &quot;Rate&quot;,
+         year_description == &quot;2015&quot;) %&gt;%
+  select(geo_entity_id, geo_entity_name, asthma_em_0to4 = data_value)
+
+asthma_em_5to14 = asthma_air %&gt;%
+  filter(name == &quot;Asthma Emergency Department Visits (Children 5 to 14 Yrs Old)&quot;,
+         measure == &quot;Rate&quot;,
+         year_description == &quot;2015&quot;) %&gt;%
+  select(geo_entity_id, asthma_em_5to14 = data_value) 
+
+so2 = asthma_air %&gt;%
+  filter(name == &quot;Sulfur Dioxide (SO2)&quot;,
+         measure == &quot;Mean&quot;,
+         year_description == &quot;Winter 2014-15&quot;) %&gt;%
+  select(geo_entity_id, so2 = data_value)
+
+poverty = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(year_description == &quot;2012-16&quot;,
+         measure == &quot;Percent&quot;,
+         name == &quot;Poverty&quot;) %&gt;%
+  select(geo_entity_id, poverty = data_value) </code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Unique Id` = col_character(),
+##   indicator_id = col_integer(),
+##   geo_type_id = col_integer(),
+##   measurement_type_id = col_integer(),
+##   internal_id = col_integer(),
+##   subtopic_id = col_integer(),
+##   name = col_character(),
+##   Measure = col_character(),
+##   geo_type_name = col_character(),
+##   description = col_character(),
+##   geo_entity_id = col_integer(),
+##   geo_entity_name = col_character(),
+##   year_description = col_character(),
+##   data_value = col_double(),
+##   message = col_character(),
+##   X16 = col_character()
+## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
+## a multiple of vector length (arg 1)</code></pre>
+<pre><code>## Warning: 3 parsing failures.
+## row # A tibble: 3 x 5 col     row col   expected   actual    file                      expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;                     actual 1   841 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; file 2   842 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; row 3   843 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
+<pre class="r"><code>poverty_under5 = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(year_description == &quot;2011-15&quot;,
+         measure == &quot;Percent&quot;,
+         name == &quot;Children under 5 years old in Poverty&quot;) %&gt;%
+  select(geo_entity_id, poverty_under5 = data_value) </code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Unique Id` = col_character(),
+##   indicator_id = col_integer(),
+##   geo_type_id = col_integer(),
+##   measurement_type_id = col_integer(),
+##   internal_id = col_integer(),
+##   subtopic_id = col_integer(),
+##   name = col_character(),
+##   Measure = col_character(),
+##   geo_type_name = col_character(),
+##   description = col_character(),
+##   geo_entity_id = col_integer(),
+##   geo_entity_name = col_character(),
+##   year_description = col_character(),
+##   data_value = col_double(),
+##   message = col_character(),
+##   X16 = col_character()
+## )</code></pre>
+<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not a multiple of vector length (arg 1)
+
+## Warning in rbind(names(probs), probs_f): 3 parsing failures.
+## row # A tibble: 3 x 5 col     row col   expected   actual    file                      expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;                     actual 1   841 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; file 2   842 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; row 3   843 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
+<pre class="r"><code>tree_density_total = tree_density%&gt;%
+  select(geo_entity_id=uhf42_code,tree_density) %&gt;%
+  distinct()
+
+final_df = left_join(asthma_em_0to4,asthma_em_5to14) %&gt;%
+  left_join(so2) %&gt;%
+  left_join(poverty) %&gt;%
+  left_join(poverty_under5) %&gt;%
+  left_join(tree_density_total) %&gt;%
+  mutate(asthma_total = asthma_em_0to4+asthma_em_5to14,
+         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total)) </code></pre>
+<pre><code>## Joining, by = &quot;geo_entity_id&quot;</code></pre>
+<pre><code>## Joining, by = &quot;geo_entity_id&quot;
+## Joining, by = &quot;geo_entity_id&quot;
+## Joining, by = &quot;geo_entity_id&quot;
+## Joining, by = &quot;geo_entity_id&quot;</code></pre>
+</div>
+</div>
+<div id="exploratory-analysis" class="section level2">
+<h2>Exploratory Analysis</h2>
+<p>Visualizations, summaries, and exploratory statistical analyses. Justify the steps you took, and show any major changes to your ideas.</p>
+</div>
+<div id="asthma-visualizations" class="section level2">
+<h2>Asthma Visualizations</h2>
+<div id="step-one" class="section level3">
+<h3>step one</h3>
+<p>We made a plot showing the assoication between tree density and astham rate.</p>
+<pre class="r"><code>#plot between asthma and tree
+final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to4:asthma_em_5to14) %&gt;%
+  gather(key = poverty_age, value = poverty, poverty:poverty_under5) %&gt;%
+  filter((asthma_age == &quot;asthma_em_5to14&quot;&amp;poverty_age == &quot;poverty&quot;)|(asthma_age == &quot;asthma_em_0to4&quot;&amp; poverty_age == &quot;poverty_under5&quot;))
+
+ggplot(final_asthma_df) +
+  geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<p><img src="final_report_files/figure-html/unnamed-chunk-4-1.png" width="672" /> This plot showed the relationship between asthma and tree. Visually, there was a positive association between tree density and astham rate.</p>
+</div>
+<div id="step-two" class="section level3">
+<h3>step two</h3>
+<p>Other factors may also impact the astham rate. We made plots showing the association between astham and air qualities (fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2) ) and the association between asthma and poverty rate.</p>
+<pre class="r"><code># plot between asthma and so2
+ggplot(final_asthma_df) +
+   geom_point(aes(x=so2,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=so2,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<p><img src="final_report_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>#plot between asthma and poverty
+ggplot(final_asthma_df) +
+   geom_point(aes(x=poverty,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<p><img src="final_report_files/figure-html/unnamed-chunk-5-2.png" width="672" /> plot1 showed the relationship between asthma and so2. plot2 showed the relationship between asthma and poverty. Visually, there was a positive association between astham rate and so2 and there was a postive association between astham rate and poverty level.</p>
+</div>
+<div id="step-three" class="section level3">
+<h3>step three</h3>
+<p>We are interested in seeing whether asthma rate is different between children from 0 to 4 years old and children from 5 to 14 years old in 42 neighborhoods in new york city.</p>
+<pre class="r"><code>#plot between asthma 0-4 and asthma 5-14 in each UHF42
+ggplot(final_asthma_df) +
+  geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = &quot;identity&quot;,position = &quot;dodge&quot;) +
+  coord_flip()</code></pre>
+<p><img src="final_report_files/figure-html/unnamed-chunk-6-1.png" width="672" /> Plot showed that children from 0 to 4 years have higher asthma rate compared to children from 5 to 14 years old.</p>
+</div>
+</div>
+<div id="tree-visualizations" class="section level2">
+<h2>Tree Visualizations</h2>
+<p>Tree</p>
+</div>
+<div id="statistical-analyses" class="section level2">
+<h2>statistical analyses</h2>
+<pre class="r"><code># mlr showing the relationship between asthma rate of kids from 0 to 4 years and tree density, so2 levels, percent of the children under 5 years living in the poverty areas
+
+summary(lm(asthma_em_0to4~tree_density+so2+poverty_under5,data=final_df))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_em_0to4 ~ tree_density + so2 + poverty_under5, 
+##     data = final_df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -390.05  -60.43    2.28   97.32  259.42 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      -155.24      90.12  -1.723  0.09307 .  
+## tree_density   163130.32  941507.03   0.173  0.86336    
+## so2               189.68      62.76   3.022  0.00448 ** 
+## poverty_under5     11.07       1.49   7.434 6.41e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 144.7 on 38 degrees of freedom
+## Multiple R-squared:  0.6473, Adjusted R-squared:  0.6195 
+## F-statistic: 23.25 on 3 and 38 DF,  p-value: 1.028e-08</code></pre>
+<pre class="r"><code># mlr howing the relationship between asthma rate of kids from 5 to 14 years and tree density, so2 levels, poverty levels
+
+summary(lm(asthma_em_5to14~tree_density+so2+poverty,data=final_df))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_em_5to14 ~ tree_density + so2 + poverty, 
+##     data = final_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -247.495  -43.658    8.746   36.013  221.440 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -9.535e+01  6.439e+01  -1.481   0.1469    
+## tree_density -3.111e+05  6.677e+05  -0.466   0.6439    
+## so2           1.208e+02  4.558e+01   2.651   0.0116 *  
+## poverty       1.306e+01  1.697e+00   7.701 2.83e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 102.7 on 38 degrees of freedom
+## Multiple R-squared:  0.6789, Adjusted R-squared:  0.6535 
+## F-statistic: 26.78 on 3 and 38 DF,  p-value: 1.771e-09</code></pre>
+<p>Based on the multiple linear regression models, all the factors are significant except tree density ( p value is 0.86, 0.64). This indicated that there are associations between asthma rate of kids and so2 and poverty levels.</p>
 </div>
 
 
