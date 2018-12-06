@@ -19,8 +19,7 @@ output:
 *   Data from [NYC open data](https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35) was used to obtain the number of trees in different entities in NYC, based on which we visualized the density of trees in different entities to explore the identical characteristics of __tree density__ and asthma rate distribution.
 
 
-*   We match the name of entities in NYC to UHF zip code to realize __the combination of two dataset__ to explore potential associations between possible factors. The criteria information was provided by [United Hospital Fund (UHF) Neighborhood](http://www.infoshare.org/misc/UHF.pdf) 
-
+*   We match the name of entities in NYC to UHF zip code to realize __the combination of two dataset__ to explore potential associations between possible factors. The criteria information was provided by [United Hospital Fund (UHF) Neighborhood](http://www.infoshare.org/misc/UHF.pdf) Meanwhile, the area information of each UHF neighborhood was obtained in [CARTO](https://catharob.carto.com/tables/uhf_42_dohmh_2009/public)
 
 
 
