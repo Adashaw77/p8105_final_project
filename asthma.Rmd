@@ -134,7 +134,7 @@ Column {.tabset data-width=650}
 
 ### Asthma Rate Distribution
 
-```{r}
+```{r message=FALSE}
 
 cnames = aggregate(cbind(x, y) ~ id, data=map_data, FUN=mean)
 cnames = left_join(cnames,asthma_map, by = "id")
@@ -162,7 +162,7 @@ map = ggplot(asthma_map) +
 
 ### Asthma rate in different entities in NYC
 
-```{r}
+```{r message=FALSE}
 ax = list(
   title = "Entities in NYC",
   zeroline = FALSE,
@@ -192,7 +192,7 @@ Column {data-width=550}
 -----------------------------------------------------------------------
 ### Scatterplot between SO2 and the asthma rate in  different age group of children
 
-```{r}
+```{r message=FALSE}
 so2_plot = ggplot(final_asthma_df) +
    geom_point(aes(x=sulfur_dioxide_so2,y=rate,color=asthma_age))+
    geom_smooth(aes(x=sulfur_dioxide_so2,y=rate,color = asthma_age), method = "lm",se=F)+theme(legend.position = "none")
@@ -206,7 +206,7 @@ ggplotly(so2_plot) %>%
 
 ### Scatterplot between poverty and asthma rate different age griup children
 
-```{r}
+```{r message=FALSE}
 #asthma and poverty
 poverty = ggplot(final_asthma_df) +
    geom_point(aes(x=poverty,y=rate,color=asthma_age))+

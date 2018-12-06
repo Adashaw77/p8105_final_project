@@ -9,9 +9,10 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Jingwei Ren (jr3869); Qi Shao (qs2200); Xinyao Wu (xw2598); Baoyi Shi bs3141" />
 
 
-<title></title>
+<title>The relationship between Tree density and asthma rate among children in New York City</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,6 +23,9 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -216,13 +220,13 @@ $(document).ready(function () {
 
 
 
+<h1 class="title toc-ignore">The relationship between Tree density and asthma rate among children in New York City</h1>
+<h4 class="author"><em>Jingwei Ren (jr3869); Qi Shao (qs2200); Xinyao Wu (xw2598); Baoyi Shi bs3141</em></h4>
+<h4 class="date"><em>12/2/2018</em></h4>
 
 </div>
 
 
-<div id="the-relationship-between-tree-density-and-asthma-rate-among-children-in-new-york-city" class="section level1">
-<h1>The relationship between Tree density and asthma rate among children in New York City</h1>
-<p>Jingwei Ren (jr3869); Qi Shao (qs2200); Xinyao Wu (xw2598); Baoyi Shi bs3141 12/2/2018</p>
 <div id="motivation" class="section level2">
 <h2>Motivation</h2>
 <p>Over the past decades, the prevalence of asthma has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Asthma is the most prevalent chronic disease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presence of extra mucus in narrow airways.</p>
@@ -247,57 +251,107 @@ $(document).ready(function () {
 <h3>Data Source</h3>
 <p>All data about asthma, poverty and air qualities was retrieved from NYC health (<a href="http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx" class="uri">http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx</a>)</p>
 <p>All data related to trees was retrieved from NYC open data (<a href="https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35" class="uri">https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35</a>)</p>
-<p>All neighborhood data was retrieved from (<a href="http://www.infoshare.org/misc/UHF.pdf" class="uri">http://www.infoshare.org/misc/UHF.pdf</a>)</p>
+<p>All neighborhood data was retrieved from<a href="https://catharob.carto.com/tables/uhf_42_dohmh_2009/public">CARTO</a>.</p>
 </div>
 <div id="scraping-method-cleaning" class="section level3">
 <h3>Scraping method, cleaning</h3>
-<pre class="r"><code>#import and tidy tree data
-tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
+<pre class="r"><code>tree_df = GET(&quot;https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD&quot;) %&gt;% 
+  content(&quot;parsed&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_character(),
+##   tree_id = col_integer(),
+##   block_id = col_integer(),
+##   tree_dbh = col_integer(),
+##   stump_diam = col_integer(),
+##   zipcode = col_integer(),
+##   cb_num = col_integer(),
+##   borocode = col_integer(),
+##   cncldist = col_integer(),
+##   st_assem = col_integer(),
+##   st_senate = col_integer(),
+##   boro_ct = col_integer(),
+##   Latitude = col_double(),
+##   longitude = col_double(),
+##   x_sp = col_double(),
+##   y_sp = col_double()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>tree_df = tree_df %&gt;%
   janitor::clean_names() %&gt;%
-  filter(status == &quot;Alive&quot;) 
+  filter(status == &quot;Alive&quot;) %&gt;%
+  select(zipcode, latitude, longitude)
 
-zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+download.file(&quot;https://raw.githubusercontent.com/BS1125/project_data/master/Zipcode_UHF42.xlsx&quot;,mode = &quot;wb&quot;,destfile = &quot;Zipcode_UHF42.xlsx&quot;)
+
+zipcode_uhf42 = read_excel(&quot;Zipcode_UHF42.xlsx&quot;) %&gt;%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
-   dplyr::select(-zipcode_no, uhf42_name) %&gt;%
+   select(-zipcode_no, uhf42_name) %&gt;%
    filter(is.na(zipcode) == FALSE)
 
 tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;) 
 
-mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
-<pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;/Users/wuxinyao/Desktop/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
-## with 43 features
-## It has 8 fields</code></pre>
-<pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
-  filter(is.na(uhf42_code) == FALSE)
+download.file(&quot;https://catharob.carto.com/api/v2/sql?filename=uhf_42_dohmh_2009&amp;q=SELECT+*+FROM+(select+*+from+public.uhf_42_dohmh_2009)+as+subq+&amp;format=csv&amp;bounds=&amp;api_key=&amp;skipfields=the_geom_webmercator&quot;,destfile = &quot;UHF_42.csv&quot;)
 
-tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)
-
-#tree density element is added
+area = read_csv(&quot;UHF_42.csv&quot;) %&gt;%
+  filter(uhfcode != 0) %&gt;%
+  select(uhf42_code = uhfcode, area = shape_area)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   the_geom = col_character(),
+##   cartodb_id = col_integer(),
+##   objectid = col_integer(),
+##   uhfcode = col_integer(),
+##   shape_leng = col_double(),
+##   shape_area = col_double(),
+##   uhf_neigh = col_character(),
+##   borough = col_character()
+## )</code></pre>
+<pre class="r"><code>tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)</code></pre>
+<pre class="r"><code>#tree density
 tree_density = tree_df %&gt;%
-  group_by(boroname, uhf42_name, uhf42_code, area) %&gt;%
+  group_by(uhf42_name, uhf42_code, area) %&gt;%
   dplyr::summarize(tree_total = n()) %&gt;%
   filter(is.na(uhf42_name) == FALSE) %&gt;%
   group_by(uhf42_name) %&gt;%
   dplyr::mutate(tree_density = tree_total/area) %&gt;%
   ungroup() %&gt;%
   mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))</code></pre>
-<pre class="r"><code># import and tidy astham data
+<pre class="r"><code>#read and tidy data
+download.file(&quot;https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv&quot;,mode = &quot;wb&quot;,destfile = &quot;asthma_air_poverty.csv&quot;)
 
-asthma_air_poverty = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
+asthma_air_poverty = read_csv(&quot;asthma_air_poverty.csv&quot;) %&gt;%
   select(geo_entity_id, geo_entity_name, name, data_value) %&gt;%
   filter(is.na(geo_entity_id) == FALSE) %&gt;%
   spread(key = name, value = data_value) %&gt;%
   janitor::clean_names() %&gt;%
   select(poverty, children_under_5_years_old_in_poverty, everything()) %&gt;%
   mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
-         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
-
-tree_density_total = tree_density %&gt;%
-  select(boroname, geo_entity_id=uhf42_code, tree_density) %&gt;%
+         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Unique Id` = col_character(),
+##   indicator_id = col_integer(),
+##   geo_type_id = col_integer(),
+##   measurement_type_id = col_integer(),
+##   internal_id = col_integer(),
+##   subtopic_id = col_integer(),
+##   name = col_character(),
+##   Measure = col_character(),
+##   geo_type_name = col_character(),
+##   description = col_character(),
+##   geo_entity_id = col_integer(),
+##   geo_entity_name = col_character(),
+##   year_description = col_character(),
+##   data_value = col_double(),
+##   message = col_character()
+## )</code></pre>
+<pre class="r"><code>tree_density_total = tree_density %&gt;%
+  select(geo_entity_id=uhf42_code, tree_density) %&gt;%
   distinct()
 
 final_df = left_join(asthma_air_poverty, tree_density_total)</code></pre>
+<pre><code>## Joining, by = &quot;geo_entity_id&quot;</code></pre>
 </div>
 </div>
 <div id="exploratory-analysis" class="section level2">
@@ -324,10 +378,7 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;) +
    guides(color = guide_legend(nrow = 2)) +
    scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<div class="figure">
-<img src="finalreport_files/figure-markdown_github/unnamed-chunk-4-1.png" />
-
-</div>
+<p><img src="finalreport_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>This plot 1 showed the relationship between asthma and tree. Visually, there was a positive association between tree density and astham rate.</p>
 </div>
 <div id="step-two" class="section level3">
@@ -345,10 +396,7 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;) +
    guides(color = guide_legend(nrow = 2)) +
    scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<div class="figure">
-<img src="finalreport_files/figure-markdown_github/unnamed-chunk-5-1.png" />
-
-</div>
+<p><img src="finalreport_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code># plot asthma and pm2.5
 ggplot(final_asthma_df) +
    geom_point(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age))+
@@ -361,10 +409,7 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;) +
    guides(color = guide_legend(nrow = 2)) +
    scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<div class="figure">
-<img src="finalreport_files/figure-markdown_github/unnamed-chunk-5-2.png" />
-
-</div>
+<p><img src="finalreport_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
 <pre class="r"><code># plot between asthma and poverty
 ggplot(final_asthma_df) +
    geom_point(aes(x = poverty, y = rate, color = asthma_age))+
@@ -377,10 +422,7 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;) +
    guides(color = guide_legend(nrow = 2)) +
    scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<div class="figure">
-<img src="finalreport_files/figure-markdown_github/unnamed-chunk-5-3.png" />
-
-</div>
+<p><img src="finalreport_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
 <p>plot2 showed the relationship between asthma rate and so2. plot3 showed the relationship between astham rate rate and pM.25 plot4 showed the relationship between asthma and poverty. Visually, there was a positive association between astham rate and SO2, PM 2.5 and poverty level.</p>
 </div>
 <div id="step-three" class="section level3">
@@ -397,10 +439,7 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;, axis.text.x = element_text(angle = 75, hjust = 1)) +
    guides(fill = guide_legend(nrow = 2)) +
    scale_fill_hue(name = &quot;Age&quot;) </code></pre>
-<div class="figure">
-<img src="finalreport_files/figure-markdown_github/unnamed-chunk-6-1.png" />
-
-</div>
+<p><img src="finalreport_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Plot 5 showed that children from 0 to 4 years have higher asthma rate compared to children from 5 to 14 years old.</p>
 </div>
 </div>
@@ -416,10 +455,7 @@ ggplot(final_asthma_df) +
     x = &quot;Sulfur Dioxide Average&quot;,
     y = &quot;Tree Density&quot;
   ) </code></pre>
-<div class="figure">
-<img src="finalreport_files/figure-markdown_github/unnamed-chunk-7-1.png" />
-
-</div>
+<p><img src="finalreport_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <pre class="r"><code>#plot between tree and pm2.5
 ggplot(final_asthma_df) +
   geom_point(aes(x = fine_particulate_matter_pm2_5, y = tree_density)) +
@@ -429,10 +465,7 @@ ggplot(final_asthma_df) +
     x = &quot;PM2.5 Average&quot;,
     y = &quot;Tree Density&quot;
   ) </code></pre>
-<div class="figure">
-<img src="finalreport_files/figure-markdown_github/unnamed-chunk-7-2.png" />
-
-</div>
+<p><img src="finalreport_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <p>plot 6 showed the association between tree density and so2. plot 7 showed the association between tree density and pm 2.5 Visually, there was a positive association between tree density and air quality factors.</p>
 </div>
 <div id="statistical-analyses" class="section level2">
@@ -443,13 +476,6 @@ summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_densi
   broom::tidy() %&gt;%
   knitr::kable()</code></pre>
 <table>
-<colgroup>
-<col width="45%" />
-<col width="15%" />
-<col width="14%" />
-<col width="12%" />
-<col width="11%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th align="left">term</th>
@@ -462,30 +488,30 @@ summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_densi
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">-103.55417</td>
-<td align="right">7.107578e+01</td>
-<td align="right">-1.4569545</td>
-<td align="right">0.1527456</td>
+<td align="right">-155.24310</td>
+<td align="right">9.011553e+01</td>
+<td align="right">-1.7227119</td>
+<td align="right">0.0930711</td>
 </tr>
 <tr class="even">
 <td align="left">tree_density</td>
-<td align="right">-450005.47197</td>
-<td align="right">7.087065e+05</td>
-<td align="right">-0.6349673</td>
-<td align="right">0.5289775</td>
+<td align="right">163130.32364</td>
+<td align="right">9.415070e+05</td>
+<td align="right">0.1732651</td>
+<td align="right">0.8633627</td>
 </tr>
 <tr class="odd">
 <td align="left">sulfur_dioxide_so2</td>
-<td align="right">192.94852</td>
-<td align="right">6.144257e+01</td>
-<td align="right">3.1403066</td>
-<td align="right">0.0031272</td>
+<td align="right">189.68311</td>
+<td align="right">6.276371e+01</td>
+<td align="right">3.0221782</td>
+<td align="right">0.0044754</td>
 </tr>
 <tr class="even">
 <td align="left">children_under_5_years_old_in_poverty</td>
-<td align="right">11.17321</td>
-<td align="right">1.438942e+00</td>
-<td align="right">7.7648807</td>
+<td align="right">11.07405</td>
+<td align="right">1.489616e+00</td>
+<td align="right">7.4341612</td>
 <td align="right">0.0000000</td>
 </tr>
 </tbody>
@@ -508,30 +534,30 @@ summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_dens
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">-82.55365</td>
-<td align="right">5.019181e+01</td>
-<td align="right">-1.6447634</td>
-<td align="right">0.1076654</td>
+<td align="right">-88.28305</td>
+<td align="right">6.421422e+01</td>
+<td align="right">-1.3748207</td>
+<td align="right">0.1772400</td>
 </tr>
 <tr class="even">
 <td align="left">tree_density</td>
-<td align="right">-471392.09498</td>
-<td align="right">4.963879e+05</td>
-<td align="right">-0.9496446</td>
-<td align="right">0.3478574</td>
+<td align="right">-414020.33134</td>
+<td align="right">6.693588e+05</td>
+<td align="right">-0.6185327</td>
+<td align="right">0.5399144</td>
 </tr>
 <tr class="odd">
 <td align="left">sulfur_dioxide_so2</td>
-<td align="right">122.64218</td>
-<td align="right">4.405184e+01</td>
-<td align="right">2.7840421</td>
-<td align="right">0.0080856</td>
+<td align="right">122.53171</td>
+<td align="right">4.567335e+01</td>
+<td align="right">2.6827835</td>
+<td align="right">0.0107495</td>
 </tr>
 <tr class="even">
 <td align="left">poverty</td>
-<td align="right">12.87822</td>
-<td align="right">1.587895e+00</td>
-<td align="right">8.1102445</td>
+<td align="right">12.90333</td>
+<td align="right">1.683991e+00</td>
+<td align="right">7.6623505</td>
 <td align="right">0.0000000</td>
 </tr>
 </tbody>
@@ -581,32 +607,32 @@ data.frame(Pollute = c(&quot;Ozone&quot;, &quot;Black Carbon&quot;, &quot;PM2.5&
 <tbody>
 <tr class="odd">
 <td align="left">Ozone</td>
-<td align="right">0.893</td>
-<td align="right">0.376</td>
+<td align="right">0.828</td>
+<td align="right">0.380</td>
 </tr>
 <tr class="even">
 <td align="left">Black Carbon</td>
-<td align="right">0.569</td>
-<td align="right">0.220</td>
+<td align="right">0.551</td>
+<td align="right">0.242</td>
 </tr>
 <tr class="odd">
 <td align="left">PM2.5</td>
-<td align="right">0.678</td>
-<td align="right">0.265</td>
+<td align="right">0.676</td>
+<td align="right">0.298</td>
 </tr>
 <tr class="even">
 <td align="left">NO</td>
-<td align="right">0.490</td>
-<td align="right">0.883</td>
+<td align="right">0.507</td>
+<td align="right">0.868</td>
 </tr>
 <tr class="odd">
 <td align="left">NO2</td>
-<td align="right">0.758</td>
-<td align="right">0.328</td>
+<td align="right">0.738</td>
+<td align="right">0.347</td>
 </tr>
 <tr class="even">
 <td align="left">SO2</td>
-<td align="right">0.023</td>
+<td align="right">0.017</td>
 <td align="right">0.006</td>
 </tr>
 </tbody>
@@ -633,12 +659,12 @@ t.test(final_df$asthma_emergency_department_visits_children_0_to_4_yrs_old, fina
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">57.01778</td>
-<td align="right">4.761863</td>
-<td align="right">2.11e-05</td>
-<td align="right">44</td>
-<td align="right">32.88609</td>
-<td align="right">81.14946</td>
+<td align="right">53.06667</td>
+<td align="right">4.257839</td>
+<td align="right">0.0001173</td>
+<td align="right">41</td>
+<td align="right">27.89655</td>
+<td align="right">78.23679</td>
 <td align="left">Paired t-test</td>
 <td align="left">two.sided</td>
 </tr>
@@ -652,7 +678,6 @@ t.test(final_df$asthma_emergency_department_visits_children_0_to_4_yrs_old, fina
 <p>We listed some possible reasons that explained why no obvious association was shown between tree density and asthma. One possible explanation is the season. In the spring and summer months, increasing tree densities might have a positive impact on asthma rate. Pollen could be an allergen that gives some people sneezing fits and watery eyes, which could indirectly cause an asthma attack in others. Certain trees like Ash, Birch, and Oak could cause aggravate respiratory allergies. However, in the fall and winter months, increasing tree densities might decrease the asthma rate through the effect on local air quality. Those two situations might counteract each other and result in the conclusion that overall, there was no association between tree density in New York City and children asthma rate in 2015. Other factors might also influence the asthma rate, including sociodemographic characteristics, population density and hospitals amount in the neighborhood. After adjustment, the association between tree density and hospitalizations as a result of asthma might no longer significant.</p>
 <p>We were also interested to see whether there was a difference in asthma rate between children from 0 to 4 years old and children from 5 to 14 years old. The result from plot 5 showed that children from 0 to 4 years have a higher asthma rate compared to children from 5 to 14 years old. The T-test also proved that there is a significant difference between children asthma rate of 0-4 and that of 5-14. (P value = 2.11e-05). A positive relationship between tree density and air quality factors in 42 neighborhood in New York city was reported. Tree density increases as CO2 and PM 2.5 levels increase. One possible explanation for this could be that people’s awareness of environment increases as the air quality in one area decreases. Therefore, we saw a positive result. We would expect to see a negative association. In order to verify this, we could make plots detecting the change of air quality’s levels throughout a couple of years. Increasing tree densities might help to decrease air quality’s levels through a long-term process.</p>
 <p>In conclusion, we found out that there is no association between tree density and asthma rate based on our data set. If more variables are included in the future, we would expect to see that afforestation in low-income communities will help improve air-quality and thus decrease the risk of child asthma over a long-term period</p>
-</div>
 </div>
 
 
