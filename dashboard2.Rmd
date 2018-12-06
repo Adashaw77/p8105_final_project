@@ -41,7 +41,6 @@ tree_total_uhf42 = tree_df %>%
 
 mydat2 = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
 
-names(mydat2)
 mydat2$UHFCODE
 proj4string1 =  "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80
 +towgs84=0,0,0" 

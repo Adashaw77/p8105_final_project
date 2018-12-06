@@ -50,9 +50,9 @@ tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
 
     ## Parsed with column specification:
     ## cols(
-    ##   zipcode = col_integer(),
+    ##   zipcode = col_double(),
     ##   boroname = col_character(),
-    ##   tree_dbh = col_integer(),
+    ##   tree_dbh = col_double(),
     ##   status = col_character(),
     ##   health = col_character(),
     ##   spc_common = col_character(),
@@ -72,7 +72,7 @@ mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
 ```
 
     ## OGR data source with driver: ESRI Shapefile 
-    ## Source: "/Users/wuxinyao/Desktop/p8105_final_project/UHF42/UHF_42_DOHMH.shp", layer: "UHF_42_DOHMH"
+    ## Source: "/Users/ada/Documents/Ada Documents/Master in Columbia/Courses/Data Science/R programming/homework/p8105_final_project/UHF42/UHF_42_DOHMH.shp", layer: "UHF_42_DOHMH"
     ## with 43 features
     ## It has 8 fields
 
@@ -109,20 +109,20 @@ asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
     ## Parsed with column specification:
     ## cols(
     ##   `Unique Id` = col_character(),
-    ##   indicator_id = col_integer(),
-    ##   geo_type_id = col_integer(),
-    ##   measurement_type_id = col_integer(),
-    ##   internal_id = col_integer(),
-    ##   subtopic_id = col_integer(),
+    ##   indicator_id = col_double(),
+    ##   geo_type_id = col_double(),
+    ##   measurement_type_id = col_double(),
+    ##   internal_id = col_double(),
+    ##   subtopic_id = col_double(),
     ##   name = col_character(),
     ##   Measure = col_character(),
     ##   geo_type_name = col_character(),
     ##   description = col_character(),
-    ##   geo_entity_id = col_integer(),
+    ##   geo_entity_id = col_double(),
     ##   geo_entity_name = col_character(),
     ##   year_description = col_character(),
     ##   data_value = col_double(),
-    ##   message = col_character()
+    ##   message = col_logical()
     ## )
 
 ``` r

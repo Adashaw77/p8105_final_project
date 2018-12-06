@@ -194,7 +194,7 @@ $(document).ready(function () {
   <a href="dashboRD.html">Dashboard</a>
 </li>
 <li>
-  <a href="https://treeandasthma.shinyapps.io/asthma_tree/">Shiny</a>
+  <a href="dashboard2.html">Dashboard</a>
 </li>
 <li>
   <a href="map.Rmd">
@@ -235,9 +235,9 @@ tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
   filter(status == &quot;Alive&quot;) </code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
-##   zipcode = col_integer(),
+##   zipcode = col_double(),
 ##   boroname = col_character(),
-##   tree_dbh = col_integer(),
+##   tree_dbh = col_double(),
 ##   status = col_character(),
 ##   health = col_character(),
 ##   spc_common = col_character(),
@@ -253,7 +253,7 @@ tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;)
 
 mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;/Users/wuxinyao/Desktop/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+## Source: &quot;/Users/ada/Documents/Ada Documents/Master in Columbia/Courses/Data Science/R programming/homework/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
 ## with 43 features
 ## It has 8 fields</code></pre>
 <pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
@@ -297,20 +297,20 @@ asthma_air_poverty = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `Unique Id` = col_character(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
+##   indicator_id = col_double(),
+##   geo_type_id = col_double(),
+##   measurement_type_id = col_double(),
+##   internal_id = col_double(),
+##   subtopic_id = col_double(),
 ##   name = col_character(),
 ##   Measure = col_character(),
 ##   geo_type_name = col_character(),
 ##   description = col_character(),
-##   geo_entity_id = col_integer(),
+##   geo_entity_id = col_double(),
 ##   geo_entity_name = col_character(),
 ##   year_description = col_character(),
 ##   data_value = col_double(),
-##   message = col_character()
+##   message = col_logical()
 ## )</code></pre>
 <pre class="r"><code>tree_density_total = tree_density %&gt;%
   select(boroname, geo_entity_id=uhf42_code, tree_density) %&gt;%
