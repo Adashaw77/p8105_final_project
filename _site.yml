@@ -6,9 +6,9 @@ navbar:
   right:
     - text: "Data"
       href:  Data.html
-    - text: "Dashboard"
+    - text: "Asthma"
       href: dashboRD.html
-    - text: "Dashboard"
+    - text: "Tree and asthma"
       href: dashboard2.html
     - icon: fab fa-youtube
       href: https://www.youtube.com/watch?v=XUR1DjuEwj0&feature=youtu.be/
