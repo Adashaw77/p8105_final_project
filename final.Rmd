@@ -53,7 +53,7 @@ ggplot(tree_df) +
 ```{r }
 #tree density
 tree_density = tree_df %>%
-  group_by(uhf42_name, uhf42_code, area) %>%
+  group_by(boroname, uhf42_name, uhf42_code, area) %>%
   dplyr::summarize(tree_total = n()) %>%
   filter(is.na(uhf42_name) == FALSE) %>%
   group_by(uhf42_name) %>%
@@ -74,7 +74,7 @@ asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
          geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
 
 tree_density_total = tree_density %>%
-  select(geo_entity_id=uhf42_code, tree_density) %>%
+  select(boroname, geo_entity_id=uhf42_code, tree_density) %>%
   distinct()
 
 final_df = left_join(asthma_air_poverty, tree_density_total)
@@ -106,7 +106,7 @@ so2_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~s
 
 so2_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~sulfur_dioxide_so2, data=final_df))$coefficients[2,4]
 
-p_value = data.frame(Pollute = c("Ozone", "Black Carbon", "PM2.5", "NO", "NO2", "SO2"),
+data.frame(Pollute = c("Ozone", "Black Carbon", "PM2.5", "NO", "NO2", "SO2"),
                      P_value1 = c(o3_p1, black_carbon_p1, pm2_5_p1, no_p1, no2_p1, so2_p1),
                      P_value1 = c(o3_p2, black_carbon_p2, pm2_5_p2, no_p2, no2_p2, so2_p2)) %>%
   knitr::kable(digits = 3)
@@ -121,6 +121,33 @@ summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_dens
 ```
 
 ```{r }
+ggplot(final_df) +
+  geom_boxplot(aes(x = boroname, y = sulfur_dioxide_so2, fill = boroname)) +
+  theme(legend.position = "none")
+
+ggplot(final_df) +
+  geom_boxplot(aes(x = boroname, y = ozone_o3, fill = boroname)) +
+  theme(legend.position = "none")
+
+ggplot(final_df) +
+  geom_boxplot(aes(x = boroname, y = nitric_oxide_no, fill = boroname)) +
+  theme(legend.position = "none")
+
+ggplot(final_df) +
+  geom_boxplot(aes(x = boroname, y = nitrogen_dioxide_no2, fill = boroname)) +
+  theme(legend.position = "none")
+
+ggplot(final_df) +
+  geom_boxplot(aes(x = boroname, y = black_carbon, fill = boroname)) +
+  theme(legend.position = "none")
+
+ggplot(final_df) +
+  geom_boxplot(aes(x = boroname, y = fine_particulate_matter_pm2_5, fill = boroname)) +
+  theme(legend.position = "none")
+```
+
+
+```{r }
 #asthma and so2
 final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %>%
   gather(key = poverty_age, value = poverty, poverty:children_under_5_years_old_in_poverty) %>%
@@ -133,21 +160,25 @@ ggplot(final_asthma_df) +
 
 #asthma and poverty
 ggplot(final_asthma_df) +
-   geom_point(aes(x=poverty,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = "lm",se=F) +
+   geom_point(aes(x = poverty, y = rate, color = asthma_age))+
+   geom_smooth(aes(x = poverty, y = rate, color = asthma_age), method = "lm", se = F) +
   theme(legend.position = "bottom")
 
 #asthma and tree
 ggplot(final_asthma_df) +
-  geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = "lm",se=F) +
+  geom_point(aes(x = tree_density, y = rate, color = asthma_age)) +
+   geom_smooth(aes(x = tree_density, y = rate, color = asthma_age), method = "lm",se = F) +
   theme(legend.position = "bottom")
 
 #asthma 0-4 and asthma 5-14 in each UHF42
 ggplot(final_asthma_df) +
-  geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = "identity",position = "dodge") +
-  coord_flip() +
+  geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = "identity", position = "dodge")
   theme(legend.position = "bottom")
+
+#tree and SO2
+ggplot(final_asthma_df) +
+  geom_point(aes(x = sulfur_dioxide_so2, y = tree_density)) +
+  geom_smooth(aes(x = sulfur_dioxide_so2, y = tree_density), method = "lm", se = F)
 ```
 
 
