@@ -193,19 +193,11 @@ $(document).ready(function () {
 <li>
   <a href="MLR.html">MLR</a>
 </li>
-<li class="dropdown-header">Dashboard</li>
 <li>
-<<<<<<< HEAD
-  <a href="dashboRD.html">Asthma</a>
-</li>
-<li>
-  <a href="dashboard2.html">Tree and asthma</a>
-=======
   <a href="asthma.html">Asthma</a>
 </li>
 <li>
   <a href="Tree.html">Tree and asthma</a>
->>>>>>> 0b24c0a4a4fbd150a7a04167d8de20fec0a692d0
 </li>
 <li>
   <a href="https://www.youtube.com/watch?v=XUR1DjuEwj0&amp;feature=youtu.be/">
@@ -236,14 +228,14 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
-## ✔ tibble  1.4.2     ✔ dplyr   0.7.8
-## ✔ tidyr   0.8.2     ✔ stringr 1.3.1
-## ✔ readr   1.2.1     ✔ forcats 0.3.0</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre><code>## -- Attaching packages ----------------------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## v ggplot2 3.0.0     v purrr   0.2.5
+## v tibble  1.4.2     v dplyr   0.7.8
+## v tidyr   0.8.1     v stringr 1.3.1
+## v readr   1.1.1     v forcats 0.3.0</code></pre>
+<pre><code>## -- Conflicts -------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(dplyr)
 library(readr)
 library(ggplot2)
@@ -264,17 +256,17 @@ library(rvest)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   .default = col_character(),
-##   tree_id = col_double(),
-##   block_id = col_double(),
-##   tree_dbh = col_double(),
-##   stump_diam = col_double(),
-##   zipcode = col_double(),
-##   cb_num = col_double(),
-##   borocode = col_double(),
-##   cncldist = col_double(),
-##   st_assem = col_double(),
-##   st_senate = col_double(),
-##   boro_ct = col_double(),
+##   tree_id = col_integer(),
+##   block_id = col_integer(),
+##   tree_dbh = col_integer(),
+##   stump_diam = col_integer(),
+##   zipcode = col_integer(),
+##   cb_num = col_integer(),
+##   borocode = col_integer(),
+##   cncldist = col_integer(),
+##   st_assem = col_integer(),
+##   st_senate = col_integer(),
+##   boro_ct = col_integer(),
 ##   Latitude = col_double(),
 ##   longitude = col_double(),
 ##   x_sp = col_double(),
@@ -303,9 +295,9 @@ area = read_csv(&quot;UHF_42.csv&quot;) %&gt;%
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   the_geom = col_character(),
-##   cartodb_id = col_double(),
-##   objectid = col_double(),
-##   uhfcode = col_double(),
+##   cartodb_id = col_integer(),
+##   objectid = col_integer(),
+##   uhfcode = col_integer(),
 ##   shape_leng = col_double(),
 ##   shape_area = col_double(),
 ##   uhf_neigh = col_character(),
@@ -335,20 +327,20 @@ asthma_air_poverty = read_csv(&quot;asthma_air_poverty.csv&quot;) %&gt;%
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `Unique Id` = col_character(),
-##   indicator_id = col_double(),
-##   geo_type_id = col_double(),
-##   measurement_type_id = col_double(),
-##   internal_id = col_double(),
-##   subtopic_id = col_double(),
+##   indicator_id = col_integer(),
+##   geo_type_id = col_integer(),
+##   measurement_type_id = col_integer(),
+##   internal_id = col_integer(),
+##   subtopic_id = col_integer(),
 ##   name = col_character(),
 ##   Measure = col_character(),
 ##   geo_type_name = col_character(),
 ##   description = col_character(),
-##   geo_entity_id = col_double(),
+##   geo_entity_id = col_integer(),
 ##   geo_entity_name = col_character(),
 ##   year_description = col_character(),
 ##   data_value = col_double(),
-##   message = col_logical()
+##   message = col_character()
 ## )</code></pre>
 <pre class="r"><code>tree_density_total = tree_density %&gt;%
   select(geo_entity_id=uhf42_code, tree_density) %&gt;%
