@@ -8,8 +8,8 @@ navbar:
       href:  Data.html
     - text: "Dashboard"
       href: dashboRD.html
-    - text: "Shiny"
-      href: https://treeandasthma.shinyapps.io/asthma_tree/
+    - text: "Dashboard"
+      href: dashboard2.html
     - icon: fab fa-youtube
       href: map.Rmd
     - icon: fa-github fa-lg
