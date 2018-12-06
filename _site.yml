@@ -11,7 +11,7 @@ navbar:
     - text: "Dashboard"
       href: dashboard2.html
     - icon: fab fa-youtube
-      href: map.Rmd
+      href: Data.Rmd
     - icon: fa-github fa-lg
       href: https://github.com/Adashaw77/p8105_final_project/
 output:

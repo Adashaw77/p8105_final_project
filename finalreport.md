@@ -49,25 +49,9 @@ tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
   janitor::clean_names() %>%
   filter(status == "Alive") 
 
-<<<<<<< HEAD
-=======
-    ## Parsed with column specification:
-    ## cols(
-    ##   zipcode = col_double(),
-    ##   boroname = col_character(),
-    ##   tree_dbh = col_double(),
-    ##   status = col_character(),
-    ##   health = col_character(),
-    ##   spc_common = col_character(),
-    ##   Latitude = col_double(),
-    ##   longitude = col_double()
-    ## )
-
-``` r
->>>>>>> 4195917071510e71162e9c20231a3778734c61eb
 zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
-   select(-zipcode_no, uhf42_name) %>%
+   dplyr::select(-zipcode_no, uhf42_name) %>%
    filter(is.na(zipcode) == FALSE)
 
 tree_df = left_join(tree_df, zipcode_uhf42, by = "zipcode") 
@@ -76,7 +60,7 @@ mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
 ```
 
     ## OGR data source with driver: ESRI Shapefile 
-    ## Source: "/Users/ada/Documents/Ada Documents/Master in Columbia/Courses/Data Science/R programming/homework/p8105_final_project/UHF42/UHF_42_DOHMH.shp", layer: "UHF_42_DOHMH"
+    ## Source: "/Users/wuxinyao/Desktop/p8105_final_project/UHF42/UHF_42_DOHMH.shp", layer: "UHF_42_DOHMH"
     ## with 43 features
     ## It has 8 fields
 
@@ -108,29 +92,6 @@ asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
   select(poverty, children_under_5_years_old_in_poverty, everything()) %>%
   mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
          geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
-<<<<<<< HEAD
-=======
-```
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   `Unique Id` = col_character(),
-    ##   indicator_id = col_double(),
-    ##   geo_type_id = col_double(),
-    ##   measurement_type_id = col_double(),
-    ##   internal_id = col_double(),
-    ##   subtopic_id = col_double(),
-    ##   name = col_character(),
-    ##   Measure = col_character(),
-    ##   geo_type_name = col_character(),
-    ##   description = col_character(),
-    ##   geo_entity_id = col_double(),
-    ##   geo_entity_name = col_character(),
-    ##   year_description = col_character(),
-    ##   data_value = col_double(),
-    ##   message = col_logical()
-    ## )
->>>>>>> 4195917071510e71162e9c20231a3778734c61eb
 
 tree_density_total = tree_density %>%
   select(boroname, geo_entity_id=uhf42_code, tree_density) %>%

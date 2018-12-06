@@ -98,11 +98,8 @@ final_df = left_join(asthma_air_poverty, tree_density_total)
 final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %>%
   gather(key = poverty_age, value = poverty, poverty:children_under_5_years_old_in_poverty) %>%
   filter((asthma_age == "asthma_emergency_department_visits_children_5_to_14_yrs_old"&poverty_age == "poverty")|(asthma_age == "asthma_emergency_department_visits_children_0_to_4_yrs_old"& poverty_age == "children_under_5_years_old_in_poverty"))
-<<<<<<< HEAD
 names(final_asthma_df)
-=======
 
->>>>>>> 4195917071510e71162e9c20231a3778734c61eb
 theme_set(theme_bw())
 ```
 
