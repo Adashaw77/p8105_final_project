@@ -117,10 +117,6 @@ total_tree = tree_total_uhf42 %>%
   arrange(UHFCODE) %>%
   mutate(tree_density = tree_density*100000)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 58121ff6b5e0d513e8989e71b2c22b5393d11c97
 
 pal <- colorBin("Greens", total_tree$tree_density, 5, pretty = FALSE)
 
