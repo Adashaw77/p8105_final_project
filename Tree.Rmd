@@ -95,19 +95,16 @@ pal <- colorBin("Greens", total_tree$tree_density, 5, pretty = FALSE)
 
 ```
 
-```{r }
+```{r include=FALSE }
 #tree density
 
 
 ### MAP
 
 mydat2 = rgdal::readOGR("./UHF_42/UHF_42_DOHMH.shp")
-
-mydat2$UHFCODE
 proj4string1 =  "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80
 +towgs84=0,0,0" 
 mydat2 = spTransform(mydat2, proj4string1)
-proj4string(mydat2)
 
 
 theme_set(theme_bw())
