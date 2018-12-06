@@ -90,8 +90,6 @@ final_df = left_join(asthma_air_poverty, tree_density_total)
 asthma_map = final_df %>%
   dplyr::select (id = geo_entity_id, asthma = asthma_total,geo_entity_name) 
 names(final_df)
-
-
 final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %>%
   gather(key = poverty_age, value = poverty, poverty:children_under_5_years_old_in_poverty) %>%
   filter((asthma_age == "asthma_emergency_department_visits_children_5_to_14_yrs_old"&poverty_age == "poverty")|(asthma_age == "asthma_emergency_department_visits_children_0_to_4_yrs_old"& poverty_age == "children_under_5_years_old_in_poverty"))
@@ -108,12 +106,20 @@ Column {data-width=450}
 
 ```{r debug2}
 
+tree_total_uhf42 = tree_df %>%
+  group_by(uhf42_name, area,uhf42_code) %>%
+  dplyr::summarize(total = n()) %>%
+  mutate(spc_common = "Total") %>%
+  filter(is.na(uhf42_name) == FALSE) %>%
+   group_by(spc_common) %>%
+  mutate(tree_density = total/area, 
+         uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))
+
 total_tree = tree_total_uhf42 %>%
   ungroup() %>%
   dplyr::select(UHFCODE= uhf42_code, everything()) %>%
   arrange(UHFCODE) %>%
   mutate(tree_density = tree_density*100000)
-
 
 pal <- colorBin("Greens", total_tree$tree_density, 5, pretty = FALSE)
 

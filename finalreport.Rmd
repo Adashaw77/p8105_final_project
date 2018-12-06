@@ -336,5 +336,13 @@ We were also interested to see whether there was a difference in asthma rate bet
 
 In conclusion, we found out that there is no association between tree density and asthma rate based on our data set. If more variables are included in the future, we would expect to see that afforestation in low-income communities will help improve air-quality and thus decrease the risk of child asthma over a long-term period
 
+## Reference
+
+(1)Lovasi, G. S., Quinn, J. W., Neckerman, K. M., Perzanowski, M. S., & Rundle, A. (2008). Children living in areas with more street trees have lower prevalence of asthma. Journal of Epidemiology & Community Health, 62(7), 647-649. doi:10.1136/jech.2007.071894
+
+(2)Andrusaityte, S., Grazuleviciene, R., Kudzyte, J., Bernotiene, A., Dedele, A. and Nieuwenhuijsen, M. (2016). Associations between neighbourhood greenness and asthma in preschool children in Kaunas, Lithuania: a case–control study. BMJ Open, 6(4), p.e010341.
+
+(3)Dadvand, Payam, et al. “Risks and Benefits of Green Spaces for Children: A Cross-Sectional Study of Associations with Sedentary Behavior, Obesity, Asthma, and Allergy.” Environmental Health Perspectives, vol. 122, no. 12, 2014, pp. 1329–1335., doi:10.1289/ehp.1308038.
+
 
 

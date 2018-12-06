@@ -256,28 +256,9 @@ $(document).ready(function () {
 <div id="scraping-method-cleaning" class="section level3">
 <h3>Scraping method, cleaning</h3>
 <pre class="r"><code>tree_df = GET(&quot;https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD&quot;) %&gt;% 
-  content(&quot;parsed&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character(),
-##   tree_id = col_integer(),
-##   block_id = col_integer(),
-##   tree_dbh = col_integer(),
-##   stump_diam = col_integer(),
-##   zipcode = col_integer(),
-##   cb_num = col_integer(),
-##   borocode = col_integer(),
-##   cncldist = col_integer(),
-##   st_assem = col_integer(),
-##   st_senate = col_integer(),
-##   boro_ct = col_integer(),
-##   Latitude = col_double(),
-##   longitude = col_double(),
-##   x_sp = col_double(),
-##   y_sp = col_double()
-## )</code></pre>
-<pre><code>## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>tree_df = tree_df %&gt;%
+  content(&quot;parsed&quot;)
+
+tree_df = tree_df %&gt;%
   janitor::clean_names() %&gt;%
   filter(status == &quot;Alive&quot;) %&gt;%
   select(zipcode, latitude, longitude)
@@ -295,19 +276,9 @@ download.file(&quot;https://catharob.carto.com/api/v2/sql?filename=uhf_42_dohmh_
 
 area = read_csv(&quot;UHF_42.csv&quot;) %&gt;%
   filter(uhfcode != 0) %&gt;%
-  select(uhf42_code = uhfcode, area = shape_area)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   the_geom = col_character(),
-##   cartodb_id = col_integer(),
-##   objectid = col_integer(),
-##   uhfcode = col_integer(),
-##   shape_leng = col_double(),
-##   shape_area = col_double(),
-##   uhf_neigh = col_character(),
-##   borough = col_character()
-## )</code></pre>
-<pre class="r"><code>tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)</code></pre>
+  select(uhf42_code = uhfcode, area = shape_area)
+
+tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)</code></pre>
 <pre class="r"><code>#tree density
 tree_density = tree_df %&gt;%
   group_by(uhf42_name, uhf42_code, area) %&gt;%
@@ -327,31 +298,13 @@ asthma_air_poverty = read_csv(&quot;asthma_air_poverty.csv&quot;) %&gt;%
   janitor::clean_names() %&gt;%
   select(poverty, children_under_5_years_old_in_poverty, everything()) %&gt;%
   mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
-         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_character(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_character(),
-##   data_value = col_double(),
-##   message = col_character()
-## )</code></pre>
-<pre class="r"><code>tree_density_total = tree_density %&gt;%
+         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
+
+tree_density_total = tree_density %&gt;%
   select(geo_entity_id=uhf42_code, tree_density) %&gt;%
   distinct()
 
 final_df = left_join(asthma_air_poverty, tree_density_total)</code></pre>
-<pre><code>## Joining, by = &quot;geo_entity_id&quot;</code></pre>
 </div>
 </div>
 <div id="exploratory-analysis" class="section level2">
@@ -678,6 +631,12 @@ t.test(final_df$asthma_emergency_department_visits_children_0_to_4_yrs_old, fina
 <p>We listed some possible reasons that explained why no obvious association was shown between tree density and asthma. One possible explanation is the season. In the spring and summer months, increasing tree densities might have a positive impact on asthma rate. Pollen could be an allergen that gives some people sneezing fits and watery eyes, which could indirectly cause an asthma attack in others. Certain trees like Ash, Birch, and Oak could cause aggravate respiratory allergies. However, in the fall and winter months, increasing tree densities might decrease the asthma rate through the effect on local air quality. Those two situations might counteract each other and result in the conclusion that overall, there was no association between tree density in New York City and children asthma rate in 2015. Other factors might also influence the asthma rate, including sociodemographic characteristics, population density and hospitals amount in the neighborhood. After adjustment, the association between tree density and hospitalizations as a result of asthma might no longer significant.</p>
 <p>We were also interested to see whether there was a difference in asthma rate between children from 0 to 4 years old and children from 5 to 14 years old. The result from plot 5 showed that children from 0 to 4 years have a higher asthma rate compared to children from 5 to 14 years old. The T-test also proved that there is a significant difference between children asthma rate of 0-4 and that of 5-14. (P value = 2.11e-05). A positive relationship between tree density and air quality factors in 42 neighborhood in New York city was reported. Tree density increases as CO2 and PM 2.5 levels increase. One possible explanation for this could be that people’s awareness of environment increases as the air quality in one area decreases. Therefore, we saw a positive result. We would expect to see a negative association. In order to verify this, we could make plots detecting the change of air quality’s levels throughout a couple of years. Increasing tree densities might help to decrease air quality’s levels through a long-term process.</p>
 <p>In conclusion, we found out that there is no association between tree density and asthma rate based on our data set. If more variables are included in the future, we would expect to see that afforestation in low-income communities will help improve air-quality and thus decrease the risk of child asthma over a long-term period</p>
+</div>
+<div id="reference" class="section level2">
+<h2>Reference</h2>
+<p>(1)Lovasi, G. S., Quinn, J. W., Neckerman, K. M., Perzanowski, M. S., &amp; Rundle, A. (2008). Children living in areas with more street trees have lower prevalence of asthma. Journal of Epidemiology &amp; Community Health, 62(7), 647-649. <a href="doi:10.1136/jech.2007.071894" class="uri">doi:10.1136/jech.2007.071894</a></p>
+<p>(2)Andrusaityte, S., Grazuleviciene, R., Kudzyte, J., Bernotiene, A., Dedele, A. and Nieuwenhuijsen, M. (2016). Associations between neighbourhood greenness and asthma in preschool children in Kaunas, Lithuania: a case–control study. BMJ Open, 6(4), p.e010341.</p>
+<p>(3)Dadvand, Payam, et al. “Risks and Benefits of Green Spaces for Children: A Cross-Sectional Study of Associations with Sedentary Behavior, Obesity, Asthma, and Allergy.” Environmental Health Perspectives, vol. 122, no. 12, 2014, pp. 1329–1335., <a href="doi:10.1289/ehp.1308038" class="uri">doi:10.1289/ehp.1308038</a>.</p>
 </div>
 
 
