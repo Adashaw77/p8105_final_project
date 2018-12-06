@@ -148,7 +148,7 @@ map = ggplot(asthma_map) +
 
 ```{r}
 ax = list(
-  title = "",
+  title = "Entities in NY",
   zeroline = FALSE,
   showline = FALSE,
   showticklabels = FALSE,
@@ -161,7 +161,9 @@ final_df %>%
          value  = rate ,
          asthma_emergency_department_visits_children_0_to_4_yrs_old,
          asthma_emergency_department_visits_children_5_to_14_yrs_old) %>% 
-  
+  mutate(
+    asthma_age = str_replace(asthma_age,"asthma_emergency_department_visits_","")
+  ) %>% 
 plot_ly(x= ~rate, y= ~geo_entity_name, color = ~asthma_age, type = 'bar',orientation = "h") %>%
   layout(
          yaxis = ax,
