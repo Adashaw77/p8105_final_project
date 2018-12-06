@@ -194,7 +194,7 @@ ggplot(final_asthma_df) +
 plot2 showed the relationship between asthma rate and so2.
 plot3 showed the relationship between astham rate rate and pM.25
 plot4 showed the relationship between asthma and poverty.
-Visually, there was a respective positive association between asthma rate and SO2, PM 2.5 and poverty level.
+Visually, there was a respective positive association between asthma rate and SO2, PM 2.5 and poverty level. 
 
 ### Step three
 
@@ -210,7 +210,7 @@ ggplot(final_asthma_df) +
     x = "Entity Name",
     y = "Asthma Rate"
   ) +
-   theme(legend.position = "bottom", axis.text.x = element_text(angle = 75, hjust = 1)) +
+   theme(legend.position = "bottom", axis.text.x = element_text(size = 4.5,angle = 75, hjust = 1)) +
    guides(fill = guide_legend(nrow = 2)) +
    scale_fill_hue(name = "Age") 
 ```
@@ -219,7 +219,9 @@ Plot 5 showed that children from 0 to 4 years have higher asthma rate compared t
 
 
 ## Three Visualizations
-We were also interested testing the association between tree density and air quality factors.
+
+Based on the association we found between air quality and asthma as well as the association between tree density and asthma, we then desired to explore the relationship between tree density and air quality factors.
+
 ```{r message = FALSE, warning = FALSE}
 #plot between tree and SO2
 ggplot(final_asthma_df) +
@@ -242,13 +244,16 @@ ggplot(final_asthma_df) +
   ) 
 ```
 
+As the previous figure showed that So2 and pm2.5 has a strong positive association with asthma, we chose So2 and pm2.5 respectively as our factor then made a scatter plot and added an adjusted regression line to visualize the relationship.
 plot 6 showed the association between tree density and so2.
 plot 7 showed the association between tree density and pm 2.5
 Visually, there was a positive association between tree density and air quality factors.As the SO2 level in one area increases, its tree density also increases. As PM 2.5 level in one area increases, its tree density also increases.
 
 ## Statistical analyses
 
+Based on the fact that tree density as well as air quality both have obvious effects on children asthma rate, we tried math method to prove our finding.
 We built two multilinear regression models, investigating the association between asthma rate and tree density, sulfur dioxide SO2 and poverty level for children from 0 to 4 years old and children from 5 to 14 years old. We assumed no interactions existed between each variable.
+
 ```{r  message = FALSE, warning = FALSE}
 
 # mlr showing the relationship between asthma rate of kids from 0 to 4 years and tree density, so2 levels, percent of the children under 5 years living in the poverty areas
@@ -264,7 +269,8 @@ summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_dens
 
 ```
 
-Based on the multiple linear regression models, all the factors are significant except tree density ( p value is 0.86, 0.64). This indicated that there are associations between asthma rate of kids and so2 and poverty levels.
+The multiple linear regression models show all the factors are significant except tree density ( p value is 0.86, 0.64). This indicated that there are associations between asthma rate of kids and so2 and poverty levels.
+
 model one: asthma = -103.55-450005 tree_density +192SO2+ 11.17poverty
 model two: asthma = -82.55 -471392 tree_density+ 122SO2+12.87poverty
 
