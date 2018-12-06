@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Jingwei Ren" />
+<meta name="author" content="Jingwei Ren," />
 
 
 <title>final report</title>
@@ -218,7 +218,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">final report</h1>
-<h4 class="author"><em>Jingwei Ren</em></h4>
+<h4 class="author"><em>Jingwei Ren,</em></h4>
 <h4 class="date"><em>12/2/2018</em></h4>
 
 </div>
@@ -254,16 +254,8 @@ $(document).ready(function () {
 </div>
 <div id="scraping-method-cleaning" class="section level3">
 <h3>scraping method, cleaning</h3>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages ---------------------------------------------- tidyverse 1.2.1 --</code></pre>
-<pre><code>## v ggplot2 3.0.0     v purrr   0.2.5
-## v tibble  1.4.2     v dplyr   0.7.8
-## v tidyr   0.8.1     v stringr 1.3.1
-## v readr   1.1.1     v forcats 0.3.0</code></pre>
-<pre><code>## -- Conflicts ------------------------------------------------- tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(dplyr)
+<pre class="r"><code>library(tidyverse)
+library(dplyr)
 library(readr)
 library(ggplot2)
 library(readxl)</code></pre>
@@ -271,19 +263,9 @@ library(readxl)</code></pre>
 tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
   janitor::clean_names() %&gt;%
   filter(status == &quot;Alive&quot;) %&gt;%
-  dplyr::select(-status)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   zipcode = col_integer(),
-##   boroname = col_character(),
-##   tree_dbh = col_integer(),
-##   status = col_character(),
-##   health = col_character(),
-##   spc_common = col_character(),
-##   Latitude = col_double(),
-##   longitude = col_double()
-## )</code></pre>
-<pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+  dplyr::select(-status)
+
+zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
    dplyr::select(-zipcode_no, uhf42_name) %&gt;%
    filter(is.na(zipcode) == FALSE)
@@ -314,26 +296,9 @@ tree_density = tree_df %&gt;%
 <pre class="r"><code># import and tidy astham data
 
 asthma_air = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
-  janitor::clean_names()</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_character(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_character(),
-##   data_value = col_double(),
-##   message = col_character()
-## )</code></pre>
-<pre class="r"><code>asthma_em_0to4 = asthma_air %&gt;%
+  janitor::clean_names()
+
+asthma_em_0to4 = asthma_air %&gt;%
   filter(name == &quot;Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)&quot;,
          measure == &quot;Rate&quot;,
          year_description == &quot;2015&quot;) %&gt;%
@@ -356,50 +321,16 @@ poverty = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
   filter(year_description == &quot;2011-15&quot;,
          measure == &quot;Percent&quot;,
          name == &quot;Poverty&quot;) %&gt;%
-  dplyr::select(geo_entity_id, poverty = data_value) </code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_character(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_character(),
-##   data_value = col_double(),
-##   message = col_character()
-## )</code></pre>
-<pre class="r"><code>poverty_under5 = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
+  dplyr::select(geo_entity_id, poverty = data_value) 
+
+poverty_under5 = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
   janitor::clean_names() %&gt;%
   filter(year_description == &quot;2011-15&quot;,
          measure == &quot;Percent&quot;,
          name == &quot;Children under 5 years old in Poverty&quot;) %&gt;%
-  dplyr::select(geo_entity_id, poverty_under5 = data_value) </code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_character(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_character(),
-##   data_value = col_double(),
-##   message = col_character()
-## )</code></pre>
-<pre class="r"><code>tree_density_total = tree_density%&gt;%
+  dplyr::select(geo_entity_id, poverty_under5 = data_value) 
+
+tree_density_total = tree_density%&gt;%
   dplyr::select(geo_entity_id=uhf42_code,tree_density) %&gt;%
   distinct()
 
@@ -410,11 +341,6 @@ final_df = left_join(asthma_em_0to4,asthma_em_5to14) %&gt;%
   left_join(tree_density_total) %&gt;%
   mutate(asthma_total = asthma_em_0to4+asthma_em_5to14,
          geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total)) </code></pre>
-<pre><code>## Joining, by = &quot;geo_entity_id&quot;</code></pre>
-<pre><code>## Joining, by = &quot;geo_entity_id&quot;
-## Joining, by = &quot;geo_entity_id&quot;
-## Joining, by = &quot;geo_entity_id&quot;
-## Joining, by = &quot;geo_entity_id&quot;</code></pre>
 </div>
 </div>
 <div id="exploratory-analysis" class="section level2">

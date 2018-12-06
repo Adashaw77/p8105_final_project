@@ -1,6 +1,6 @@
 ---
 title: "final report"
-author: "Jingwei Ren"
+author: "Jingwei Ren,"
 date: "12/2/2018"
 output: html_document
 ---
@@ -54,7 +54,7 @@ library(ggplot2)
 library(readxl)
 ```
 
-```{r}
+```{r message=FALSE}
 
 #import and tidy tree data
 tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
@@ -91,7 +91,7 @@ tree_density = tree_df %>%
 ```
 
 
-```{r}
+```{r message=FALSE}
 # import and tidy astham data
 
 asthma_air = read_csv("./data/asthma_pollutes_poverty.csv") %>%
@@ -150,6 +150,7 @@ Visualizations, summaries, and exploratory statistical analyses. Justify the ste
 ## Asthma Visualizations
 
 ###step one
+
 We made a plot showing the assoication between tree density and astham rate.
 ```{r}
 #plot between asthma and tree

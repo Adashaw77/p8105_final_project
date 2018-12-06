@@ -147,7 +147,7 @@ map = ggplot(asthma_map) +
 ```
 
 
-### Chart B
+### Asthma rate in different entities in NYC
 
 ```{r}
 ax = list(

@@ -6,8 +6,11 @@ output:
    theme: sandstone
    highlight: monochrome
 ---
- with asthma among children in New York City
+
+Tree density influences on asthma among children in New York City
 ------------------------------------------------------------
+
+<img src="figure/lung.png" style="width:75%">
 
 # Motivation
 
@@ -23,27 +26,9 @@ Our goal was to investigate the association between tree densities and asthma am
 
   All neighborhood data was retrieved from (http://www.infoshare.org/misc/UHF.pdf)
 
-# What we found
+# Conclusion
 
-##tree density vs astham rate
-
- shows the assoication between tree density and astham rate among different age groups of children in New York City. __Even though__
-
-<img src="image/tree.png" style="width:75%">
-
-##SO2 vs astham rate
-
-Figure 2. shows the assoication between SO2 and astham rate among different age groups of children in New York City. __Even though__
-
-<img src="image/so2.png" style="width:75%">
-
-## poverty vs astham rate
-
-Figure 3.shows the assoication between poverty level and astham rate among different age groups of children in New York City. __Even though__
-
-<img src="image/poverty.png" style="width:75%">
-
-
+In conclusion, we found out that there is no association between tree density and asthma rate based on our data set. If more variables are included in the future, we would expect to see that afforestation in low-income communities will help improve air-quality and thus decrease the risk of child asthma over a long-term period.
 
 
 
