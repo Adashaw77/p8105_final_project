@@ -16,6 +16,8 @@ library(httr)
 ```
 
 ```{r }
+
+
 tree_df = GET("https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD") %>% 
   content("parsed")
 

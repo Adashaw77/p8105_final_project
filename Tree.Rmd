@@ -13,64 +13,48 @@ library(plotly)
 library(readxl)
 library(rgdal)
 library(leaflet)
+library(rvest)
+library(httr)
+###
+tree_df = GET("https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD") %>% 
+  content("parsed")
 
-mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
-tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
-  dplyr::select(-health) %>%
-  janitor::clean_names() 
-
-zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
-   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
-   dplyr::select(-zipcode_no, uhf42_name) %>%
-   filter(is.na(zipcode) == FALSE)
-area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %>%
-  filter(is.na(uhf42_code) == FALSE)
-
-tree_df =  left_join(tree_df, zipcode_uhf42, by = "zipcode") 
-tree_df = left_join(tree_df, area, by = "uhf42_code")
-
-tree_total_uhf42 = tree_df %>%
-  group_by(uhf42_name, area,uhf42_code) %>%
-  dplyr::summarize(total = n()) %>%
-  mutate(spc_common = "Total") %>%
-  filter(is.na(uhf42_name) == FALSE) %>%
-   group_by(spc_common) %>%
-  mutate(tree_density = total/area, 
-         uhf42_name = forcats::fct_reorder(uhf42_name, tree_density)) 
-
-
-mydat2 = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
-
-mydat2$UHFCODE
-proj4string1 =  "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80
-+towgs84=0,0,0" 
-mydat2 = spTransform(mydat, proj4string1)
-proj4string(mydat2)
-
-
-#import and tidy tree data
-tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
+tree_df = tree_df %>%
   janitor::clean_names() %>%
-  filter(status == "Alive") 
+  filter(status == "Alive") %>%
+  select(zipcode, latitude, longitude)
 
-zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
+download.file("https://raw.githubusercontent.com/BS1125/project_data/master/Zipcode_UHF42.xlsx",mode = "wb",destfile = "Zipcode_UHF42.xlsx")
+
+zipcode_uhf42 = read_excel("Zipcode_UHF42.xlsx") %>%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
-   dplyr::select(-zipcode_no, uhf42_name) %>%
+   select(-zipcode_no, uhf42_name) %>%
    filter(is.na(zipcode) == FALSE)
 
 tree_df = left_join(tree_df, zipcode_uhf42, by = "zipcode") 
 
-mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
+download.file("https://catharob.carto.com/api/v2/sql?filename=uhf_42_dohmh_2009&q=SELECT+*+FROM+(select+*+from+public.uhf_42_dohmh_2009)+as+subq+&format=csv&bounds=&api_key=&skipfields=the_geom_webmercator",destfile = "UHF_42.csv")
 
-area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %>%
-  filter(is.na(uhf42_code) == FALSE)
+area = read_csv("UHF_42.csv") %>%
+  filter(uhfcode != 0) %>%
+  select(uhf42_code = uhfcode, area = shape_area)
 
 tree_df = left_join(tree_df, area, by = "uhf42_code")
 
+#read and tidy data
+download.file("https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv",mode = "wb",destfile = "asthma_air_poverty.csv")
 
-#tree density
+asthma_air_poverty = read_csv("asthma_air_poverty.csv") %>%
+  select(geo_entity_id, geo_entity_name, name, data_value) %>%
+  filter(is.na(geo_entity_id) == FALSE) %>%
+  spread(key = name, value = data_value) %>%
+  janitor::clean_names() %>%
+  select(poverty, children_under_5_years_old_in_poverty, everything()) %>%
+  mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
+         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
+
 tree_density = tree_df %>%
-  group_by(boroname, uhf42_name, uhf42_code, area) %>%
+  group_by(uhf42_name, uhf42_code, area) %>%
   dplyr::summarize(tree_total = n()) %>%
   filter(is.na(uhf42_name) == FALSE) %>%
   group_by(uhf42_name) %>%
@@ -78,19 +62,8 @@ tree_density = tree_df %>%
   ungroup() %>%
   mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))
 
-
-#read and tidy data
-asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
-  dplyr::select(geo_entity_id, geo_entity_name, name, data_value) %>%
-  filter(is.na(geo_entity_id) == FALSE) %>%
-  spread(key = name, value = data_value) %>%
-  janitor::clean_names() %>%
-  dplyr::select(poverty, children_under_5_years_old_in_poverty, everything()) %>%
-  mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
-         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
-
 tree_density_total = tree_density %>%
-  dplyr::select(boroname, geo_entity_id=uhf42_code, tree_density) %>%
+  select(geo_entity_id=uhf42_code, tree_density) %>%
   distinct()
 
 final_df = left_join(asthma_air_poverty, tree_density_total)
@@ -98,7 +71,22 @@ final_df = left_join(asthma_air_poverty, tree_density_total)
 final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %>%
   gather(key = poverty_age, value = poverty, poverty:children_under_5_years_old_in_poverty) %>%
   filter((asthma_age == "asthma_emergency_department_visits_children_5_to_14_yrs_old"&poverty_age == "poverty")|(asthma_age == "asthma_emergency_department_visits_children_0_to_4_yrs_old"& poverty_age == "children_under_5_years_old_in_poverty"))
-names(final_asthma_df)
+```
+
+```{r }
+#tree density
+
+
+### MAP
+
+mydat2 = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
+
+mydat2$UHFCODE
+proj4string1 =  "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80
++towgs84=0,0,0" 
+mydat2 = spTransform(mydat2, proj4string1)
+proj4string(mydat2)
+
 
 theme_set(theme_bw())
 ```
@@ -110,6 +98,17 @@ Column {data-width=450}
 ### Tree distribution in New York City
 
 ```{r debug2}
+
+
+tree_total_uhf42 = tree_df %>%
+  group_by(uhf42_name, area,uhf42_code) %>%
+  dplyr::summarize(total = n()) %>%
+  mutate(spc_common = "Total") %>%
+  filter(is.na(uhf42_name) == FALSE) %>%
+   group_by(spc_common) %>%
+  mutate(tree_density = total/area, 
+         uhf42_name = forcats::fct_reorder(uhf42_name, tree_density)) 
+
 
 total_tree = tree_total_uhf42 %>%
   ungroup() %>%
