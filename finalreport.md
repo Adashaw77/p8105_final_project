@@ -39,40 +39,51 @@ All data about asthma, poverty and air qualities was retrieved from NYC health (
 
 All data related to trees was retrieved from NYC open data (<https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35>)
 
-All neighborhood data was retrieved from (<http://www.infoshare.org/misc/UHF.pdf>)
+All neighborhood data was retrieved from[CARTO](https://catharob.carto.com/tables/uhf_42_dohmh_2009/public).
 
 ### Scraping method, cleaning
 
-``` r
-#import and tidy tree data
-tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
-  janitor::clean_names() %>%
-  filter(status == "Alive") 
+#### Data download link
 
-zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
+[Tree data](https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD)
+
+[UHF42 Zipcoda data](https://raw.githubusercontent.com/BS1125/project_data/master/Zipcode_UHF42.xlsx)
+
+[UHF42 Area data](https://catharob.carto.com/api/v2/sql?filename=uhf_42_dohmh_2009&q=SELECT+*+FROM+(select+*+from+public.uhf_42_dohmh_2009)+as+subq+&format=csv&bounds=&api_key=&skipfields=the_geom_webmercator)
+
+[Asthma, Pollutes and Poverty data](https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv)
+
+``` r
+tree_df = GET("https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD") %>% 
+  content("parsed")
+
+tree_df = tree_df %>%
+  janitor::clean_names() %>%
+  filter(status == "Alive") %>%
+  select(zipcode, latitude, longitude)
+
+download.file("https://raw.githubusercontent.com/BS1125/project_data/master/Zipcode_UHF42.xlsx",mode = "wb",destfile = "Zipcode_UHF42.xlsx")
+
+zipcode_uhf42 = read_excel("Zipcode_UHF42.xlsx") %>%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
-   dplyr::select(-zipcode_no, uhf42_name) %>%
+   select(-zipcode_no, uhf42_name) %>%
    filter(is.na(zipcode) == FALSE)
 
 tree_df = left_join(tree_df, zipcode_uhf42, by = "zipcode") 
 
-mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
-```
+download.file("https://catharob.carto.com/api/v2/sql?filename=uhf_42_dohmh_2009&q=SELECT+*+FROM+(select+*+from+public.uhf_42_dohmh_2009)+as+subq+&format=csv&bounds=&api_key=&skipfields=the_geom_webmercator",destfile = "UHF_42.csv")
 
-    ## OGR data source with driver: ESRI Shapefile 
-    ## Source: "/Users/ada/Documents/Ada Documents/Master in Columbia/Courses/Data Science/R programming/homework/p8105_final_project/UHF42/UHF_42_DOHMH.shp", layer: "UHF_42_DOHMH"
-    ## with 43 features
-    ## It has 8 fields
-
-``` r
-area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %>%
-  filter(is.na(uhf42_code) == FALSE)
+area = read_csv("UHF_42.csv") %>%
+  filter(uhfcode != 0) %>%
+  select(uhf42_code = uhfcode, area = shape_area)
 
 tree_df = left_join(tree_df, area, by = "uhf42_code")
+```
 
-#tree density element is added
+``` r
+#tree density
 tree_density = tree_df %>%
-  group_by(boroname, uhf42_name, uhf42_code, area) %>%
+  group_by(uhf42_name, uhf42_code, area) %>%
   dplyr::summarize(tree_total = n()) %>%
   filter(is.na(uhf42_name) == FALSE) %>%
   group_by(uhf42_name) %>%
@@ -82,9 +93,10 @@ tree_density = tree_df %>%
 ```
 
 ``` r
-# import and tidy astham data
+#read and tidy data
+download.file("https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv",mode = "wb",destfile = "asthma_air_poverty.csv")
 
-asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
+asthma_air_poverty = read_csv("asthma_air_poverty.csv") %>%
   select(geo_entity_id, geo_entity_name, name, data_value) %>%
   filter(is.na(geo_entity_id) == FALSE) %>%
   spread(key = name, value = data_value) %>%
@@ -94,7 +106,7 @@ asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
          geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
 
 tree_density_total = tree_density %>%
-  select(boroname, geo_entity_id=uhf42_code, tree_density) %>%
+  select(geo_entity_id=uhf42_code, tree_density) %>%
   distinct()
 
 final_df = left_join(asthma_air_poverty, tree_density_total)
@@ -127,9 +139,9 @@ ggplot(final_asthma_df) +
    scale_color_hue(name = "Age")
 ```
 
-![](finalreport_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](finalreport_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
-This plot 1 showed the relationship between asthma and tree. Visually, there was a positive association between tree density and astham rate.
+Plot1 showed the relationship between children asthma rate and tree densities for children from 0 to 4 years old and for children from 5 to 14 yeras old. Visually, there was a slightly positive association between tree density and astham rate. Children who are younger have a relatively higher asthma rate compared to children who are older.
 
 ### Step two
 
@@ -150,7 +162,7 @@ ggplot(final_asthma_df) +
    scale_color_hue(name = "Age")
 ```
 
-![](finalreport_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](finalreport_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 ``` r
 # plot asthma and pm2.5
@@ -167,7 +179,7 @@ ggplot(final_asthma_df) +
    scale_color_hue(name = "Age")
 ```
 
-![](finalreport_files/figure-markdown_github/unnamed-chunk-5-2.png)
+![](finalreport_files/figure-markdown_github/unnamed-chunk-6-2.png)
 
 ``` r
 # plot between asthma and poverty
@@ -184,9 +196,9 @@ ggplot(final_asthma_df) +
    scale_color_hue(name = "Age")
 ```
 
-![](finalreport_files/figure-markdown_github/unnamed-chunk-5-3.png)
+![](finalreport_files/figure-markdown_github/unnamed-chunk-6-3.png)
 
-plot2 showed the relationship between asthma rate and so2. plot3 showed the relationship between astham rate rate and pM.25 plot4 showed the relationship between asthma and poverty. Visually, there was a positive association between astham rate and SO2, PM 2.5 and poverty level.
+plot2 showed the relationship between asthma rate and so2. plot3 showed the relationship between astham rate rate and pM.25 plot4 showed the relationship between asthma and poverty. Visually, there was a respective positive association between asthma rate and SO2, PM 2.5 and poverty level.
 
 ### Step three
 
@@ -201,19 +213,19 @@ ggplot(final_asthma_df) +
     x = "Entity Name",
     y = "Asthma Rate"
   ) +
-   theme(legend.position = "bottom", axis.text.x = element_text(angle = 75, hjust = 1)) +
+   theme(legend.position = "bottom", axis.text.x = element_text(size = 4.5,angle = 75, hjust = 1)) +
    guides(fill = guide_legend(nrow = 2)) +
    scale_fill_hue(name = "Age") 
 ```
 
-![](finalreport_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](finalreport_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
-Plot 5 showed that children from 0 to 4 years have higher asthma rate compared to children from 5 to 14 years old.
+Plot 5 showed that children from 0 to 4 years have higher asthma rate compared to children from 5 to 14 years old. Hunts point\_ Mott Haven has the highest asthma rate for children from 0 to 4 years old. East Harlem has the highest asthma rate for children from 5 to 14 years old. The plot also showed that children from 0 to 4 years have higher asthma rate compared to children from 5 to 14 years old.
 
-Tree Visualizations
--------------------
+Three Visualizations
+--------------------
 
-We were also interested testing the association between tree density and air quality factors.
+Based on the association we found between air quality and asthma as well as the association between tree density and asthma, we then desired to explore the relationship between tree density and air quality factors.
 
 ``` r
 #plot between tree and SO2
@@ -227,7 +239,7 @@ ggplot(final_asthma_df) +
   ) 
 ```
 
-![](finalreport_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](finalreport_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
 ``` r
 #plot between tree and pm2.5
@@ -241,14 +253,14 @@ ggplot(final_asthma_df) +
   ) 
 ```
 
-![](finalreport_files/figure-markdown_github/unnamed-chunk-7-2.png)
+![](finalreport_files/figure-markdown_github/unnamed-chunk-8-2.png)
 
-plot 6 showed the association between tree density and so2. plot 7 showed the association between tree density and pm 2.5 Visually, there was a positive association between tree density and air quality factors.
+As the previous figure showed that So2 and pm2.5 has a strong positive association with asthma, we chose So2 and pm2.5 respectively as our factor then made a scatter plot and added an adjusted regression line to visualize the relationship. plot 6 showed the association between tree density and so2. plot 7 showed the association between tree density and pm 2.5 Visually, there was a positive association between tree density and air quality factors.As the SO2 level in one area increases, its tree density also increases. As PM 2.5 level in one area increases, its tree density also increases.
 
 Statistical analyses
 --------------------
 
-We built two multilinear regression models, investigating the association between asthma rate and tree density, sulfur dioxide SO2 and poverty level for children from 0 to 4 years old and children from 5 to 14 years old. We assumed no interactions existed between each variable.
+Based on the fact that tree density as well as air quality both have obvious effects on children asthma rate, we tried math method to prove our finding. We built two multilinear regression models, investigating the association between asthma rate and tree density, sulfur dioxide SO2 and poverty level for children from 0 to 4 years old and children from 5 to 14 years old. We assumed no interactions existed between each variable.
 
 ``` r
 # mlr showing the relationship between asthma rate of kids from 0 to 4 years and tree density, so2 levels, percent of the children under 5 years living in the poverty areas
@@ -257,12 +269,12 @@ summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_densi
   knitr::kable()
 ```
 
-| term                                        |       estimate|     std.error|   statistic|    p.value|
-|:--------------------------------------------|--------------:|-------------:|-----------:|----------:|
-| (Intercept)                                 |     -103.55417|  7.107578e+01|  -1.4569545|  0.1527456|
-| tree\_density                               |  -450005.47197|  7.087065e+05|  -0.6349673|  0.5289775|
-| sulfur\_dioxide\_so2                        |      192.94852|  6.144257e+01|   3.1403066|  0.0031272|
-| children\_under\_5\_years\_old\_in\_poverty |       11.17321|  1.438942e+00|   7.7648807|  0.0000000|
+| term                                        |      estimate|     std.error|   statistic|    p.value|
+|:--------------------------------------------|-------------:|-------------:|-----------:|----------:|
+| (Intercept)                                 |    -155.24310|  9.011553e+01|  -1.7227119|  0.0930711|
+| tree\_density                               |  163130.32364|  9.415070e+05|   0.1732651|  0.8633627|
+| sulfur\_dioxide\_so2                        |     189.68311|  6.276371e+01|   3.0221782|  0.0044754|
+| children\_under\_5\_years\_old\_in\_poverty |      11.07405|  1.489616e+00|   7.4341612|  0.0000000|
 
 ``` r
 # mlr howing the relationship between asthma rate of kids from 5 to 14 years and tree density, so2 levels, poverty levels
@@ -274,15 +286,19 @@ summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_dens
 
 | term                 |       estimate|     std.error|   statistic|    p.value|
 |:---------------------|--------------:|-------------:|-----------:|----------:|
-| (Intercept)          |      -82.55365|  5.019181e+01|  -1.6447634|  0.1076654|
-| tree\_density        |  -471392.09498|  4.963879e+05|  -0.9496446|  0.3478574|
-| sulfur\_dioxide\_so2 |      122.64218|  4.405184e+01|   2.7840421|  0.0080856|
-| poverty              |       12.87822|  1.587895e+00|   8.1102445|  0.0000000|
+| (Intercept)          |      -88.28305|  6.421422e+01|  -1.3748207|  0.1772400|
+| tree\_density        |  -414020.33134|  6.693588e+05|  -0.6185327|  0.5399144|
+| sulfur\_dioxide\_so2 |      122.53171|  4.567335e+01|   2.6827835|  0.0107495|
+| poverty              |       12.90333|  1.683991e+00|   7.6623505|  0.0000000|
 
-Based on the multiple linear regression models, all the factors are significant except tree density ( p value is 0.86, 0.64). This indicated that there are associations between asthma rate of kids and so2 and poverty levels. model one: asthma = -103.55-450005 tree\_density +192SO2+ 11.17poverty model two: asthma = -82.55 -471392 tree\_density+ 122SO2+12.87poverty
+The multiple linear regression models show all the factors are significant except tree density ( p value is 0.86, 0.64). This indicated that there are associations between asthma rate of kids and so2 and poverty levels.
+
+model one: asthma = -103.55-450005 tree\_density +192SO2+ 11.17poverty model two: asthma = -82.55 -471392 tree\_density+ 122SO2+12.87poverty
 
 Additional analysis
 -------------------
+
+For a intuitive sence, people will strongly believe that better air quality will lead to less asthnma rate. Since we have the data included other kinds of air pollution related level and asthma rate, we used math method(SLR) to figure out whether other factors may have influences on asthma rate.
 
 We tested the association between astham rate and all pollutes including ozone, black carbon, PM 2.5, NO, NO2, SO2.
 
@@ -320,12 +336,12 @@ data.frame(Pollute = c("Ozone", "Black Carbon", "PM2.5", "NO", "NO2", "SO2"),
 
 | Pollute      |  P\_value1|  P\_value2|
 |:-------------|----------:|----------:|
-| Ozone        |      0.893|      0.376|
-| Black Carbon |      0.569|      0.220|
-| PM2.5        |      0.678|      0.265|
-| NO           |      0.490|      0.883|
-| NO2          |      0.758|      0.328|
-| SO2          |      0.023|      0.006|
+| Ozone        |      0.828|      0.380|
+| Black Carbon |      0.551|      0.242|
+| PM2.5        |      0.676|      0.298|
+| NO           |      0.507|      0.868|
+| NO2          |      0.738|      0.347|
+| SO2          |      0.017|      0.006|
 
 ``` r
 #based on p values, we choose SO2
@@ -333,7 +349,7 @@ data.frame(Pollute = c("Ozone", "Black Carbon", "PM2.5", "NO", "NO2", "SO2"),
 
 The result showed that only SO2 had an association with asthma, since the p value is lower than 0.05. All the other air quality factors are not significantly related to children asthma rate.
 
-We did a paired T test to test if there is significant difference between asthma rate of 0-4 and that of 5-14
+We did a paired T test to test if there is significant difference between asthma rate of 0-4 and that of 5-14.
 
 ``` r
 #Paired T test to test if there is significant difference between asthma rate of 0-4 and that of 5-14
@@ -342,9 +358,9 @@ t.test(final_df$asthma_emergency_department_visits_children_0_to_4_yrs_old, fina
   knitr::kable()
 ```
 
-|  estimate|  statistic|   p.value|  parameter|  conf.low|  conf.high| method        | alternative |
-|---------:|----------:|---------:|----------:|---------:|----------:|:--------------|:------------|
-|  57.01778|   4.761863|  2.11e-05|         44|  32.88609|   81.14946| Paired t-test | two.sided   |
+|  estimate|  statistic|    p.value|  parameter|  conf.low|  conf.high| method        | alternative |
+|---------:|----------:|----------:|----------:|---------:|----------:|:--------------|:------------|
+|  53.06667|   4.257839|  0.0001173|         41|  27.89655|   78.23679| Paired t-test | two.sided   |
 
 The T test result showed that there is significant difference between children asthma rate of 0-4 and that of 5-14. P value is 2.11e-05, lower than 0.05.
 
@@ -358,3 +374,12 @@ We listed some possible reasons that explained why no obvious association was sh
 We were also interested to see whether there was a difference in asthma rate between children from 0 to 4 years old and children from 5 to 14 years old. The result from plot 5 showed that children from 0 to 4 years have a higher asthma rate compared to children from 5 to 14 years old. The T-test also proved that there is a significant difference between children asthma rate of 0-4 and that of 5-14. (P value = 2.11e-05). A positive relationship between tree density and air quality factors in 42 neighborhood in New York city was reported. Tree density increases as CO2 and PM 2.5 levels increase. One possible explanation for this could be that people's awareness of environment increases as the air quality in one area decreases. Therefore, we saw a positive result. We would expect to see a negative association. In order to verify this, we could make plots detecting the change of air quality's levels throughout a couple of years. Increasing tree densities might help to decrease air quality's levels through a long-term process.
 
 In conclusion, we found out that there is no association between tree density and asthma rate based on our data set. If more variables are included in the future, we would expect to see that afforestation in low-income communities will help improve air-quality and thus decrease the risk of child asthma over a long-term period
+
+Reference
+---------
+
+(1)Lovasi, G. S., Quinn, J. W., Neckerman, K. M., Perzanowski, M. S., & Rundle, A. (2008). Children living in areas with more street trees have lower prevalence of asthma. Journal of Epidemiology & Community Health, 62(7), 647-649. <doi:10.1136/jech.2007.071894>
+
+(2)Andrusaityte, S., Grazuleviciene, R., Kudzyte, J., Bernotiene, A., Dedele, A. and Nieuwenhuijsen, M. (2016). Associations between neighbourhood greenness and asthma in preschool children in Kaunas, Lithuania: a case–control study. BMJ Open, 6(4), p.e010341.
+
+(3)Dadvand, Payam, et al. “Risks and Benefits of Green Spaces for Children: A Cross-Sectional Study of Associations with Sedentary Behavior, Obesity, Asthma, and Allergy.” Environmental Health Perspectives, vol. 122, no. 12, 2014, pp. 1329–1335., <doi:10.1289/ehp.1308038>.

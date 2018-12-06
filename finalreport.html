@@ -9,10 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Jingwei Ren (jr3869); Qi Shao (qs2200); Xinyao Wu (xw2598); Baoyi Shi bs3141" />
 
 
-<title>The relationship between Tree density and asthma rate among children in New York City</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,9 +22,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -220,13 +216,13 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">The relationship between Tree density and asthma rate among children in New York City</h1>
-<h4 class="author"><em>Jingwei Ren (jr3869); Qi Shao (qs2200); Xinyao Wu (xw2598); Baoyi Shi bs3141</em></h4>
-<h4 class="date"><em>12/2/2018</em></h4>
 
 </div>
 
 
+<div id="the-relationship-between-tree-density-and-asthma-rate-among-children-in-new-york-city" class="section level1">
+<h1>The relationship between Tree density and asthma rate among children in New York City</h1>
+<p>Jingwei Ren (jr3869); Qi Shao (qs2200); Xinyao Wu (xw2598); Baoyi Shi bs3141 12/2/2018</p>
 <div id="motivation" class="section level2">
 <h2>Motivation</h2>
 <p>Over the past decades, the prevalence of asthma has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Asthma is the most prevalent chronic disease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presence of extra mucus in narrow airways.</p>
@@ -255,6 +251,12 @@ $(document).ready(function () {
 </div>
 <div id="scraping-method-cleaning" class="section level3">
 <h3>Scraping method, cleaning</h3>
+<div id="data-download-link" class="section level4">
+<h4>Data download link</h4>
+<p><a href="https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD">Tree data</a></p>
+<p><a href="https://raw.githubusercontent.com/BS1125/project_data/master/Zipcode_UHF42.xlsx">UHF42 Zipcoda data</a></p>
+<p><a href="https://catharob.carto.com/api/v2/sql?filename=uhf_42_dohmh_2009&amp;q=SELECT+*+FROM+(select+*+from+public.uhf_42_dohmh_2009)+as+subq+&amp;format=csv&amp;bounds=&amp;api_key=&amp;skipfields=the_geom_webmercator">UHF42 Area data</a></p>
+<p><a href="https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv">Asthma, Pollutes and Poverty data</a></p>
 <pre class="r"><code>tree_df = GET(&quot;https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD&quot;) %&gt;% 
   content(&quot;parsed&quot;)
 
@@ -307,6 +309,7 @@ tree_density_total = tree_density %&gt;%
 final_df = left_join(asthma_air_poverty, tree_density_total)</code></pre>
 </div>
 </div>
+</div>
 <div id="exploratory-analysis" class="section level2">
 <h2>Exploratory analysis:</h2>
 <div id="asthma-visualizations" class="section level3">
@@ -331,7 +334,10 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;) +
    guides(color = guide_legend(nrow = 2)) +
    scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<p><img src="finalreport_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div class="figure">
+<img src="finalreport_files/figure-markdown_github/unnamed-chunk-5-1.png" />
+
+</div>
 <p>Plot1 showed the relationship between children asthma rate and tree densities for children from 0 to 4 years old and for children from 5 to 14 yeras old. Visually, there was a slightly positive association between tree density and astham rate. Children who are younger have a relatively higher asthma rate compared to children who are older.</p>
 </div>
 <div id="step-two" class="section level3">
@@ -349,7 +355,10 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;) +
    guides(color = guide_legend(nrow = 2)) +
    scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<p><img src="finalreport_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div class="figure">
+<img src="finalreport_files/figure-markdown_github/unnamed-chunk-6-1.png" />
+
+</div>
 <pre class="r"><code># plot asthma and pm2.5
 ggplot(final_asthma_df) +
    geom_point(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age))+
@@ -362,7 +371,10 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;) +
    guides(color = guide_legend(nrow = 2)) +
    scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<p><img src="finalreport_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<div class="figure">
+<img src="finalreport_files/figure-markdown_github/unnamed-chunk-6-2.png" />
+
+</div>
 <pre class="r"><code># plot between asthma and poverty
 ggplot(final_asthma_df) +
    geom_point(aes(x = poverty, y = rate, color = asthma_age))+
@@ -375,7 +387,10 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;) +
    guides(color = guide_legend(nrow = 2)) +
    scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<p><img src="finalreport_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
+<div class="figure">
+<img src="finalreport_files/figure-markdown_github/unnamed-chunk-6-3.png" />
+
+</div>
 <p>plot2 showed the relationship between asthma rate and so2. plot3 showed the relationship between astham rate rate and pM.25 plot4 showed the relationship between asthma and poverty. Visually, there was a respective positive association between asthma rate and SO2, PM 2.5 and poverty level.</p>
 </div>
 <div id="step-three" class="section level3">
@@ -392,7 +407,10 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;, axis.text.x = element_text(size = 4.5,angle = 75, hjust = 1)) +
    guides(fill = guide_legend(nrow = 2)) +
    scale_fill_hue(name = &quot;Age&quot;) </code></pre>
-<p><img src="finalreport_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="figure">
+<img src="finalreport_files/figure-markdown_github/unnamed-chunk-7-1.png" />
+
+</div>
 <p>Plot 5 showed that children from 0 to 4 years have higher asthma rate compared to children from 5 to 14 years old. Hunts point_ Mott Haven has the highest asthma rate for children from 0 to 4 years old. East Harlem has the highest asthma rate for children from 5 to 14 years old. The plot also showed that children from 0 to 4 years have higher asthma rate compared to children from 5 to 14 years old.</p>
 </div>
 </div>
@@ -408,7 +426,10 @@ ggplot(final_asthma_df) +
     x = &quot;Sulfur Dioxide Average&quot;,
     y = &quot;Tree Density&quot;
   ) </code></pre>
-<p><img src="finalreport_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="figure">
+<img src="finalreport_files/figure-markdown_github/unnamed-chunk-8-1.png" />
+
+</div>
 <pre class="r"><code>#plot between tree and pm2.5
 ggplot(final_asthma_df) +
   geom_point(aes(x = fine_particulate_matter_pm2_5, y = tree_density)) +
@@ -418,17 +439,27 @@ ggplot(final_asthma_df) +
     x = &quot;PM2.5 Average&quot;,
     y = &quot;Tree Density&quot;
   ) </code></pre>
-<p><img src="finalreport_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<div class="figure">
+<img src="finalreport_files/figure-markdown_github/unnamed-chunk-8-2.png" />
+
+</div>
 <p>As the previous figure showed that So2 and pm2.5 has a strong positive association with asthma, we chose So2 and pm2.5 respectively as our factor then made a scatter plot and added an adjusted regression line to visualize the relationship. plot 6 showed the association between tree density and so2. plot 7 showed the association between tree density and pm 2.5 Visually, there was a positive association between tree density and air quality factors.As the SO2 level in one area increases, its tree density also increases. As PM 2.5 level in one area increases, its tree density also increases.</p>
 </div>
 <div id="statistical-analyses" class="section level2">
 <h2>Statistical analyses</h2>
-<p>We built two multilinear regression models, investigating the association between asthma rate and tree density, sulfur dioxide SO2 and poverty level for children from 0 to 4 years old and children from 5 to 14 years old. We assumed no interactions existed between each variable.</p>
+<p>Based on the fact that tree density as well as air quality both have obvious effects on children asthma rate, we tried math method to prove our finding. We built two multilinear regression models, investigating the association between asthma rate and tree density, sulfur dioxide SO2 and poverty level for children from 0 to 4 years old and children from 5 to 14 years old. We assumed no interactions existed between each variable.</p>
 <pre class="r"><code># mlr showing the relationship between asthma rate of kids from 0 to 4 years and tree density, so2 levels, percent of the children under 5 years living in the poverty areas
 summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_density+sulfur_dioxide_so2+children_under_5_years_old_in_poverty,data=final_df)) %&gt;%
   broom::tidy() %&gt;%
   knitr::kable()</code></pre>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="45%" />
+<col width="14%" />
+<col width="14%" />
+<col width="12%" />
+<col width="11%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">term</th>
@@ -515,10 +546,12 @@ summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_dens
 </tr>
 </tbody>
 </table>
-<p>Based on the multiple linear regression models, all the factors are significant except tree density ( p value is 0.86, 0.64). This indicated that there are associations between asthma rate of kids and so2 and poverty levels. model one: asthma = -103.55-450005 tree_density +192SO2+ 11.17poverty model two: asthma = -82.55 -471392 tree_density+ 122SO2+12.87poverty</p>
+<p>The multiple linear regression models show all the factors are significant except tree density ( p value is 0.86, 0.64). This indicated that there are associations between asthma rate of kids and so2 and poverty levels.</p>
+<p>model one: asthma = -103.55-450005 tree_density +192SO2+ 11.17poverty model two: asthma = -82.55 -471392 tree_density+ 122SO2+12.87poverty</p>
 </div>
 <div id="additional-analysis" class="section level2">
 <h2>Additional analysis</h2>
+<p>For a intuitive sence, people will strongly believe that better air quality will lead to less asthnma rate. Since we have the data included other kinds of air pollution related level and asthma rate, we used math method(SLR) to figure out whether other factors may have influences on asthma rate.</p>
 <p>We tested the association between astham rate and all pollutes including ozone, black carbon, PM 2.5, NO, NO2, SO2.</p>
 <pre class="r"><code>#SLR:choose the pollutes associated with asthma
 o3_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~ozone_o3, data=final_df))$coefficients[2,4]
@@ -637,6 +670,7 @@ t.test(final_df$asthma_emergency_department_visits_children_0_to_4_yrs_old, fina
 <p>(1)Lovasi, G. S., Quinn, J. W., Neckerman, K. M., Perzanowski, M. S., &amp; Rundle, A. (2008). Children living in areas with more street trees have lower prevalence of asthma. Journal of Epidemiology &amp; Community Health, 62(7), 647-649. <a href="doi:10.1136/jech.2007.071894" class="uri">doi:10.1136/jech.2007.071894</a></p>
 <p>(2)Andrusaityte, S., Grazuleviciene, R., Kudzyte, J., Bernotiene, A., Dedele, A. and Nieuwenhuijsen, M. (2016). Associations between neighbourhood greenness and asthma in preschool children in Kaunas, Lithuania: a case–control study. BMJ Open, 6(4), p.e010341.</p>
 <p>(3)Dadvand, Payam, et al. “Risks and Benefits of Green Spaces for Children: A Cross-Sectional Study of Associations with Sedentary Behavior, Obesity, Asthma, and Allergy.” Environmental Health Perspectives, vol. 122, no. 12, 2014, pp. 1329–1335., <a href="doi:10.1289/ehp.1308038" class="uri">doi:10.1289/ehp.1308038</a>.</p>
+</div>
 </div>
 
 

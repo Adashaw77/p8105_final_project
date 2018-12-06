@@ -48,7 +48,7 @@ area = read_csv("UHF_42.csv") %>%
 tree_df = left_join(tree_df, area, by = "uhf42_code")
 
 ## Tidy map data
-mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
+mydat = rgdal::readOGR("./UHF_42/UHF_42_DOHMH.shp")
 area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %>%
   filter(is.na(uhf42_code) == FALSE)
 

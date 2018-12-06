@@ -5,6 +5,7 @@ date: "12/2/2018"
 output: github_document
 ---
 
+
 ## Motivation
 
 Over the past decades, the prevalence of asthma has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Asthma is the most prevalent chronic disease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presence of extra mucus in narrow airways. 
@@ -55,6 +56,18 @@ library(ggplot2)
 library(readxl)
 library(httr)
 ```
+
+####Data download link
+
+[Tree data](https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD)
+
+
+[UHF42 Zipcoda data](https://raw.githubusercontent.com/BS1125/project_data/master/Zipcode_UHF42.xlsx)
+
+[UHF42 Area data](https://catharob.carto.com/api/v2/sql?filename=uhf_42_dohmh_2009&q=SELECT+*+FROM+(select+*+from+public.uhf_42_dohmh_2009)+as+subq+&format=csv&bounds=&api_key=&skipfields=the_geom_webmercator)
+
+[Asthma, Pollutes and Poverty data](https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv)
+
 
 ```{r message=FALSE }
 tree_df = GET("https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD") %>% 
@@ -277,7 +290,7 @@ model two: asthma = -82.55 -471392 tree_density+ 122SO2+12.87poverty
 
 ## Additional analysis
 
-
+For a intuitive sence, people will strongly believe that better air quality will lead to less asthnma rate. Since we have the data included other kinds of air pollution related level and asthma rate, we used math method(SLR) to figure out whether other factors may have influences on asthma rate.
 
 We tested the association between astham rate and all pollutes including ozone, black carbon, PM 2.5, NO, NO2, SO2.
 ```{r message = F}
