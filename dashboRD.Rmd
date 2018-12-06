@@ -5,7 +5,8 @@ output:
     vertical_layout: fill
 ---
 
-```{r dashboard setup, include=FALSE}
+```{r dashboard, include=FALSE}
+
 library(flexdashboard)
 library(tidyverse)
 library(rvest)
@@ -16,10 +17,41 @@ library(patchwork)
 library(readr)
 library(ggplot2)
 library(readxl)
+library(ggthemes)
 ```
 
+
+
 ```{r tidy,include= FALSE}
+## Tidy tree data
+tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
+  janitor::clean_names() %>%
+  filter(status == "Alive") 
+
+zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
+   select(-zipcode_no, uhf42_name) %>%
+   filter(is.na(zipcode) == FALSE)
+
+tree_df = left_join(tree_df, zipcode_uhf42, by = "zipcode") 
+
+## Tidy map data
 mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
+area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %>%
+  filter(is.na(uhf42_code) == FALSE)
+
+tree_df = left_join(tree_df, area, by = "uhf42_code")
+
+tree_density = tree_df %>%
+  group_by(uhf42_name, uhf42_code, area) %>%
+  dplyr::summarize(tree_total = n()) %>%
+  filter(is.na(uhf42_name) == FALSE) %>%
+  group_by(uhf42_name) %>%
+  dplyr::mutate(tree_density = tree_total/area) %>%
+  ungroup() %>%
+  mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))
+
+## Tidy map data
 map_data = fortify(mydat) %>%
   dplyr::select(id, everything() )%>%
   nest(long:group)
@@ -29,128 +61,60 @@ map_data = map_data %>%
   dplyr::select(-id) %>%
   dplyr::select(id = uhf, everything()) %>%
   dplyr::select(long, lat, everything())
-
 names(map_data)[1:2] = c("x","y") 
 
-asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
-  filter(str_detect(year_description, "^20|^An")) %>%
-  mutate(year_description = str_remove(year_description, "Annual Average ")) %>%
-    filter(year_description == 2015)
-
-sulfur_dioxide= read_csv("./data/asthma_air/Data.csv") %>%
-  filter(name == "Sulfur Dioxide (SO2)") %>%
-  filter(year_description == "Winter 2014-15")
-
-ozone= read_csv("./data/asthma_air/Data.csv") %>%
-  filter(name == "Ozone (O3)") %>%
-  filter(year_description == "Summer 2015")
-
-poverty= read_csv("./data/poverty/Data.csv") %>%
-  filter(year_description == "2011-15" )
-
-smoke = read_csv("./data/smoking_exer/Data.csv") %>%
-  filter(year_description == "2015" )
-
-data = rbind(asthma_air,sulfur_dioxide,ozone, poverty, smoke)
-  
-asthma_air1 = data %>%
-  select(name, description, Measure, geo_entity_name, geo_entity_id, year = year_description, data_value) %>%
-  janitor::clean_names() %>% 
-  filter(measure %in% c("Mean", "Rate", "Number", "Percent", "Age-Adjusted Percent", "Age-Adjusted Rate ")) %>%
-  mutate(name_measure=str_c(name,"-",measure)) %>%
-  select(-name, -measure, -description, -year) %>%
-  spread(key = name_measure, value = data_value) %>%
-  janitor::clean_names()
-
-asthma_map = asthma_air1 %>%
-  dplyr::select (id = geo_entity_id, asthma = asthma_emergency_department_visits_children_0_to_4_yrs_old_rate)
-asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
-  filter(str_detect(year_description, "^20|^An")) %>%
-  mutate(year_description = str_remove(year_description, "Annual Average "))
-
-```
-
-```{r tree_tidy,include = F}
-#import and tidy tree data
-tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
+## Tidy asthma data
+asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
+  select(geo_entity_id, geo_entity_name, name, data_value) %>%
+  filter(is.na(geo_entity_id) == FALSE) %>%
+  spread(key = name, value = data_value) %>%
   janitor::clean_names() %>%
-  filter(status == "Alive")
+  select(poverty, children_under_5_years_old_in_poverty, everything()) %>%
+  mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
+         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
 
-zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
-   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
-   select(-zipcode_no, uhf42_name) %>%
-   filter(is.na(zipcode) == FALSE)
-
-tree_df = left_join(tree_df, zipcode_uhf42, by = "zipcode") 
-
-mydat = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
-
-area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %>%
-  filter(is.na(uhf42_code) == FALSE)
-
-tree_df = left_join(tree_df, area, by = "uhf42_code")
-#tree density
-tree_density = tree_df %>%
-  group_by(uhf42_name, uhf42_code, area, health) %>%
-  dplyr::summarize(health_total = n()) %>%
-  filter(is.na(uhf42_name) == FALSE) %>%
-  group_by(uhf42_name) %>%
-  dplyr::mutate(total = sum(health_total),
-                tree_density = total/area,
-                health_tree_density = health_total/area) %>%
-  ungroup() %>%
-  mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))
-
-asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
-  janitor::clean_names()
-
-asthma_em_0to4 = asthma_air %>%
-  filter(name == "Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)",
-         measure == "Rate",
-         year_description == "2015") %>%
-  select(geo_entity_id, geo_entity_name, asthma_em_0to4 = data_value)
-
-asthma_em_5to14 = asthma_air %>%
-  filter(name == "Asthma Emergency Department Visits (Children 5 to 14 Yrs Old)",
-         measure == "Rate",
-         year_description == "2015") %>%
-  select(geo_entity_id, asthma_em_5to14 = data_value) 
-
-so2 = asthma_air %>%
-  filter(name == "Sulfur Dioxide (SO2)",
-         measure == "Mean",
-         year_description == "Winter 2014-15") %>%
-  select(geo_entity_id, so2 = data_value)
-
-poverty = read_csv("./data/poverty/Data.csv") %>%
-  janitor::clean_names() %>%
-  filter(year_description == "2012-16",
-         measure == "Percent",
-         name == "Poverty") %>%
-  select(geo_entity_id, poverty = data_value) 
-
-poverty_under5 = read_csv("./data/poverty/Data.csv") %>%
-  janitor::clean_names() %>%
-  filter(year_description == "2011-15",
-         measure == "Percent",
-         name == "Children under 5 years old in Poverty") %>%
-  select(geo_entity_id, poverty_under5 = data_value) 
-
-tree_density_total = tree_density%>%
-  select(geo_entity_id=uhf42_code,tree_density) %>%
+## Join all together
+tree_density_total = tree_density %>%
+  select(geo_entity_id=uhf42_code, tree_density) %>%
   distinct()
 
-final_df = left_join(asthma_em_0to4,asthma_em_5to14) %>%
-  left_join(so2) %>%
-  left_join(poverty) %>%
-  left_join(poverty_under5) %>%
-  left_join(tree_density_total) %>%
-  mutate(asthma_total = asthma_em_0to4+asthma_em_5to14,
-         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total)) 
-#asthma and so2
-final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to4:asthma_em_5to14) %>%
-  gather(key = poverty_age, value = poverty, poverty:poverty_under5) %>%
-  filter((asthma_age == "asthma_em_5to14"&poverty_age == "poverty")|(asthma_age == "asthma_em_0to4"& poverty_age == "poverty_under5"))
+final_df = left_join(asthma_air_poverty, tree_density_total)
+
+
+## Asthma_map
+
+asthma_map = final_df %>%
+  dplyr::select (id = geo_entity_id, asthma = asthma_total,geo_entity_name) 
+names(final_df)
+
+### Write a function to remove grid and axis
+
+theme_nothing <- function(base_size = 12, legend = TRUE){
+  if(legend){
+    theme(
+      axis.text =          element_blank(),
+      axis.title =         element_blank(),
+      panel.background =   element_blank(),
+      panel.grid.major =   element_blank(),
+      panel.grid.minor =   element_blank(),
+      axis.ticks.length =  unit(0, "cm"),
+      panel.spacing =      unit(0, "lines"),
+      plot.margin =        unit(c(0, 0, 0, 0), "lines")
+    )
+  } else {
+    theme(
+      line =               element_blank(),
+      rect =               element_blank(),
+      text =               element_blank(),
+      axis.ticks.length =  unit(0, "cm"),
+      legend.position =    "none",
+      panel.spacing =      unit(0, "lines"),
+      plot.margin =        unit(c(0, 0, 0, 0), "lines")
+    )
+  }
+}
+
+
 ```
 
 
@@ -161,21 +125,31 @@ Column {.tabset data-width=650}
 ### Chart A
 
 ```{r}
-ggplot(asthma_map) +
-    geom_map(aes(map_id = id, fill = asthma), color = "white", map = map_data) +
-    scale_fill_gradient(high = "darkgreen",low = "lightgreen") +
-    expand_limits(map_data)
+
+cnames = aggregate(cbind(x, y) ~ id, data=map_data, FUN=mean)
+cnames = left_join(cnames,asthma_map, by = "id")
+cnames = cnames[-1,]
+map = ggplot(asthma_map) +
+    geom_map(aes(map_id = id, fill = asthma), color = "white", map = map_data)  +
+    scale_fill_gradient(high = "#c51b8a",low = "#fde0dd", guide = "colorbar", name="Visits") +
+    expand_limits(map_data) +
+  geom_text(data = cnames, aes(x = x, y = y, label = geo_entity_name), size = 2) + theme_void()+
+  theme(legend.justification=c(1,0), legend.position=c(1,0)) +
+    theme_nothing()
+
+  ggplotly(map) %>%
+  layout(hoverlabel = list(bgcolor = "white", 
+                              font = list(family = "Calibri", 
+                                          size = 14, 
+                                          color = "black")))
+
 ```
 
 
 ### Chart B
 
 ```{r}
-#asthma 0-4 and asthma 5-14 in each UHF42
-bar = ggplot(final_asthma_df) +
-  geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = "identity",position = "dodge") +
-  coord_flip()
-ggplotly(bar)
+
 ```
 
 Column {data-width=550}
@@ -183,36 +157,20 @@ Column {data-width=550}
 ### Chart C
 
 ```{r}
-old = filter(final_asthma_df,asthma_age == "asthma_em_5to14")
-young = filter(final_asthma_df,asthma_age == "asthma_em_0to4")
-fit1 = lm(rate~so2,data = old)
-fit2 = lm(rate~so2,data = young)
-subplot(
-  plot_ly(old, x = ~so2, y = ~rate)%>% 
-    add_markers(alpha = 0.5,name = "age from 5 to 14") %>% 
-    add_lines(y=fitted(fit1),name = "lm for age 5 to 14"),
-  plot_ly(young, x = ~so2, y = ~rate) %>% 
-    add_markers(alpha = 0.5,name = "age from 0 to 4") %>% 
-   add_lines(y=fitted(fit2),name = "lm for age 0 to 4")
-)
+
 ```
 
 
 ### Chart D {.tabset}
 
 ```{r}
-#asthma and poverty
-ggplot(final_asthma_df) +
-   geom_point(aes(x=poverty,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = "lm",se=F)
+
+
 ```
 
 ### Chart E 
 
 ```{r}
-#asthma and tree
-ggplot(final_asthma_df) +
-  geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = "lm",se=F)
+
 
 ```

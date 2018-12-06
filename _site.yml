@@ -1,3 +1,4 @@
+runtime: shiny
 name: "Yay internet!"
 output_dir: "."
 navbar:
@@ -9,10 +10,8 @@ navbar:
       href: datasource.html
     - text: "Dashboard"
       href: dashboRD.html
-    - text: "Shiny"
-      href: shiny_treemap.html   
     - icon: fab fa-youtube
-      href: youtube.html
+      href: map.Rmd
     - icon: fa-github fa-lg
       href: https://github.com/Adashaw77/p8105_final_project/
 output:

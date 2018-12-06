@@ -12,7 +12,7 @@
 <meta name="author" content="Jingwei Ren" />
 
 
-<title>final report</title>
+<title>final_report</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -197,10 +197,7 @@ $(document).ready(function () {
   <a href="dashboRD.html">Dashboard</a>
 </li>
 <li>
-  <a href="shiny_treemap.html">Shiny</a>
-</li>
-<li>
-  <a href="youtube.html">
+  <a href="map.Rmd">
     <span class="fab fa fab fa-youtube"></span>
      
   </a>
@@ -220,7 +217,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">final report</h1>
+<h1 class="title toc-ignore">final_report</h1>
 <h4 class="author"><em>Jingwei Ren</em></h4>
 <h4 class="date"><em>12/2/2018</em></h4>
 
@@ -242,13 +239,21 @@ $(document).ready(function () {
 <div id="initial-questions" class="section level2">
 <h2>Initial Questions</h2>
 <p>Our initial questions was whether there is an association between tree densities and asthma among children in New York City based on 42 different neighborhoods.</p>
+<<<<<<< HEAD
 <p>Furthermore, we investigated the relationships between asthma and other factors, like poverties and air qualities, factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2)). We were also interested in the association between tree densities in 42 different neighborhoods and air quality factors.</p>
+=======
+<p>Furthermore, we investigated the relationships between asthma and other factors, like air qualities, factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2)), poverties, and smoking. We were also interested in the association between tree densities in 42 different neighborhoods and air quality factors.</p>
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
 <p>Our GitHub repo of the steps in this analysis can be found <a href="https://github.com/Adashaw77/p8105_final_project/blob/master/final.Rmd">here</a>.</p>
 <p>The original tree data includes variables: zip code of each neighborhoods, boroname, tree’s diameter, status(alive and dead), health, spc_common (tree species) and tree’s latitude and longitude.</p>
+<<<<<<< HEAD
 <p>The asthma dataset has a total 16 variables and it includes important variables like neighborhoods, asthma rate for children from 0 to 4 years old and children from 5 to 14 years old, so2 level, poverty percent, percent of the children under 5 years living in the poverty areas, tree’s density and total asthma rate.</p>
+=======
+<p>The compiled dataset has a total 16 variables and it includes important variables like neighborhoods, asthma rate for children from 0 to 4 years old and children from 5 to 14 years old, so2 level, poverty percent, percent of the children under 5 years living in the poverty areas, tree’s density and total asthma rate.</p>
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
 <div id="source" class="section level3">
 <h3>source</h3>
 <p>All data about asthma, poverty and air qualities was retrieved from NYC health (<a href="http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx" class="uri">http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx</a>)</p>
@@ -257,6 +262,7 @@ $(document).ready(function () {
 </div>
 <div id="scraping-method-cleaning" class="section level3">
 <h3>scraping method, cleaning</h3>
+<<<<<<< HEAD
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
@@ -270,10 +276,13 @@ $(document).ready(function () {
 library(readr)
 library(ggplot2)
 library(readxl)</code></pre>
+=======
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
 <pre class="r"><code>#import and tidy tree data
 tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
   janitor::clean_names() %&gt;%
   filter(status == &quot;Alive&quot;) %&gt;%
+<<<<<<< HEAD
   select(-status)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -287,6 +296,11 @@ tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
 ##   longitude = col_double()
 ## )</code></pre>
 <pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+=======
+  select(-status)
+
+zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
    select(-zipcode_no, uhf42_name) %&gt;%
    filter(is.na(zipcode) == FALSE)
@@ -295,15 +309,28 @@ tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;)
 
 mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
+<<<<<<< HEAD
 ## Source: &quot;/Users/jingweiren/Desktop/p8105/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+=======
+## Source: &quot;/Users/ada/Documents/Ada Documents/Master in Columbia/Courses/Data Science/R programming/homework/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
 ## with 43 features
 ## It has 8 fields</code></pre>
 <pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
   filter(is.na(uhf42_code) == FALSE)
 
+<<<<<<< HEAD
 tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)
 
 #tree density element is added
+=======
+# based on zip code, we match the tree to 42 neighborhoods
+
+tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)
+
+
+#tree density
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
 tree_density = tree_df %&gt;%
   group_by(uhf42_name, uhf42_code, area, health) %&gt;%
   dplyr::summarize(health_total = n()) %&gt;%
@@ -314,6 +341,7 @@ tree_density = tree_df %&gt;%
                 health_tree_density = health_total/area) %&gt;%
   ungroup() %&gt;%
   mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))</code></pre>
+<<<<<<< HEAD
 <pre class="r"><code># import and tidy astham data
 
 asthma_air = read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
@@ -345,6 +373,14 @@ asthma_air = read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
 ## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
 ## See problems(...) for more details.</code></pre>
 <pre class="r"><code>asthma_em_0to4 = asthma_air %&gt;%
+=======
+<pre class="r"><code>#import and tidy asthma data
+
+asthma_air = read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
+  janitor::clean_names()
+
+asthma_em_0to4 = asthma_air %&gt;%
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
   filter(name == &quot;Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)&quot;,
          measure == &quot;Rate&quot;,
          year_description == &quot;2015&quot;) %&gt;%
@@ -367,6 +403,7 @@ poverty = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
   filter(year_description == &quot;2012-16&quot;,
          measure == &quot;Percent&quot;,
          name == &quot;Poverty&quot;) %&gt;%
+<<<<<<< HEAD
   select(geo_entity_id, poverty = data_value) </code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
@@ -393,10 +430,16 @@ poverty = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
 <pre><code>## Warning: 3 parsing failures.
 ## row # A tibble: 3 x 5 col     row col   expected   actual    file                      expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;                     actual 1   841 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; file 2   842 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; row 3   843 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
 <pre class="r"><code>poverty_under5 = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
+=======
+  select(geo_entity_id, poverty = data_value) 
+
+poverty_under5 = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
   janitor::clean_names() %&gt;%
   filter(year_description == &quot;2011-15&quot;,
          measure == &quot;Percent&quot;,
          name == &quot;Children under 5 years old in Poverty&quot;) %&gt;%
+<<<<<<< HEAD
   select(geo_entity_id, poverty_under5 = data_value) </code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
 <pre><code>## Parsed with column specification:
@@ -423,6 +466,11 @@ poverty = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
 ## Warning in rbind(names(probs), probs_f): 3 parsing failures.
 ## row # A tibble: 3 x 5 col     row col   expected   actual    file                      expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;                     actual 1   841 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; file 2   842 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; row 3   843 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
 <pre class="r"><code>tree_density_total = tree_density%&gt;%
+=======
+  select(geo_entity_id, poverty_under5 = data_value) 
+
+tree_density_total = tree_density%&gt;%
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
   select(geo_entity_id=uhf42_code,tree_density) %&gt;%
   distinct()
 
@@ -433,28 +481,38 @@ final_df = left_join(asthma_em_0to4,asthma_em_5to14) %&gt;%
   left_join(tree_density_total) %&gt;%
   mutate(asthma_total = asthma_em_0to4+asthma_em_5to14,
          geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total)) </code></pre>
+<<<<<<< HEAD
 <pre><code>## Joining, by = &quot;geo_entity_id&quot;</code></pre>
 <pre><code>## Joining, by = &quot;geo_entity_id&quot;
 ## Joining, by = &quot;geo_entity_id&quot;
 ## Joining, by = &quot;geo_entity_id&quot;
 ## Joining, by = &quot;geo_entity_id&quot;</code></pre>
+=======
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
 </div>
 </div>
 <div id="exploratory-analysis" class="section level2">
 <h2>Exploratory Analysis</h2>
 <p>Visualizations, summaries, and exploratory statistical analyses. Justify the steps you took, and show any major changes to your ideas.</p>
 </div>
+<<<<<<< HEAD
 <div id="asthma-visualizations" class="section level2">
 <h2>Asthma Visualizations</h2>
 <div id="step-one" class="section level3">
 <h3>step one</h3>
 <p>We made a plot showing the assoication between tree density and astham rate.</p>
 <pre class="r"><code>#plot between asthma and tree
+=======
+<div id="visualizations" class="section level2">
+<h2>Visualizations</h2>
+<pre class="r"><code># plot between asthma and so2
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
 final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to4:asthma_em_5to14) %&gt;%
   gather(key = poverty_age, value = poverty, poverty:poverty_under5) %&gt;%
   filter((asthma_age == &quot;asthma_em_5to14&quot;&amp;poverty_age == &quot;poverty&quot;)|(asthma_age == &quot;asthma_em_0to4&quot;&amp; poverty_age == &quot;poverty_under5&quot;))
 
 ggplot(final_asthma_df) +
+<<<<<<< HEAD
   geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
    geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
 <p><img src="final_report_files/figure-html/unnamed-chunk-4-1.png" width="672" /> This plot showed the relationship between asthma and tree. Visually, there was a positive association between tree density and astham rate.</p>
@@ -467,10 +525,16 @@ ggplot(final_asthma_df) +
    geom_point(aes(x=so2,y=rate,color=asthma_age))+
    geom_smooth(aes(x=so2,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
 <p><img src="final_report_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+=======
+   geom_point(aes(x=so2,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=so2,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<p><img src="final_report_files/figure-html/read3-1.png" width="672" /></p>
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
 <pre class="r"><code>#plot between asthma and poverty
 ggplot(final_asthma_df) +
    geom_point(aes(x=poverty,y=rate,color=asthma_age))+
    geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<<<<<<< HEAD
 <p><img src="final_report_files/figure-html/unnamed-chunk-5-2.png" width="672" /> plot1 showed the relationship between asthma and so2. plot2 showed the relationship between asthma and poverty. Visually, there was a positive association between astham rate and so2 and there was a postive association between astham rate and poverty level.</p>
 </div>
 <div id="step-three" class="section level3">
@@ -486,6 +550,19 @@ ggplot(final_asthma_df) +
 <div id="tree-visualizations" class="section level2">
 <h2>Tree Visualizations</h2>
 <p>Tree</p>
+=======
+<p><img src="final_report_files/figure-html/read3-2.png" width="672" /></p>
+<pre class="r"><code>#plot between asthma and tree
+ggplot(final_asthma_df) +
+  geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<p><img src="final_report_files/figure-html/read3-3.png" width="672" /></p>
+<pre class="r"><code>#asthma 0-4 and asthma 5-14 amount in each UHF42
+ggplot(final_asthma_df) +
+  geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = &quot;identity&quot;,position = &quot;dodge&quot;) +
+  coord_flip()</code></pre>
+<p><img src="final_report_files/figure-html/read3-4.png" width="672" /> plot1 showed the relationship between asthma and so2 plot2 showed the relationship between asthma and poverty plot3 showed the relationship between asthma and tree plot 4 showed asthma 0-4 and asthma 5-14 amount in each UHF42 Positive associations could be visualized from plot1, 2, 3. Plot 4 showed that children from 0 to 4 years have higher asthma rate compared to children from 5 to 14 years old.</p>
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
 </div>
 <div id="statistical-analyses" class="section level2">
 <h2>statistical analyses</h2>
@@ -513,7 +590,11 @@ summary(lm(asthma_em_0to4~tree_density+so2+poverty_under5,data=final_df))</code>
 ## Residual standard error: 144.7 on 38 degrees of freedom
 ## Multiple R-squared:  0.6473, Adjusted R-squared:  0.6195 
 ## F-statistic: 23.25 on 3 and 38 DF,  p-value: 1.028e-08</code></pre>
+<<<<<<< HEAD
 <pre class="r"><code># mlr howing the relationship between asthma rate of kids from 5 to 14 years and tree density, so2 levels, poverty levels
+=======
+<pre class="r"><code># mlr howing the relationship between asthma rate of kids from 5 to 414years and tree density, so2 levels, poverty levels
+>>>>>>> 0579403d66ef21685743b56df6c728722104e14e
 
 summary(lm(asthma_em_5to14~tree_density+so2+poverty,data=final_df))</code></pre>
 <pre><code>## 

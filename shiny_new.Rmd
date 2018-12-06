@@ -12,8 +12,6 @@ library(rgdal)
 library(leaflet)
 library(raster)
 library(readxl)
-
-
 ```
 ##TREE
 

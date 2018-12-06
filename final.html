@@ -197,10 +197,7 @@ $(document).ready(function () {
   <a href="dashboRD.html">Dashboard</a>
 </li>
 <li>
-  <a href="shiny_treemap.html">Shiny</a>
-</li>
-<li>
-  <a href="youtube.html">
+  <a href="map.Rmd">
     <span class="fab fa fab fa-youtube"></span>
      
   </a>
@@ -228,12 +225,12 @@ $(document).ready(function () {
 
 
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages ----------------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
 <pre><code>## √ ggplot2 3.1.0     √ purrr   0.2.5
 ## √ tibble  1.4.2     √ dplyr   0.7.8
 ## √ tidyr   0.8.2     √ stringr 1.3.1
 ## √ readr   1.1.1     √ forcats 0.3.0</code></pre>
-<pre><code>## -- Conflicts -------------------------------------- tidyverse_conflicts() --
+<pre><code>## -- Conflicts ------------------------------------------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(dplyr)
@@ -243,8 +240,7 @@ library(readxl)</code></pre>
 <pre class="r"><code>#import and tidy tree data
 tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
   janitor::clean_names() %&gt;%
-  filter(status == &quot;Alive&quot;) %&gt;%
-  select(-status)</code></pre>
+  filter(status == &quot;Alive&quot;) </code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   zipcode = col_integer(),
@@ -290,68 +286,22 @@ ggplot(tree_df) +
 <p><img src="final_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
 <pre class="r"><code>#tree density
 tree_density = tree_df %&gt;%
-  group_by(uhf42_name, uhf42_code, area, health) %&gt;%
-  dplyr::summarize(health_total = n()) %&gt;%
+  group_by(boroname, uhf42_name, uhf42_code, area) %&gt;%
+  dplyr::summarize(tree_total = n()) %&gt;%
   filter(is.na(uhf42_name) == FALSE) %&gt;%
   group_by(uhf42_name) %&gt;%
-  dplyr::mutate(total = sum(health_total),
-                tree_density = total/area,
-                health_tree_density = health_total/area) %&gt;%
+  dplyr::mutate(tree_density = tree_total/area) %&gt;%
   ungroup() %&gt;%
   mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))</code></pre>
-<pre class="r"><code>asthma_air = read_csv(&quot;./data/asthma_air/Data.csv&quot;) %&gt;%
-  janitor::clean_names()</code></pre>
-<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_integer(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_character(),
-##   data_value = col_double(),
-##   message = col_character(),
-##   X16 = col_character()
-## )</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 6 parsing failures.
-## row # A tibble: 5 x 5 col     row col     expected  actual                           file            expected   &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                            &lt;chr&gt;           actual 1 19069 Unique~ an integ~ NYC Department of Health and Me~ &#39;./data/asthma~ file 2 19069 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/asthma~ row 3 19070 Unique~ an integ~ Environment &amp; Health Data Portal &#39;./data/asthma~ col 4 19070 &lt;NA&gt;    16 colum~ 1 columns                        &#39;./data/asthma~ expected 5 19071 Unique~ an integ~ Available at: http://nyc.gov/he~ &#39;./data/asthma~
-## ... ................. ... .......................................................................... ........ .......................................................................... ...... .......................................................................... .... .......................................................................... ... .......................................................................... ... .......................................................................... ........ ..........................................................................
-## See problems(...) for more details.</code></pre>
-<pre class="r"><code>asthma_em_0to4 = asthma_air %&gt;%
-  filter(name == &quot;Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)&quot;,
-         measure == &quot;Rate&quot;,
-         year_description == &quot;2015&quot;) %&gt;%
-  select(geo_entity_id, geo_entity_name, asthma_em_0to4 = data_value)
-
-asthma_em_5to14 = asthma_air %&gt;%
-  filter(name == &quot;Asthma Emergency Department Visits (Children 5 to 14 Yrs Old)&quot;,
-         measure == &quot;Rate&quot;,
-         year_description == &quot;2015&quot;) %&gt;%
-  select(geo_entity_id, asthma_em_5to14 = data_value) 
-
-so2 = asthma_air %&gt;%
-  filter(name == &quot;Sulfur Dioxide (SO2)&quot;,
-         measure == &quot;Mean&quot;,
-         year_description == &quot;Winter 2014-15&quot;) %&gt;%
-  select(geo_entity_id, so2 = data_value)
-
-poverty = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
+<pre class="r"><code>#read and tidy data
+asthma_air_poverty = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
+  select(geo_entity_id, geo_entity_name, name, data_value) %&gt;%
+  filter(is.na(geo_entity_id) == FALSE) %&gt;%
+  spread(key = name, value = data_value) %&gt;%
   janitor::clean_names() %&gt;%
-  filter(year_description == &quot;2012-16&quot;,
-         measure == &quot;Percent&quot;,
-         name == &quot;Poverty&quot;) %&gt;%
-  select(geo_entity_id, poverty = data_value) </code></pre>
-<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
+  select(poverty, children_under_5_years_old_in_poverty, everything()) %&gt;%
+  mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
+         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `Unique Id` = col_character(),
@@ -368,128 +318,227 @@ poverty = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
 ##   geo_entity_name = col_character(),
 ##   year_description = col_character(),
 ##   data_value = col_double(),
-##   message = col_character(),
-##   X16 = col_character()
+##   message = col_character()
 ## )</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 3 parsing failures.
-## row # A tibble: 3 x 5 col     row col   expected   actual    file                      expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;                     actual 1   841 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; file 2   842 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; row 3   843 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
-<pre class="r"><code>poverty_under5 = read_csv(&quot;./data/poverty/Data.csv&quot;) %&gt;%
-  janitor::clean_names() %&gt;%
-  filter(year_description == &quot;2011-15&quot;,
-         measure == &quot;Percent&quot;,
-         name == &quot;Children under 5 years old in Poverty&quot;) %&gt;%
-  select(geo_entity_id, poverty_under5 = data_value) </code></pre>
-<pre><code>## Warning: Missing column names filled in: &#39;X16&#39; [16]</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   `Unique Id` = col_character(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
-##   name = col_character(),
-##   Measure = col_character(),
-##   geo_type_name = col_character(),
-##   description = col_character(),
-##   geo_entity_id = col_integer(),
-##   geo_entity_name = col_character(),
-##   year_description = col_character(),
-##   data_value = col_double(),
-##   message = col_character(),
-##   X16 = col_character()
-## )</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not a multiple of vector length (arg 1)
-
-## Warning in rbind(names(probs), probs_f): 3 parsing failures.
-## row # A tibble: 3 x 5 col     row col   expected   actual    file                      expected   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;                     actual 1   841 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; file 2   842 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39; row 3   843 &lt;NA&gt;  16 columns 1 columns &#39;./data/poverty/Data.csv&#39;</code></pre>
-<pre class="r"><code>tree_density_total = tree_density%&gt;%
-  select(geo_entity_id=uhf42_code,tree_density) %&gt;%
+<pre class="r"><code>tree_density_total = tree_density %&gt;%
+  select(boroname, geo_entity_id=uhf42_code, tree_density) %&gt;%
   distinct()
 
-final_df = left_join(asthma_em_0to4,asthma_em_5to14) %&gt;%
-  left_join(so2) %&gt;%
-  left_join(poverty) %&gt;%
-  left_join(poverty_under5) %&gt;%
-  left_join(tree_density_total) %&gt;%
-  mutate(asthma_total = asthma_em_0to4+asthma_em_5to14,
-         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total)) </code></pre>
+final_df = left_join(asthma_air_poverty, tree_density_total)</code></pre>
 <pre><code>## Joining, by = &quot;geo_entity_id&quot;</code></pre>
-<pre><code>## Joining, by = &quot;geo_entity_id&quot;
-## Joining, by = &quot;geo_entity_id&quot;
-## Joining, by = &quot;geo_entity_id&quot;
-## Joining, by = &quot;geo_entity_id&quot;</code></pre>
-<pre class="r"><code>#MLR
-summary(lm(asthma_em_0to4~tree_density+so2+poverty_under5,data=final_df))</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = asthma_em_0to4 ~ tree_density + so2 + poverty_under5, 
-##     data = final_df)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -390.05  -60.43    2.28   97.32  259.42 
-## 
-## Coefficients:
-##                 Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)      -155.24      90.12  -1.723  0.09307 .  
-## tree_density   163130.32  941507.03   0.173  0.86336    
-## so2               189.68      62.76   3.022  0.00448 ** 
-## poverty_under5     11.07       1.49   7.434 6.41e-09 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 144.7 on 38 degrees of freedom
-## Multiple R-squared:  0.6473, Adjusted R-squared:  0.6195 
-## F-statistic: 23.25 on 3 and 38 DF,  p-value: 1.028e-08</code></pre>
-<pre class="r"><code>summary(lm(asthma_em_5to14~tree_density+so2+poverty,data=final_df))</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = asthma_em_5to14 ~ tree_density + so2 + poverty, 
-##     data = final_df)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -247.495  -43.658    8.746   36.013  221.440 
-## 
-## Coefficients:
-##                Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -9.535e+01  6.439e+01  -1.481   0.1469    
-## tree_density -3.111e+05  6.677e+05  -0.466   0.6439    
-## so2           1.208e+02  4.558e+01   2.651   0.0116 *  
-## poverty       1.306e+01  1.697e+00   7.701 2.83e-09 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 102.7 on 38 degrees of freedom
-## Multiple R-squared:  0.6789, Adjusted R-squared:  0.6535 
-## F-statistic: 26.78 on 3 and 38 DF,  p-value: 1.771e-09</code></pre>
-<pre class="r"><code>#asthma and so2
-final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to4:asthma_em_5to14) %&gt;%
-  gather(key = poverty_age, value = poverty, poverty:poverty_under5) %&gt;%
-  filter((asthma_age == &quot;asthma_em_5to14&quot;&amp;poverty_age == &quot;poverty&quot;)|(asthma_age == &quot;asthma_em_0to4&quot;&amp; poverty_age == &quot;poverty_under5&quot;))
+<pre class="r"><code>#SLR:choose the pollutes associated with asthma
+o3_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~ozone_o3, data=final_df))$coefficients[2,4]
 
+o3_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~ozone_o3, data=final_df))$coefficients[2,4]
+
+black_carbon_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~black_carbon, data=final_df))$coefficients[2,4]
+
+black_carbon_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~black_carbon, data=final_df))$coefficients[2,4]
+
+pm2_5_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~fine_particulate_matter_pm2_5, data=final_df))$coefficients[2,4]
+
+pm2_5_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~fine_particulate_matter_pm2_5, data=final_df))$coefficients[2,4]
+
+no_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~nitric_oxide_no, data=final_df))$coefficients[2,4]
+
+no_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~nitric_oxide_no, data=final_df))$coefficients[2,4]
+
+no2_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~nitrogen_dioxide_no2, data=final_df))$coefficients[2,4]
+
+no2_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~nitrogen_dioxide_no2, data=final_df))$coefficients[2,4]
+
+so2_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~sulfur_dioxide_so2, data=final_df))$coefficients[2,4]
+
+so2_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~sulfur_dioxide_so2, data=final_df))$coefficients[2,4]
+
+data.frame(Pollute = c(&quot;Ozone&quot;, &quot;Black Carbon&quot;, &quot;PM2.5&quot;, &quot;NO&quot;, &quot;NO2&quot;, &quot;SO2&quot;),
+                     P_value1 = c(o3_p1, black_carbon_p1, pm2_5_p1, no_p1, no2_p1, so2_p1),
+                     P_value2 = c(o3_p2, black_carbon_p2, pm2_5_p2, no_p2, no2_p2, so2_p2)) %&gt;%
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Pollute</th>
+<th align="right">P_value1</th>
+<th align="right">P_value2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ozone</td>
+<td align="right">0.893</td>
+<td align="right">0.376</td>
+</tr>
+<tr class="even">
+<td align="left">Black Carbon</td>
+<td align="right">0.569</td>
+<td align="right">0.220</td>
+</tr>
+<tr class="odd">
+<td align="left">PM2.5</td>
+<td align="right">0.678</td>
+<td align="right">0.265</td>
+</tr>
+<tr class="even">
+<td align="left">NO</td>
+<td align="right">0.490</td>
+<td align="right">0.883</td>
+</tr>
+<tr class="odd">
+<td align="left">NO2</td>
+<td align="right">0.758</td>
+<td align="right">0.328</td>
+</tr>
+<tr class="even">
+<td align="left">SO2</td>
+<td align="right">0.023</td>
+<td align="right">0.006</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>#based on p values, we choose SO2</code></pre>
+<pre class="r"><code>#MLR
+summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_density+sulfur_dioxide_so2+children_under_5_years_old_in_poverty,data=final_df)) %&gt;%
+  broom::tidy() %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-103.55417</td>
+<td align="right">7.107578e+01</td>
+<td align="right">-1.4569545</td>
+<td align="right">0.1527456</td>
+</tr>
+<tr class="even">
+<td align="left">tree_density</td>
+<td align="right">-450005.47197</td>
+<td align="right">7.087065e+05</td>
+<td align="right">-0.6349673</td>
+<td align="right">0.5289775</td>
+</tr>
+<tr class="odd">
+<td align="left">sulfur_dioxide_so2</td>
+<td align="right">192.94852</td>
+<td align="right">6.144257e+01</td>
+<td align="right">3.1403066</td>
+<td align="right">0.0031272</td>
+</tr>
+<tr class="even">
+<td align="left">children_under_5_years_old_in_poverty</td>
+<td align="right">11.17321</td>
+<td align="right">1.438942e+00</td>
+<td align="right">7.7648807</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_density+sulfur_dioxide_so2+poverty,data=final_df)) %&gt;%
+  broom::tidy() %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-82.55365</td>
+<td align="right">5.019181e+01</td>
+<td align="right">-1.6447634</td>
+<td align="right">0.1076654</td>
+</tr>
+<tr class="even">
+<td align="left">tree_density</td>
+<td align="right">-471392.09498</td>
+<td align="right">4.963879e+05</td>
+<td align="right">-0.9496446</td>
+<td align="right">0.3478574</td>
+</tr>
+<tr class="odd">
+<td align="left">sulfur_dioxide_so2</td>
+<td align="right">122.64218</td>
+<td align="right">4.405184e+01</td>
+<td align="right">2.7840421</td>
+<td align="right">0.0080856</td>
+</tr>
+<tr class="even">
+<td align="left">poverty</td>
+<td align="right">12.87822</td>
+<td align="right">1.587895e+00</td>
+<td align="right">8.1102445</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %&gt;%
+  gather(key = poverty_age, value = poverty, poverty:children_under_5_years_old_in_poverty) %&gt;%
+  filter((asthma_age == &quot;asthma_emergency_department_visits_children_5_to_14_yrs_old&quot;&amp;poverty_age == &quot;poverty&quot;)|(asthma_age == &quot;asthma_emergency_department_visits_children_0_to_4_yrs_old&quot;&amp; poverty_age == &quot;children_under_5_years_old_in_poverty&quot;))
+
+#asthma and so2
 ggplot(final_asthma_df) +
-   geom_point(aes(x=so2,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=so2,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+   geom_point(aes(x = sulfur_dioxide_so2, y = rate, color = asthma_age))+
+   geom_smooth(aes(x = sulfur_dioxide_so2, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
+   labs(
+    title = &quot;Asthma and Sulfur Dioxide&quot;,
+    x = &quot;Sulfur Dioxide Annual Average&quot;,
+    y = &quot;Asthma Rate&quot;
+  ) +
+   theme(legend.position = &quot;bottom&quot;) </code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>#asthma and pm2.5
+ggplot(final_asthma_df) +
+   geom_point(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age))+
+   geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <pre class="r"><code>#asthma and poverty
 ggplot(final_asthma_df) +
-   geom_point(aes(x=poverty,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+   geom_point(aes(x = poverty, y = rate, color = asthma_age))+
+   geom_smooth(aes(x = poverty, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
 <pre class="r"><code>#asthma and tree
 ggplot(final_asthma_df) +
-  geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
-   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
+  geom_point(aes(x = tree_density, y = rate, color = asthma_age)) +
+   geom_smooth(aes(x = tree_density, y = rate, color = asthma_age), method = &quot;lm&quot;,se = F) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
 <pre class="r"><code>#asthma 0-4 and asthma 5-14 in each UHF42
 ggplot(final_asthma_df) +
-  geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = &quot;identity&quot;,position = &quot;dodge&quot;) +
-  coord_flip()</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
+  geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = &quot;identity&quot;, position = &quot;dodge&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
+<pre class="r"><code>  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<pre><code>## List of 1
+##  $ legend.position: chr &quot;bottom&quot;
+##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;theme&quot; &quot;gg&quot;
+##  - attr(*, &quot;complete&quot;)= logi FALSE
+##  - attr(*, &quot;validate&quot;)= logi TRUE</code></pre>
+<pre class="r"><code>#tree and SO2
+ggplot(final_asthma_df) +
+  geom_point(aes(x = sulfur_dioxide_so2, y = tree_density)) +
+  geom_smooth(aes(x = sulfur_dioxide_so2, y = tree_density), method = &quot;lm&quot;, se = F)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-6.png" width="672" /></p>
+<pre class="r"><code>#tree and pm2.5
+ggplot(final_asthma_df) +
+  geom_point(aes(x = fine_particulate_matter_pm2_5, y = tree_density)) +
+  geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = tree_density), method = &quot;lm&quot;, se = F) </code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-7.png" width="672" /></p>
 
 
 
