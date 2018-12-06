@@ -107,7 +107,7 @@ theme_set(theme_bw())
 Column {data-width=450}
 ---------------------------------------------------------------------
 
-### Tree distribution in New York
+### Tree distribution in New York City
 
 ```{r debug2}
 
@@ -131,7 +131,7 @@ addPolygons(data = mydat2, fillColor = ~pal(total_tree$tree_density), weight = 1
   popup = paste("Region: ", total_tree$uhf42_name, "<br>",
                           "Number: ", total_tree$total, "<br>")) %>%
   addLegend(position = "bottomright", pal = pal, values =total_tree$tree_density,
-          title = "Tree density",
+          title = "Tree density(E-6)",
           opacity = 1, bins = F)
 
 ```

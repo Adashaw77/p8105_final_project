@@ -193,14 +193,15 @@ $(document).ready(function () {
 <li>
   <a href="about.html">MLR</a>
 </li>
+<li class="dropdown-header">Dashboard</li>
 <li>
-  <a href="dashboRD.html">Dashboard</a>
+  <a href="dashboRD.html">Asthma</a>
 </li>
 <li>
-  <a href="dashboard2.html">Dashboard</a>
+  <a href="dashboard2.html">Tree and asthma</a>
 </li>
 <li>
-  <a href="Data.Rmd">
+  <a href="https://www.youtube.com/watch?v=XUR1DjuEwj0&amp;feature=youtu.be/">
     <span class="fab fa fab fa-youtube"></span>
      
   </a>
@@ -227,61 +228,86 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>library(tidyverse)
-library(dplyr)
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
+## ✔ tibble  1.4.2     ✔ dplyr   0.7.8
+## ✔ tidyr   0.8.2     ✔ stringr 1.3.1
+## ✔ readr   1.2.1     ✔ forcats 0.3.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr)
 library(readr)
 library(ggplot2)
-library(readxl)</code></pre>
-<pre class="r"><code>#import and tidy tree data
-tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
-  janitor::clean_names() %&gt;%
-  filter(status == &quot;Alive&quot;) </code></pre>
+library(readxl)
+library(rvest)</code></pre>
+<pre><code>## Loading required package: xml2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rvest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     pluck</code></pre>
+<pre><code>## The following object is masked from &#39;package:readr&#39;:
+## 
+##     guess_encoding</code></pre>
+<pre class="r"><code>library(httr)</code></pre>
+<pre class="r"><code>tree_df = GET(&quot;https://data.cityofnewyork.us/api/views/5rq2-4hqu/rows.csv?accessType=DOWNLOAD&quot;) %&gt;% 
+  content(&quot;parsed&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
-##   zipcode = col_integer(),
-##   boroname = col_character(),
-##   tree_dbh = col_integer(),
-##   status = col_character(),
-##   health = col_character(),
-##   spc_common = col_character(),
+##   .default = col_character(),
+##   tree_id = col_double(),
+##   block_id = col_double(),
+##   tree_dbh = col_double(),
+##   stump_diam = col_double(),
+##   zipcode = col_double(),
+##   cb_num = col_double(),
+##   borocode = col_double(),
+##   cncldist = col_double(),
+##   st_assem = col_double(),
+##   st_senate = col_double(),
+##   boro_ct = col_double(),
 ##   Latitude = col_double(),
-##   longitude = col_double()
+##   longitude = col_double(),
+##   x_sp = col_double(),
+##   y_sp = col_double()
 ## )</code></pre>
-<pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>tree_df = tree_df %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(status == &quot;Alive&quot;) %&gt;%
+  select(zipcode, latitude, longitude)
+
+download.file(&quot;https://raw.githubusercontent.com/BS1125/project_data/master/Zipcode_UHF42.xlsx&quot;,mode = &quot;wb&quot;,destfile = &quot;Zipcode_UHF42.xlsx&quot;)
+
+zipcode_uhf42 = read_excel(&quot;Zipcode_UHF42.xlsx&quot;) %&gt;%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
    select(-zipcode_no, uhf42_name) %&gt;%
    filter(is.na(zipcode) == FALSE)
 
 tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;) 
 
-mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
-<pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;/Users/wuxinyao/Desktop/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
-## with 43 features
-## It has 8 fields</code></pre>
-<pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
-  filter(is.na(uhf42_code) == FALSE)
+download.file(&quot;https://catharob.carto.com/api/v2/sql?filename=uhf_42_dohmh_2009&amp;q=SELECT+*+FROM+(select+*+from+public.uhf_42_dohmh_2009)+as+subq+&amp;format=csv&amp;bounds=&amp;api_key=&amp;skipfields=the_geom_webmercator&quot;,destfile = &quot;UHF_42.csv&quot;)
 
-tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)</code></pre>
-<pre class="r"><code>#among 652,173 trees, only 361 trees have diameter larger than 70, so we make plots without them.
-
-#density plot of tree_dbh
-ggplot(tree_df) +
-  geom_density(aes(x = tree_dbh, fill = boroname, alpha = 0.5))+ 
-  scale_x_continuous(limits = c(0, 50)) +
-  theme(legend.position = &quot;bottom&quot;)</code></pre>
-<pre><code>## Warning: Removed 361 rows containing non-finite values (stat_density).</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>#violin plot of tree_dbh
-ggplot(tree_df) +
-  geom_violin(aes(x = boroname, y = tree_dbh, fill = boroname))+ 
-  scale_y_continuous(limits = c(0, 50)) +
-  theme(legend.position = &quot;bottom&quot;)</code></pre>
-<pre><code>## Warning: Removed 361 rows containing non-finite values (stat_ydensity).</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+area = read_csv(&quot;UHF_42.csv&quot;) %&gt;%
+  filter(uhfcode != 0) %&gt;%
+  select(uhf42_code = uhfcode, area = shape_area)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   the_geom = col_character(),
+##   cartodb_id = col_double(),
+##   objectid = col_double(),
+##   uhfcode = col_double(),
+##   shape_leng = col_double(),
+##   shape_area = col_double(),
+##   uhf_neigh = col_character(),
+##   borough = col_character()
+## )</code></pre>
+<pre class="r"><code>tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)</code></pre>
 <pre class="r"><code>#tree density
 tree_density = tree_df %&gt;%
-  group_by(boroname, uhf42_name, uhf42_code, area) %&gt;%
+  group_by(uhf42_name, uhf42_code, area) %&gt;%
   dplyr::summarize(tree_total = n()) %&gt;%
   filter(is.na(uhf42_name) == FALSE) %&gt;%
   group_by(uhf42_name) %&gt;%
@@ -289,7 +315,9 @@ tree_density = tree_df %&gt;%
   ungroup() %&gt;%
   mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))</code></pre>
 <pre class="r"><code>#read and tidy data
-asthma_air_poverty = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
+download.file(&quot;https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv&quot;,mode = &quot;wb&quot;,destfile = &quot;asthma_air_poverty.csv&quot;)
+
+asthma_air_poverty = read_csv(&quot;asthma_air_poverty.csv&quot;) %&gt;%
   select(geo_entity_id, geo_entity_name, name, data_value) %&gt;%
   filter(is.na(geo_entity_id) == FALSE) %&gt;%
   spread(key = name, value = data_value) %&gt;%
@@ -300,23 +328,23 @@ asthma_air_poverty = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `Unique Id` = col_character(),
-##   indicator_id = col_integer(),
-##   geo_type_id = col_integer(),
-##   measurement_type_id = col_integer(),
-##   internal_id = col_integer(),
-##   subtopic_id = col_integer(),
+##   indicator_id = col_double(),
+##   geo_type_id = col_double(),
+##   measurement_type_id = col_double(),
+##   internal_id = col_double(),
+##   subtopic_id = col_double(),
 ##   name = col_character(),
 ##   Measure = col_character(),
 ##   geo_type_name = col_character(),
 ##   description = col_character(),
-##   geo_entity_id = col_integer(),
+##   geo_entity_id = col_double(),
 ##   geo_entity_name = col_character(),
 ##   year_description = col_character(),
 ##   data_value = col_double(),
-##   message = col_character()
+##   message = col_logical()
 ## )</code></pre>
 <pre class="r"><code>tree_density_total = tree_density %&gt;%
-  select(boroname, geo_entity_id=uhf42_code, tree_density) %&gt;%
+  select(geo_entity_id=uhf42_code, tree_density) %&gt;%
   distinct()
 
 final_df = left_join(asthma_air_poverty, tree_density_total)</code></pre>
@@ -361,32 +389,32 @@ data.frame(Pollute = c(&quot;Ozone&quot;, &quot;Black Carbon&quot;, &quot;PM2.5&
 <tbody>
 <tr class="odd">
 <td align="left">Ozone</td>
-<td align="right">0.893</td>
-<td align="right">0.376</td>
+<td align="right">0.828</td>
+<td align="right">0.380</td>
 </tr>
 <tr class="even">
 <td align="left">Black Carbon</td>
-<td align="right">0.569</td>
-<td align="right">0.220</td>
+<td align="right">0.551</td>
+<td align="right">0.242</td>
 </tr>
 <tr class="odd">
 <td align="left">PM2.5</td>
-<td align="right">0.678</td>
-<td align="right">0.265</td>
+<td align="right">0.676</td>
+<td align="right">0.298</td>
 </tr>
 <tr class="even">
 <td align="left">NO</td>
-<td align="right">0.490</td>
-<td align="right">0.883</td>
+<td align="right">0.507</td>
+<td align="right">0.868</td>
 </tr>
 <tr class="odd">
 <td align="left">NO2</td>
-<td align="right">0.758</td>
-<td align="right">0.328</td>
+<td align="right">0.738</td>
+<td align="right">0.347</td>
 </tr>
 <tr class="even">
 <td align="left">SO2</td>
-<td align="right">0.023</td>
+<td align="right">0.017</td>
 <td align="right">0.006</td>
 </tr>
 </tbody>
@@ -409,30 +437,30 @@ summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_densi
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">-103.55417</td>
-<td align="right">7.107578e+01</td>
-<td align="right">-1.4569545</td>
-<td align="right">0.1527456</td>
+<td align="right">-155.24310</td>
+<td align="right">9.011553e+01</td>
+<td align="right">-1.7227119</td>
+<td align="right">0.0930711</td>
 </tr>
 <tr class="even">
 <td align="left">tree_density</td>
-<td align="right">-450005.47197</td>
-<td align="right">7.087065e+05</td>
-<td align="right">-0.6349673</td>
-<td align="right">0.5289775</td>
+<td align="right">163130.32364</td>
+<td align="right">9.415070e+05</td>
+<td align="right">0.1732651</td>
+<td align="right">0.8633627</td>
 </tr>
 <tr class="odd">
 <td align="left">sulfur_dioxide_so2</td>
-<td align="right">192.94852</td>
-<td align="right">6.144257e+01</td>
-<td align="right">3.1403066</td>
-<td align="right">0.0031272</td>
+<td align="right">189.68311</td>
+<td align="right">6.276371e+01</td>
+<td align="right">3.0221782</td>
+<td align="right">0.0044754</td>
 </tr>
 <tr class="even">
 <td align="left">children_under_5_years_old_in_poverty</td>
-<td align="right">11.17321</td>
-<td align="right">1.438942e+00</td>
-<td align="right">7.7648807</td>
+<td align="right">11.07405</td>
+<td align="right">1.489616e+00</td>
+<td align="right">7.4341612</td>
 <td align="right">0.0000000</td>
 </tr>
 </tbody>
@@ -453,30 +481,30 @@ summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_densi
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">-82.55365</td>
-<td align="right">5.019181e+01</td>
-<td align="right">-1.6447634</td>
-<td align="right">0.1076654</td>
+<td align="right">-88.28305</td>
+<td align="right">6.421422e+01</td>
+<td align="right">-1.3748207</td>
+<td align="right">0.1772400</td>
 </tr>
 <tr class="even">
 <td align="left">tree_density</td>
-<td align="right">-471392.09498</td>
-<td align="right">4.963879e+05</td>
-<td align="right">-0.9496446</td>
-<td align="right">0.3478574</td>
+<td align="right">-414020.33134</td>
+<td align="right">6.693588e+05</td>
+<td align="right">-0.6185327</td>
+<td align="right">0.5399144</td>
 </tr>
 <tr class="odd">
 <td align="left">sulfur_dioxide_so2</td>
-<td align="right">122.64218</td>
-<td align="right">4.405184e+01</td>
-<td align="right">2.7840421</td>
-<td align="right">0.0080856</td>
+<td align="right">122.53171</td>
+<td align="right">4.567335e+01</td>
+<td align="right">2.6827835</td>
+<td align="right">0.0107495</td>
 </tr>
 <tr class="even">
 <td align="left">poverty</td>
-<td align="right">12.87822</td>
-<td align="right">1.587895e+00</td>
-<td align="right">8.1102445</td>
+<td align="right">12.90333</td>
+<td align="right">1.683991e+00</td>
+<td align="right">7.6623505</td>
 <td align="right">0.0000000</td>
 </tr>
 </tbody>
@@ -495,40 +523,30 @@ ggplot(final_asthma_df) +
     y = &quot;Asthma Rate&quot;
   ) +
    theme(legend.position = &quot;bottom&quot;) </code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>#asthma and pm2.5
 ggplot(final_asthma_df) +
    geom_point(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age))+
    geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
 <pre class="r"><code>#asthma and poverty
 ggplot(final_asthma_df) +
    geom_point(aes(x = poverty, y = rate, color = asthma_age))+
    geom_smooth(aes(x = poverty, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
 <pre class="r"><code>#asthma and tree
 ggplot(final_asthma_df) +
   geom_point(aes(x = tree_density, y = rate, color = asthma_age)) +
    geom_smooth(aes(x = tree_density, y = rate, color = asthma_age), method = &quot;lm&quot;,se = F) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
-<pre class="r"><code>#asthma 0-4 and asthma 5-14 in each UHF42
-ggplot(final_asthma_df) +
-  geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = &quot;identity&quot;, position = &quot;dodge&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
-<pre class="r"><code>  theme(legend.position = &quot;bottom&quot;)</code></pre>
-<pre><code>## List of 1
-##  $ legend.position: chr &quot;bottom&quot;
-##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;theme&quot; &quot;gg&quot;
-##  - attr(*, &quot;complete&quot;)= logi FALSE
-##  - attr(*, &quot;validate&quot;)= logi TRUE</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
 <pre class="r"><code>#tree and SO2
 ggplot(final_asthma_df) +
   geom_point(aes(x = sulfur_dioxide_so2, y = tree_density)) +
   geom_smooth(aes(x = sulfur_dioxide_so2, y = tree_density), method = &quot;lm&quot;, se = F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-6.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-7-5.png" width="672" /></p>
 <pre class="r"><code>#tree and pm2.5
 ggplot(final_asthma_df) +
   geom_point(aes(x = fine_particulate_matter_pm2_5, y = tree_density)) +
@@ -538,7 +556,7 @@ ggplot(final_asthma_df) +
     x = &quot;PM2.5 Average&quot;,
     y = &quot;Tree Density&quot;
   ) </code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-7.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-7-6.png" width="672" /></p>
 <pre class="r"><code>#asthma 0-4 and asthma 5-14 in each UHF42
 ggplot(final_asthma_df) +
   geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
@@ -550,7 +568,7 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;, axis.text.x = element_text(angle = 75, hjust = 1)) +
    guides(fill = guide_legend(nrow = 2)) +
    scale_fill_hue(name = &quot;Age&quot;) </code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-8.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-7-7.png" width="672" /></p>
 <pre class="r"><code>#Paired T test to test if there is significant difference between asthma rate of 0-4 and that of 5-14
 t.test(final_df$asthma_emergency_department_visits_children_0_to_4_yrs_old, final_df$asthma_emergency_department_visits_children_5_to_14_yrs_old, paired=T) %&gt;%
   broom::tidy() %&gt;%
@@ -570,12 +588,12 @@ t.test(final_df$asthma_emergency_department_visits_children_0_to_4_yrs_old, fina
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">57.01778</td>
-<td align="right">4.761863</td>
-<td align="right">2.11e-05</td>
-<td align="right">44</td>
-<td align="right">32.88609</td>
-<td align="right">81.14946</td>
+<td align="right">53.06667</td>
+<td align="right">4.257839</td>
+<td align="right">0.0001173</td>
+<td align="right">41</td>
+<td align="right">27.89655</td>
+<td align="right">78.23679</td>
 <td align="left">Paired t-test</td>
 <td align="left">two.sided</td>
 </tr>
