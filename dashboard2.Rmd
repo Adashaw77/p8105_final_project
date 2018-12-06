@@ -6,7 +6,7 @@ output:
     theme: spacelab
 ---
 
-```{r setup, include=FALSE}
+```{r debug, include=FALSE}
 library(flexdashboard)
 library(tidyverse)
 library(plotly)
@@ -98,17 +98,18 @@ final_df = left_join(asthma_air_poverty, tree_density_total)
 final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %>%
   gather(key = poverty_age, value = poverty, poverty:children_under_5_years_old_in_poverty) %>%
   filter((asthma_age == "asthma_emergency_department_visits_children_5_to_14_yrs_old"&poverty_age == "poverty")|(asthma_age == "asthma_emergency_department_visits_children_0_to_4_yrs_old"& poverty_age == "children_under_5_years_old_in_poverty"))
+names(final_asthma_df)
 
 theme_set(theme_bw())
 ```
 
 
 Column {data-width=450}
------------------------------------------------------------------------
+---------------------------------------------------------------------
 
 ### Tree distribution in New York
 
-```{r}
+```{r debug2}
 
 total_tree = tree_total_uhf42 %>%
   ungroup() %>%
@@ -116,7 +117,10 @@ total_tree = tree_total_uhf42 %>%
   arrange(UHFCODE) %>%
   mutate(tree_density = tree_density*100000)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 58121ff6b5e0d513e8989e71b2c22b5393d11c97
 
 pal <- colorBin("Greens", total_tree$tree_density, 5, pretty = FALSE)
 
