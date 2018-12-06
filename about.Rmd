@@ -1,9 +1,21 @@
 ---
-title: "About"
+output:
+  html_document:
+   theme: sandstone
+   highlight: monochrome
 ---
+##
 
-### About this site
+##Multiple Linear Regression Model
 
-Sometimes you need to say a bit about the site -- how it was made, where it's hosted, where the source code can be found. 
+We built two multilinear regression models, investigating the association between asthma rate and tree density, sulfur dioxide SO2 and poverty level for children from 0 to 4 years old and children from 5 to 14 years old.
 
-If this is for a project or analysis, I recommend giving some details about the R package versions that you used to create the content.
+model one: asthma = -103.55-450005 tree_density +192SO2+ 11.17poverty
+
+model two: asthma = -82.55 -471392 tree_density+ 122SO2+12.87poverty
+
+##
+<img src="image/0-4.png" style="width:75%">
+
+##
+<img src="image/5-14.png" style="width:75%">

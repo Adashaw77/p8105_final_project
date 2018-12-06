@@ -6,6 +6,8 @@ navbar:
   right:
     - text: "Data"
       href:  Data.html
+    - text: "MLR"
+      href:  about.html      
     - text: "Dashboard"
       href: dashboRD.html
     - text: "Dashboard"
