@@ -8,7 +8,10 @@ output:
 ##
 #Data description
 
-### About the Data
+##
+##
+##
+##
 
 *   Data from [NYC health](http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx) was used to obtain the rate of asthma emergency department visit in children from 0-4 years old and 5-14 years old,as well as the poverty level and air qualities in each entity in NYC. Based on this dataset we calculate the association between __poverty and asthma rate__ as well as __SO2 and asthma rate__.
 
