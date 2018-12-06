@@ -8,11 +8,9 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
-library(shiny)
 library(tidyverse)
 library(plotly)
 library(readxl)
-library(shiny)
 library(rgdal)
 library(leaflet)
 library(raster)
@@ -35,49 +33,15 @@ area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %>%
 tree_df =  left_join(tree_df, zipcode_uhf42, by = "zipcode") 
 tree_df = left_join(tree_df, area, by = "uhf42_code")
 
-
-Birch = tree_df %>%
-  filter(str_detect(spc_common, "[Bb]irch")) %>%
-  mutate(spc_common = "Birch") %>%
-  group_by(uhf42_name, spc_common, area, uhf42_code) %>%
-  dplyr::summarize(total = n())  %>%
-  filter(is.na(uhf42_name) == FALSE)
-
-Ash =  tree_df %>%
-  filter(str_detect(spc_common, "[Aa]sh")) %>%
-  mutate(spc_common = "Ash") %>%
-  group_by(uhf42_name, spc_common, area, uhf42_code) %>%
-  dplyr::summarize(total = n())  %>%
-  filter(is.na(uhf42_name) == FALSE)
-
-Oak =  tree_df %>%
-  filter(str_detect(spc_common, "[Oo]ak")) %>%
-  mutate(spc_common = "Oak") %>%
-  group_by(uhf42_name, spc_common, area, uhf42_code) %>%
-  dplyr::summarize(total = n())  %>%
-  filter(is.na(uhf42_name) == FALSE)
-
-Other = tree_df %>%
-  filter(!str_detect(spc_common, "[Bb]irch") | str_detect(spc_common, "[Aa]sh") | str_detect(spc_common, "[Oo]ak")) %>%
-  mutate(spc_common = "Other") %>%
-  group_by(uhf42_name, spc_common, area, uhf42_code) %>%
-  dplyr::summarize(total = n())  %>%
-  filter(is.na(uhf42_name) == FALSE)
-
-Total = tree_df %>%
+tree_total_uhf42 = tree_df %>%
   group_by(uhf42_name, area,uhf42_code) %>%
   dplyr::summarize(total = n()) %>%
   mutate(spc_common = "Total") %>%
-  filter(is.na(uhf42_name) == FALSE)
-
-tree_total_uhf42 = 
-  bind_rows(Birch, Ash, Oak, Other, Total) %>%
-  group_by(spc_common) %>%
+  filter(is.na(uhf42_name) == FALSE) %>%
+   group_by(spc_common) %>%
   mutate(tree_density = total/area, 
-         uhf42_name = forcats::fct_reorder(uhf42_name, tree_density)) %>% 
-  mutate(tree_density = tree_density * 10000000)
+         uhf42_name = forcats::fct_reorder(uhf42_name, tree_density)) 
 
-health_state = c("Birch", "Ash", "Oak", "Other", "Total")
 
 mydat2 = rgdal::readOGR("./UHF42/UHF_42_DOHMH.shp")
 
@@ -154,9 +118,9 @@ Column {data-width=450}
 
 total_tree = tree_total_uhf42 %>%
   ungroup() %>%
-  filter(spc_common == Total) %>%
   dplyr::select(UHFCODE= uhf42_code, everything()) %>%
-  arrange(UHFCODE)
+  arrange(UHFCODE) %>%
+  mutate(tree_density = tree_density*100000)
 
 names(mydat2)
 
