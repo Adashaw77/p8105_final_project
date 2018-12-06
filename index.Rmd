@@ -1,7 +1,37 @@
 ---
-title: "Holy cow!"
+output:
+  html_document:
+   toc: true
+   toc_float: true
+   theme: sandstone
+   highlight: monochrome
 ---
 
-### I have a webpage!
+Tree density influences on asthma among children in New York City
+------------------------------------------------------------
 
-And I can put all kinds of stuff on it!
+<img src="figure/lung.png" style="width:75%">
+
+# Motivation
+
+   Over the past decades, the prevalence of asthma has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Asthma is the most prevalent chronic disease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presence of extra mucus in narrow airways. Data on the influence of green spaces on asthma in children are inconstant. Previous research that did in Kaunas, Lithuania showed a positive association between the level of the surrounding greenness and risk of asthma in children. Their study suggested that high exposure to green spaces may increase the risk of allergic conditions and the prevalence of asthma through the effect of pollen. Another ecological design study did in New York City observed an inverse association between street tree density and the prevalence of asthma. Others have reported no relationships between greenery densities, canopy cover and asthma.
+
+Our goal was to investigate the association between tree densities and asthma among children in New York City, including variables like poverties and air quality factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2).
+
+# Data source
+
+  All data about asthma, poverty and air qualities was retrieved from NYC health (http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx)
+
+  All data related to trees was retrieved from NYC open data (https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35)
+
+  All neighborhood data was retrieved from (http://www.infoshare.org/misc/UHF.pdf)
+
+# Conclusion
+
+In conclusion, we found out that there is no association between tree density and asthma rate based on our data set. If more variables are included in the future, we would expect to see that afforestation in low-income communities will help improve air-quality and thus decrease the risk of child asthma over a long-term period.
+
+
+
+
+
+

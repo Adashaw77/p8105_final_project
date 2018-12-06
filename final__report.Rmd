@@ -1,6 +1,6 @@
 ---
 title: "final report"
-author: "Jingwei Ren"
+author: "Jingwei Ren,"
 date: "12/2/2018"
 output: html_document
 ---
@@ -54,16 +54,17 @@ library(ggplot2)
 library(readxl)
 ```
 
-```{r}
+```{r message=FALSE}
 
 #import and tidy tree data
 tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
   janitor::clean_names() %>%
-  filter(status == "Alive") 
+  filter(status == "Alive") %>%
+  dplyr::select(-status)
 
 zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
-   select(-zipcode_no, uhf42_name) %>%
+   dplyr::select(-zipcode_no, uhf42_name) %>%
    filter(is.na(zipcode) == FALSE)
 
 tree_df = left_join(tree_df, zipcode_uhf42, by = "zipcode") 
@@ -90,46 +91,46 @@ tree_density = tree_df %>%
 ```
 
 
-```{r}
+```{r message=FALSE}
 # import and tidy astham data
 
-asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
+asthma_air = read_csv("./data/asthma_pollutes_poverty.csv") %>%
   janitor::clean_names()
 
 asthma_em_0to4 = asthma_air %>%
   filter(name == "Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)",
          measure == "Rate",
          year_description == "2015") %>%
-  select(geo_entity_id, geo_entity_name, asthma_em_0to4 = data_value)
+  dplyr::select(geo_entity_id, geo_entity_name, asthma_em_0to4 = data_value)
 
 asthma_em_5to14 = asthma_air %>%
   filter(name == "Asthma Emergency Department Visits (Children 5 to 14 Yrs Old)",
          measure == "Rate",
          year_description == "2015") %>%
-  select(geo_entity_id, asthma_em_5to14 = data_value) 
+  dplyr::select(geo_entity_id, asthma_em_5to14 = data_value) 
 
 so2 = asthma_air %>%
   filter(name == "Sulfur Dioxide (SO2)",
          measure == "Mean",
          year_description == "Winter 2014-15") %>%
-  select(geo_entity_id, so2 = data_value)
+  dplyr::select(geo_entity_id, so2 = data_value)
 
-poverty = read_csv("./data/poverty/Data.csv") %>%
+poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
   janitor::clean_names() %>%
-  filter(year_description == "2012-16",
+  filter(year_description == "2011-15",
          measure == "Percent",
          name == "Poverty") %>%
-  select(geo_entity_id, poverty = data_value) 
+  dplyr::select(geo_entity_id, poverty = data_value) 
 
-poverty_under5 = read_csv("./data/poverty/Data.csv") %>%
+poverty_under5 = read_csv("./data/asthma_pollutes_poverty.csv") %>%
   janitor::clean_names() %>%
   filter(year_description == "2011-15",
          measure == "Percent",
          name == "Children under 5 years old in Poverty") %>%
-  select(geo_entity_id, poverty_under5 = data_value) 
+  dplyr::select(geo_entity_id, poverty_under5 = data_value) 
 
 tree_density_total = tree_density%>%
-  select(geo_entity_id=uhf42_code,tree_density) %>%
+  dplyr::select(geo_entity_id=uhf42_code,tree_density) %>%
   distinct()
 
 final_df = left_join(asthma_em_0to4,asthma_em_5to14) %>%
@@ -146,11 +147,10 @@ final_df = left_join(asthma_em_0to4,asthma_em_5to14) %>%
 
 Visualizations, summaries, and exploratory statistical analyses. Justify the steps you took, and show any major changes to your ideas.
 
-##Exploratory analysis:
-
 ## Asthma Visualizations
 
 ###step one
+
 We made a plot showing the assoication between tree density and astham rate.
 ```{r}
 #plot between asthma and tree
@@ -162,6 +162,7 @@ ggplot(final_asthma_df) +
   geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
    geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = "lm",se=F)
 ```
+
 This plot showed the relationship between asthma and tree. Visually, there was a positive association between tree density and astham rate.
 
 ### step two
@@ -179,12 +180,14 @@ ggplot(final_asthma_df) +
    geom_point(aes(x=poverty,y=rate,color=asthma_age))+
    geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = "lm",se=F)
 ```
+
 plot1 showed the relationship between asthma and so2.
 plot2 showed the relationship between asthma and poverty.
 Visually, there was a positive association between astham rate and so2 and there was a postive association between astham rate and poverty level.
 
 ### step three
 We are interested in seeing whether asthma rate is different between children from 0 to 4 years old and children from 5 to 14 years old in 42 neighborhoods in new york city. 
+
 ```{r}
 
 #plot between asthma 0-4 and asthma 5-14 in each UHF42
@@ -192,6 +195,7 @@ ggplot(final_asthma_df) +
   geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = "identity",position = "dodge") +
   coord_flip()
 ```
+
 Plot showed that children from 0 to 4 years have higher asthma rate compared to children from 5 to 14 years old.
 
 
@@ -219,11 +223,11 @@ Based on the multiple linear regression models, all the factors are significant 
 
 
 
-## Discussion
 
-Our main goal is to discuss the relationship between tree density in New York city and children asthma rate in 2015. We built two multilinear regression models, investigating the relationship between asthma rate and tree density, SO2 and poverty level for childern from 0 to 4 years old and childern from 5 to 14 years old . The result showed that exposure to air pollution (SO2) (P value = 0.048, 0.0116) and increased poverty level(P value = 6.41e-09,2.83e-09) could contribute to excess asthma in urban areas. All the factors are significant except tree density ( p value = 0.86, 0.64). We listed some possible reasons that explained why no obvious association was shown between tree density and asthma. One possible explanation is season. In the spring and summer months, increasing tree densities might have a positive impact on asthma rate. Pollen could be an allergen that give some people sneezing fits and watery eyes, which could indirectly cause an asthma attack in others. However, in the fall and winter months, increasing tree densities might decrease the asthma rate through the effect on local air quality. Those two situations might counteract each other and result in the conclusion that overall, there was no association between tree density in New York city and children asthma rate in 2015.
 
-We also 
+
+
+
 
 
 
