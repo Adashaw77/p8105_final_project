@@ -11,36 +11,19 @@
 
 
 
-<title>Holy cow!</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
 <script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
 <script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
-<script type="text/javascript">
-if (window.hljs) {
-  hljs.configure({languages: []});
-  hljs.initHighlightingOnLoad();
-  if (document.readyState && document.readyState === "complete") {
-    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
-  }
-}
-</script>
 
 
 
@@ -105,34 +88,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 61px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 </style>
 
@@ -187,13 +170,10 @@ $(document).ready(function () {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="about.html">About</a>
-</li>
-<li>
-  <a href="datasource.html">Data Source</a>
-</li>
-<li>
   <a href="dashboRD.html">Dashboard</a>
+</li>
+<li>
+  <a href="https://treeandasthma.shinyapps.io/asthma_tree/">Shiny</a>
 </li>
 <li>
   <a href="map.Rmd">
@@ -216,14 +196,26 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Holy cow!</h1>
 
 </div>
 
 
-<div id="i-have-a-webpage" class="section level3">
-<h3>I have a webpage!</h3>
-<p>And I can put all kinds of stuff on it!</p>
+<div id="section" class="section level2">
+<h2></h2>
+</div>
+<div id="section-1" class="section level2">
+<h2></h2>
+</div>
+<div id="data-description" class="section level1">
+<h1>Data description</h1>
+<div id="about-the-data" class="section level3">
+<h3>About the Data</h3>
+<ul>
+<li><p>Data from <a href="http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx">NYC health</a> was used to obtain the rate of asthma emergency department visit in children from 0-4 years old and 5-14 years old,as well as the poverty level and air qualities in each entity in NYC. Based on this dataset we calculate the association between <strong>poverty and asthma rate</strong> as well as <strong>SO2 and asthma rate</strong>.</p></li>
+<li><p>Data from <a href="https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35">NYC open data</a> was used to obtain the number of trees in different entities in NYC, based on which we visualized the density of trees in different entities to explore the identical characteristics of <strong>tree density</strong> and asthma rate distribution.</p></li>
+<li><p>We match the name of entities in NYC to UHF zip code to realize <strong>the combination of two dataset</strong> to explore potential associations between possible factors. The criteria information was provided by <a href="http://www.infoshare.org/misc/UHF.pdf">United Hospital Fund (UHF) Neighborhood</a></p></li>
+</ul>
+</div>
 </div>
 
 

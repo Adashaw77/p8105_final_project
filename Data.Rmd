@@ -1,0 +1,26 @@
+---
+output:
+  html_document:
+   theme: sandstone
+   highlight: monochrome
+---
+##
+##
+#Data description
+
+### About the Data
+
+*   Data from [NYC health](http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx) was used to obtain the rate of asthma emergency department visit in children from 0-4 years old and 5-14 years old,as well as the poverty level and air qualities in each entity in NYC. Based on this dataset we calculate the association between __poverty and asthma rate__ as well as __SO2 and asthma rate__.
+
+
+*   Data from [NYC open data](https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35) was used to obtain the number of trees in different entities in NYC, based on which we visualized the density of trees in different entities to explore the identical characteristics of __tree density__ and asthma rate distribution.
+
+
+*   We match the name of entities in NYC to UHF zip code to realize __the combination of two dataset__ to explore potential associations between possible factors. The criteria information was provided by [United Hospital Fund (UHF) Neighborhood](http://www.infoshare.org/misc/UHF.pdf) 
+
+
+
+
+
+
+
