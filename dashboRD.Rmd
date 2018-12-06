@@ -156,41 +156,50 @@ ax = list(
 )
 
 #asthma 0-4 and asthma 5-14 in each UHF42
-final_df %>% 
+final_asthma_df = final_df %>% 
   gather(key = "asthma_age",
          value  = rate ,
          asthma_emergency_department_visits_children_0_to_4_yrs_old,
          asthma_emergency_department_visits_children_5_to_14_yrs_old) %>% 
   mutate(
     asthma_age = str_replace(asthma_age,"asthma_emergency_department_visits_","")
-  ) %>% 
-plot_ly(x= ~rate, y= ~geo_entity_name, color = ~asthma_age, type = 'bar',orientation = "h") %>%
+  ) 
+plot_ly(final_asthma_df,x= ~rate, y= ~geo_entity_name, color = ~asthma_age, type = 'bar',orientation = "h") %>%
   layout(
          yaxis = ax,
-         xaxis = list(title = "Asthma rate"),
-        legend = list(x = 0.3, y = 0.01)
+         xaxis = list(title = "Rate of asthma emergency department visits"),
+        legend = list(x = 0.6, y = 0.01)
   )
 ```
 
 Column {data-width=550}
 -----------------------------------------------------------------------
-### Chart C
+### Scatterplot between SO2 and the rate of asthma emergency department visits in different age group children
 
 ```{r}
-
+so2_plot = ggplot(final_asthma_df) +
+   geom_point(aes(x=sulfur_dioxide_so2,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=sulfur_dioxide_so2,y=rate,color = asthma_age), method = "lm",se=F)+theme(legend.position = "none")
+ggplotly(so2_plot) %>% 
+  layout(
+         yaxis = list(title = "Rate of Asthma Emergency Department Visits"),
+         xaxis = list(title = "Average SO2 ")
+  )
 ```
 
 
-### Chart D {.tabset}
+### Scatterplot between poverty and the rate of asthma emergency department visits in different age griup children
 
 ```{r}
-
+#asthma and poverty
+poverty = ggplot(final_asthma_df) +
+   geom_point(aes(x=poverty,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = "lm",se=F)+theme(legend.position = "none")
+  ggplotly(poverty) %>% 
+      layout(
+         yaxis = list(title = "Rate of Asthma Emergency Department Visits"),
+         xaxis = list(title = "Poverty Level")
+  )
 
 ```
 
-### Chart E 
-
-```{r}
-
-
-```
