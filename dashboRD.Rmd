@@ -3,10 +3,10 @@ title: "Dashboard"
 output: 
   flexdashboard::flex_dashboard:
     vertical_layout: fill
+    theme: cosmo
 ---
 
 ```{r dashboard, include=FALSE}
-
 library(flexdashboard)
 library(tidyverse)
 library(rvest)
@@ -17,10 +17,8 @@ library(patchwork)
 library(readr)
 library(ggplot2)
 library(readxl)
-library(ggthemes)
+theme_set(theme_bw())
 ```
-
-
 
 ```{r tidy,include= FALSE}
 ## Tidy tree data
@@ -149,7 +147,27 @@ map = ggplot(asthma_map) +
 ### Chart B
 
 ```{r}
+ax = list(
+  title = "",
+  zeroline = FALSE,
+  showline = FALSE,
+  showticklabels = FALSE,
+  showgrid = FALSE
+)
 
+#asthma 0-4 and asthma 5-14 in each UHF42
+final_df %>% 
+  gather(key = "asthma_age",
+         value  = rate ,
+         asthma_emergency_department_visits_children_0_to_4_yrs_old,
+         asthma_emergency_department_visits_children_5_to_14_yrs_old) %>% 
+  
+plot_ly(x= ~rate, y= ~geo_entity_name, color = ~asthma_age, type = 'bar',orientation = "h") %>%
+  layout(
+         yaxis = ax,
+         xaxis = list(title = "Asthma rate"),
+        legend = list(x = 0.3, y = 0.01)
+  )
 ```
 
 Column {data-width=550}
