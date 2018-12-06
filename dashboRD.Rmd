@@ -120,7 +120,7 @@ theme_nothing <- function(base_size = 12, legend = TRUE){
 Column {.tabset data-width=650}
 -----------------------------------------------------------------------
 
-### Chart A
+### Asthma Rate Distribution
 
 ```{r}
 
@@ -129,17 +129,20 @@ cnames = left_join(cnames,asthma_map, by = "id")
 cnames = cnames[-1,]
 map = ggplot(asthma_map) +
     geom_map(aes(map_id = id, fill = asthma), color = "white", map = map_data)  +
-    scale_fill_gradient(high = "#c51b8a",low = "#fde0dd", guide = "colorbar", name="Visits") +
+    scale_fill_gradient(high = "#c51b8a",low = "#fde0dd", guide = "colorbar", name="Asthma Rate") +
     expand_limits(map_data) +
   geom_text(data = cnames, aes(x = x, y = y, label = geo_entity_name), size = 2) + theme_void()+
   theme(legend.justification=c(1,0), legend.position=c(1,0)) +
     theme_nothing()
 
   ggplotly(map) %>%
-  layout(hoverlabel = list(bgcolor = "white", 
+  layout(title = "Asthma rate among chidren in NYC",
+    hoverlabel = list(bgcolor = "white", 
                               font = list(family = "Calibri", 
-                                          size = 14, 
-                                          color = "black")))
+                                          size = 10, 
+                                          color = "black"))
+         )
+        
 
 ```
 
@@ -148,7 +151,7 @@ map = ggplot(asthma_map) +
 
 ```{r}
 ax = list(
-  title = "Entities in NY",
+  title = "Entities in NYC",
   zeroline = FALSE,
   showline = FALSE,
   showticklabels = FALSE,

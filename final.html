@@ -224,16 +224,8 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages --------------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
-<pre><code>## √ ggplot2 3.1.0     √ purrr   0.2.5
-## √ tibble  1.4.2     √ dplyr   0.7.8
-## √ tidyr   0.8.2     √ stringr 1.3.1
-## √ readr   1.1.1     √ forcats 0.3.0</code></pre>
-<pre><code>## -- Conflicts ------------------------------------------------------------------------------ tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(dplyr)
+<pre class="r"><code>library(tidyverse)
+library(dplyr)
 library(readr)
 library(ggplot2)
 library(readxl)</code></pre>
@@ -261,7 +253,7 @@ tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;)
 
 mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;E:\Master\Data Science\Assignments\Final\p8105_final_project\UHF42\UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+## Source: &quot;/Users/wuxinyao/Desktop/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
 ## with 43 features
 ## It has 8 fields</code></pre>
 <pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
