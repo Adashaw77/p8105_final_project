@@ -35,7 +35,7 @@ The asthma dataset has a total 16 variables and it includes important variables 
 
 
 
-### source
+### Data Source
 
 All data about asthma, poverty and air qualities was retrieved from NYC health (http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx)
 
@@ -43,7 +43,7 @@ All data related to trees was retrieved from NYC open data (https://data.cityofn
 
 All neighborhood data was retrieved from (http://www.infoshare.org/misc/UHF.pdf)
 
-### scraping method, cleaning
+### Scraping method, cleaning
 ```{r }
 library(tidyverse)
 library(dplyr)
@@ -114,7 +114,7 @@ Visualizations, summaries, and exploratory statistical analyses. Justify the ste
 
 ## Asthma Visualizations
 
-###step one
+###Step one
 We made a plot showing the assoication between tree density and astham rate.
 ```{r}
 #plot between asthma and tree
@@ -137,7 +137,7 @@ ggplot(final_asthma_df) +
 ```
 This plot 1 showed the relationship between asthma and tree. Visually, there was a positive association between tree density and astham rate.
 
-### step two
+### Step two
 Other factors may also impact the astham rate. We made plots showing the association between astham and air qualities (fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2) ) and the association between asthma and poverty rate. 
 
 ```{r}
@@ -186,7 +186,7 @@ plot3 showed the relationship between astham rate rate and pM.25
 plot4 showed the relationship between asthma and poverty.
 Visually, there was a positive association between astham rate and SO2, PM 2.5 and poverty level.
 
-### step three
+### Step three
 We are interested in seeing whether asthma rate is different between children from 0 to 4 years old and children from 5 to 14 years old in 42 neighborhoods in new york city. 
 ```{r}
 
@@ -232,7 +232,7 @@ plot 6 showed the association between tree density and so2.
 plot 7 showed the association between tree density and pm 2.5
 Visually, there was a positive association between tree density and air quality factors.
 
-## statistical analyses
+## Statistical analyses
 ```{r read, message = FALSE, warning = FALSE}
 
 # mlr showing the relationship between asthma rate of kids from 0 to 4 years and tree density, so2 levels, percent of the children under 5 years living in the poverty areas
@@ -250,7 +250,7 @@ summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_dens
 
 Based on the multiple linear regression models, all the factors are significant except tree density ( p value is 0.86, 0.64). This indicated that there are associations between asthma rate of kids and so2 and poverty levels.
 
-## additional analysis
+## Additional analysis
 We tested the association between astham rate and all pollutes including ozone, black carbon, PM 2.5, NO, NO2, SO2.
 ```{r}
 #SLR:choose the pollutes associated with asthma
