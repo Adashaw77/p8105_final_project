@@ -1,17 +1,10 @@
 ---
-title: "final_report"
+title: "final report"
 author: "Jingwei Ren"
 date: "12/2/2018"
 output: html_document
 ---
-```{r setup, include=FALSE}
-library(flexdashboard)
-library(shiny)
-library(tidyverse)
-library(viridis)
-library(plotly)
-library(readxl)
-```
+
 ## final report
 
 ## motivation
@@ -61,12 +54,7 @@ library(ggplot2)
 library(readxl)
 ```
 
-<<<<<<< HEAD:final report.Rmd
 ```{r}
-=======
-
-```{r read, message = FALSE, warning = FALSE}
->>>>>>> 0579403d66ef21685743b56df6c728722104e14e:final_report.Rmd
 
 #import and tidy tree data
 tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
@@ -103,14 +91,8 @@ tree_density = tree_df %>%
 ```
 
 
-<<<<<<< HEAD:final report.Rmd
 ```{r}
 # import and tidy astham data
-=======
-```{r lead, message = FALSE, warning = FALSE }
-
-#import and tidy asthma data
->>>>>>> 0579403d66ef21685743b56df6c728722104e14e:final_report.Rmd
 
 asthma_air = read_csv("./data/asthma_air/Data.csv") %>%
   janitor::clean_names()
@@ -165,18 +147,12 @@ final_df = left_join(asthma_em_0to4,asthma_em_5to14) %>%
 
 Visualizations, summaries, and exploratory statistical analyses. Justify the steps you took, and show any major changes to your ideas.
 
-<<<<<<< HEAD:final report.Rmd
 ## Asthma Visualizations
 
 ###step one
 We made a plot showing the assoication between tree density and astham rate.
 ```{r}
 #plot between asthma and tree
-=======
-## Visualizations
-```{r read3, message = FALSE, warning = FALSE}
-# plot between asthma and so2
->>>>>>> 0579403d66ef21685743b56df6c728722104e14e:final_report.Rmd
 final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to4:asthma_em_5to14) %>%
   gather(key = poverty_age, value = poverty, poverty:poverty_under5) %>%
   filter((asthma_age == "asthma_em_5to14"&poverty_age == "poverty")|(asthma_age == "asthma_em_0to4"& poverty_age == "poverty_under5"))
@@ -226,11 +202,7 @@ Tree
 ```
 
 ## statistical analyses
-<<<<<<< HEAD:final report.Rmd
 ```{r read, message = FALSE, warning = FALSE}
-=======
-```{r read4, message = FALSE, warning = FALSE}
->>>>>>> 0579403d66ef21685743b56df6c728722104e14e:final_report.Rmd
 
 # mlr showing the relationship between asthma rate of kids from 0 to 4 years and tree density, so2 levels, percent of the children under 5 years living in the poverty areas
 

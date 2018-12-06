@@ -353,14 +353,14 @@ so2_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~
 
 data.frame(Pollute = c(&quot;Ozone&quot;, &quot;Black Carbon&quot;, &quot;PM2.5&quot;, &quot;NO&quot;, &quot;NO2&quot;, &quot;SO2&quot;),
                      P_value1 = c(o3_p1, black_carbon_p1, pm2_5_p1, no_p1, no2_p1, so2_p1),
-                     P_value1 = c(o3_p2, black_carbon_p2, pm2_5_p2, no_p2, no2_p2, so2_p2)) %&gt;%
+                     P_value2 = c(o3_p2, black_carbon_p2, pm2_5_p2, no_p2, no2_p2, so2_p2)) %&gt;%
   knitr::kable(digits = 3)</code></pre>
 <table>
 <thead>
 <tr class="header">
 <th align="left">Pollute</th>
 <th align="right">P_value1</th>
-<th align="right">P_value1.1</th>
+<th align="right">P_value2</th>
 </tr>
 </thead>
 <tbody>
@@ -398,106 +398,131 @@ data.frame(Pollute = c(&quot;Ozone&quot;, &quot;Black Carbon&quot;, &quot;PM2.5&
 </table>
 <pre class="r"><code>#based on p values, we choose SO2</code></pre>
 <pre class="r"><code>#MLR
-summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_density+sulfur_dioxide_so2+children_under_5_years_old_in_poverty,data=final_df))</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = asthma_emergency_department_visits_children_0_to_4_yrs_old ~ 
-##     tree_density + sulfur_dioxide_so2 + children_under_5_years_old_in_poverty, 
-##     data = final_df)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -404.07  -55.91    4.53   95.76  248.19 
-## 
-## Coefficients:
-##                                         Estimate Std. Error t value
-## (Intercept)                           -1.036e+02  7.108e+01  -1.457
-## tree_density                          -4.500e+05  7.087e+05  -0.635
-## sulfur_dioxide_so2                     1.929e+02  6.144e+01   3.140
-## children_under_5_years_old_in_poverty  1.117e+01  1.439e+00   7.765
-##                                       Pr(&gt;|t|)    
-## (Intercept)                            0.15275    
-## tree_density                           0.52898    
-## sulfur_dioxide_so2                     0.00313 ** 
-## children_under_5_years_old_in_poverty  1.4e-09 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 141.9 on 41 degrees of freedom
-## Multiple R-squared:  0.6466, Adjusted R-squared:  0.6208 
-## F-statistic: 25.01 on 3 and 41 DF,  p-value: 2.319e-09</code></pre>
-<pre class="r"><code>summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_density+sulfur_dioxide_so2+poverty,data=final_df))</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = asthma_emergency_department_visits_children_5_to_14_yrs_old ~ 
-##     tree_density + sulfur_dioxide_so2 + poverty, data = final_df)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -240.631  -44.026    6.739   34.699  230.821 
-## 
-## Coefficients:
-##                      Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)        -8.255e+01  5.019e+01  -1.645  0.10767    
-## tree_density       -4.714e+05  4.964e+05  -0.950  0.34786    
-## sulfur_dioxide_so2  1.226e+02  4.405e+01   2.784  0.00809 ** 
-## poverty             1.288e+01  1.588e+00   8.110 4.68e-10 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 99.51 on 41 degrees of freedom
-## Multiple R-squared:  0.6828, Adjusted R-squared:  0.6596 
-## F-statistic: 29.42 on 3 and 41 DF,  p-value: 2.597e-10</code></pre>
-<pre class="r"><code>ggplot(final_df) +
-  geom_boxplot(aes(x = boroname, y = sulfur_dioxide_so2, fill = boroname)) +
-  theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<pre class="r"><code>ggplot(final_df) +
-  geom_boxplot(aes(x = boroname, y = ozone_o3, fill = boroname)) +
-  theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
-<pre class="r"><code>ggplot(final_df) +
-  geom_boxplot(aes(x = boroname, y = nitric_oxide_no, fill = boroname)) +
-  theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
-<pre class="r"><code>ggplot(final_df) +
-  geom_boxplot(aes(x = boroname, y = nitrogen_dioxide_no2, fill = boroname)) +
-  theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
-<pre class="r"><code>ggplot(final_df) +
-  geom_boxplot(aes(x = boroname, y = black_carbon, fill = boroname)) +
-  theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
-<pre class="r"><code>ggplot(final_df) +
-  geom_boxplot(aes(x = boroname, y = fine_particulate_matter_pm2_5, fill = boroname)) +
-  theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-8-6.png" width="672" /></p>
-<pre class="r"><code>#asthma and so2
-final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %&gt;%
+summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_density+sulfur_dioxide_so2+children_under_5_years_old_in_poverty,data=final_df)) %&gt;%
+  broom::tidy() %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-103.55417</td>
+<td align="right">7.107578e+01</td>
+<td align="right">-1.4569545</td>
+<td align="right">0.1527456</td>
+</tr>
+<tr class="even">
+<td align="left">tree_density</td>
+<td align="right">-450005.47197</td>
+<td align="right">7.087065e+05</td>
+<td align="right">-0.6349673</td>
+<td align="right">0.5289775</td>
+</tr>
+<tr class="odd">
+<td align="left">sulfur_dioxide_so2</td>
+<td align="right">192.94852</td>
+<td align="right">6.144257e+01</td>
+<td align="right">3.1403066</td>
+<td align="right">0.0031272</td>
+</tr>
+<tr class="even">
+<td align="left">children_under_5_years_old_in_poverty</td>
+<td align="right">11.17321</td>
+<td align="right">1.438942e+00</td>
+<td align="right">7.7648807</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_density+sulfur_dioxide_so2+poverty,data=final_df)) %&gt;%
+  broom::tidy() %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-82.55365</td>
+<td align="right">5.019181e+01</td>
+<td align="right">-1.6447634</td>
+<td align="right">0.1076654</td>
+</tr>
+<tr class="even">
+<td align="left">tree_density</td>
+<td align="right">-471392.09498</td>
+<td align="right">4.963879e+05</td>
+<td align="right">-0.9496446</td>
+<td align="right">0.3478574</td>
+</tr>
+<tr class="odd">
+<td align="left">sulfur_dioxide_so2</td>
+<td align="right">122.64218</td>
+<td align="right">4.405184e+01</td>
+<td align="right">2.7840421</td>
+<td align="right">0.0080856</td>
+</tr>
+<tr class="even">
+<td align="left">poverty</td>
+<td align="right">12.87822</td>
+<td align="right">1.587895e+00</td>
+<td align="right">8.1102445</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %&gt;%
   gather(key = poverty_age, value = poverty, poverty:children_under_5_years_old_in_poverty) %&gt;%
   filter((asthma_age == &quot;asthma_emergency_department_visits_children_5_to_14_yrs_old&quot;&amp;poverty_age == &quot;poverty&quot;)|(asthma_age == &quot;asthma_emergency_department_visits_children_0_to_4_yrs_old&quot;&amp; poverty_age == &quot;children_under_5_years_old_in_poverty&quot;))
 
+#asthma and so2
 ggplot(final_asthma_df) +
    geom_point(aes(x = sulfur_dioxide_so2, y = rate, color = asthma_age))+
    geom_smooth(aes(x = sulfur_dioxide_so2, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
+   labs(
+    title = &quot;Asthma and Sulfur Dioxide&quot;,
+    x = &quot;Sulfur Dioxide Annual Average&quot;,
+    y = &quot;Asthma Rate&quot;
+  ) +
+   theme(legend.position = &quot;bottom&quot;) </code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>#asthma and pm2.5
+ggplot(final_asthma_df) +
+   geom_point(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age))+
+   geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <pre class="r"><code>#asthma and poverty
 ggplot(final_asthma_df) +
    geom_point(aes(x = poverty, y = rate, color = asthma_age))+
    geom_smooth(aes(x = poverty, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
 <pre class="r"><code>#asthma and tree
 ggplot(final_asthma_df) +
   geom_point(aes(x = tree_density, y = rate, color = asthma_age)) +
    geom_smooth(aes(x = tree_density, y = rate, color = asthma_age), method = &quot;lm&quot;,se = F) +
   theme(legend.position = &quot;bottom&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
 <pre class="r"><code>#asthma 0-4 and asthma 5-14 in each UHF42
 ggplot(final_asthma_df) +
   geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = &quot;identity&quot;, position = &quot;dodge&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
 <pre class="r"><code>  theme(legend.position = &quot;bottom&quot;)</code></pre>
 <pre><code>## List of 1
 ##  $ legend.position: chr &quot;bottom&quot;
@@ -508,7 +533,12 @@ ggplot(final_asthma_df) +
 ggplot(final_asthma_df) +
   geom_point(aes(x = sulfur_dioxide_so2, y = tree_density)) +
   geom_smooth(aes(x = sulfur_dioxide_so2, y = tree_density), method = &quot;lm&quot;, se = F)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-9-5.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-8-6.png" width="672" /></p>
+<pre class="r"><code>#tree and pm2.5
+ggplot(final_asthma_df) +
+  geom_point(aes(x = fine_particulate_matter_pm2_5, y = tree_density)) +
+  geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = tree_density), method = &quot;lm&quot;, se = F) </code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-7.png" width="672" /></p>
 
 
 
