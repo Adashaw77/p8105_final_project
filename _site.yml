@@ -4,12 +4,10 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "About"
-      href: about.html
-    - text: "Data Source"
-      href: datasource.html
     - text: "Dashboard"
       href: dashboRD.html
+    - text: "Shiny"
+      href: https://treeandasthma.shinyapps.io/asthma_tree/
     - icon: fab fa-youtube
       href: map.Rmd
     - icon: fa-github fa-lg
