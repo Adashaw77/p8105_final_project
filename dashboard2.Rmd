@@ -116,7 +116,6 @@ total_tree = tree_total_uhf42 %>%
   arrange(UHFCODE) %>%
   mutate(tree_density = tree_density*100000)
 
-names(mydat2)
 
 
 pal <- colorBin("Greens", total_tree$tree_density, 5, pretty = FALSE)
