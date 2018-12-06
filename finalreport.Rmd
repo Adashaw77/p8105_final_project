@@ -2,7 +2,7 @@
 title: "final report"
 author: "Jingwei Ren, Baoyi Shi, Xinyao Wu, Qi Shao"
 date: "12/2/2018"
-output: html_document
+output: github_document
 ---
 
 ## motivation
@@ -307,7 +307,7 @@ Our main goal is to discuss the relationship between tree density in New York Ci
 
 We were also interested to see whether there was a difference in asthma rate between children from 0 to 4 years old and children from 5 to 14 years old. The result from plot 5 showed that children from 0 to 4 years have a higher asthma rate compared to children from 5 to 14 years old. The T-test also proved that there is a significant difference between children asthma rate of 0-4 and that of 5-14. (P value = 2.11e-05). A positive relationship between tree density and air quality factors in 42 neighborhood in New York city was reported. Tree density increases as CO2 and PM 2.5 levels increase. One possible explanation for this could be that people's awareness of environment increases as the air quality in one area decreases. Therefore, we saw a positive result. We would expect to see a negative association. In order to verify this, we could make plots detecting the change of air quality's levels throughout a couple of years. Increasing tree densities might help to decrease air quality's levels through a long-term process. 
 
-
+In conclusion, we found out that there is no association between tree density and asthma rate based on our data set. If more variables are included in the future, we would expect to see that afforestation in low-income communities will help improve air-quality and thus decrease the risk of child asthma over a long-term period
 
 
 
