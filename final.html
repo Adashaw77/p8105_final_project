@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Baoyi Shi" />
+
+
+<title>tree and asthma</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="Data.html">Data</a>
+</li>
+<li>
+  <a href="about.html">MLR</a>
+</li>
+<li>
+  <a href="dashboRD.html">Dashboard</a>
+</li>
+<li>
+  <a href="dashboard2.html">Dashboard</a>
+</li>
+<li>
+  <a href="Data.Rmd">
+    <span class="fab fa fab fa-youtube"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/Adashaw77/p8105_final_project/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">tree and asthma</h1>
+<h4 class="author"><em>Baoyi Shi</em></h4>
+<h4 class="date"><em>2018年12月4日</em></h4>
+
+</div>
+
+
+<pre class="r"><code>library(tidyverse)
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(readxl)</code></pre>
+<pre class="r"><code>#import and tidy tree data
+tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(status == &quot;Alive&quot;) </code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   zipcode = col_integer(),
+##   boroname = col_character(),
+##   tree_dbh = col_integer(),
+##   status = col_character(),
+##   health = col_character(),
+##   spc_common = col_character(),
+##   Latitude = col_double(),
+##   longitude = col_double()
+## )</code></pre>
+<pre class="r"><code>zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
+   select(-zipcode_no, uhf42_name) %&gt;%
+   filter(is.na(zipcode) == FALSE)
+
+tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;) 
+
+mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/wuxinyao/Desktop/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+## with 43 features
+## It has 8 fields</code></pre>
+<pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
+  filter(is.na(uhf42_code) == FALSE)
+
+tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)</code></pre>
+<pre class="r"><code>#among 652,173 trees, only 361 trees have diameter larger than 70, so we make plots without them.
+
+#density plot of tree_dbh
+ggplot(tree_df) +
+  geom_density(aes(x = tree_dbh, fill = boroname, alpha = 0.5))+ 
+  scale_x_continuous(limits = c(0, 50)) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<pre><code>## Warning: Removed 361 rows containing non-finite values (stat_density).</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>#violin plot of tree_dbh
+ggplot(tree_df) +
+  geom_violin(aes(x = boroname, y = tree_dbh, fill = boroname))+ 
+  scale_y_continuous(limits = c(0, 50)) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<pre><code>## Warning: Removed 361 rows containing non-finite values (stat_ydensity).</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>#tree density
+tree_density = tree_df %&gt;%
+  group_by(boroname, uhf42_name, uhf42_code, area) %&gt;%
+  dplyr::summarize(tree_total = n()) %&gt;%
+  filter(is.na(uhf42_name) == FALSE) %&gt;%
+  group_by(uhf42_name) %&gt;%
+  dplyr::mutate(tree_density = tree_total/area) %&gt;%
+  ungroup() %&gt;%
+  mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))</code></pre>
+<pre class="r"><code>#read and tidy data
+asthma_air_poverty = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
+  select(geo_entity_id, geo_entity_name, name, data_value) %&gt;%
+  filter(is.na(geo_entity_id) == FALSE) %&gt;%
+  spread(key = name, value = data_value) %&gt;%
+  janitor::clean_names() %&gt;%
+  select(poverty, children_under_5_years_old_in_poverty, everything()) %&gt;%
+  mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
+         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   `Unique Id` = col_character(),
+##   indicator_id = col_integer(),
+##   geo_type_id = col_integer(),
+##   measurement_type_id = col_integer(),
+##   internal_id = col_integer(),
+##   subtopic_id = col_integer(),
+##   name = col_character(),
+##   Measure = col_character(),
+##   geo_type_name = col_character(),
+##   description = col_character(),
+##   geo_entity_id = col_integer(),
+##   geo_entity_name = col_character(),
+##   year_description = col_character(),
+##   data_value = col_double(),
+##   message = col_character()
+## )</code></pre>
+<pre class="r"><code>tree_density_total = tree_density %&gt;%
+  select(boroname, geo_entity_id=uhf42_code, tree_density) %&gt;%
+  distinct()
+
+final_df = left_join(asthma_air_poverty, tree_density_total)</code></pre>
+<pre><code>## Joining, by = &quot;geo_entity_id&quot;</code></pre>
+<pre class="r"><code>#SLR:choose the pollutes associated with asthma
+o3_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~ozone_o3, data=final_df))$coefficients[2,4]
+
+o3_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~ozone_o3, data=final_df))$coefficients[2,4]
+
+black_carbon_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~black_carbon, data=final_df))$coefficients[2,4]
+
+black_carbon_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~black_carbon, data=final_df))$coefficients[2,4]
+
+pm2_5_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~fine_particulate_matter_pm2_5, data=final_df))$coefficients[2,4]
+
+pm2_5_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~fine_particulate_matter_pm2_5, data=final_df))$coefficients[2,4]
+
+no_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~nitric_oxide_no, data=final_df))$coefficients[2,4]
+
+no_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~nitric_oxide_no, data=final_df))$coefficients[2,4]
+
+no2_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~nitrogen_dioxide_no2, data=final_df))$coefficients[2,4]
+
+no2_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~nitrogen_dioxide_no2, data=final_df))$coefficients[2,4]
+
+so2_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~sulfur_dioxide_so2, data=final_df))$coefficients[2,4]
+
+so2_p2 = summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~sulfur_dioxide_so2, data=final_df))$coefficients[2,4]
+
+data.frame(Pollute = c(&quot;Ozone&quot;, &quot;Black Carbon&quot;, &quot;PM2.5&quot;, &quot;NO&quot;, &quot;NO2&quot;, &quot;SO2&quot;),
+                     P_value1 = c(o3_p1, black_carbon_p1, pm2_5_p1, no_p1, no2_p1, so2_p1),
+                     P_value2 = c(o3_p2, black_carbon_p2, pm2_5_p2, no_p2, no2_p2, so2_p2)) %&gt;%
+  knitr::kable(digits = 3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Pollute</th>
+<th align="right">P_value1</th>
+<th align="right">P_value2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ozone</td>
+<td align="right">0.893</td>
+<td align="right">0.376</td>
+</tr>
+<tr class="even">
+<td align="left">Black Carbon</td>
+<td align="right">0.569</td>
+<td align="right">0.220</td>
+</tr>
+<tr class="odd">
+<td align="left">PM2.5</td>
+<td align="right">0.678</td>
+<td align="right">0.265</td>
+</tr>
+<tr class="even">
+<td align="left">NO</td>
+<td align="right">0.490</td>
+<td align="right">0.883</td>
+</tr>
+<tr class="odd">
+<td align="left">NO2</td>
+<td align="right">0.758</td>
+<td align="right">0.328</td>
+</tr>
+<tr class="even">
+<td align="left">SO2</td>
+<td align="right">0.023</td>
+<td align="right">0.006</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>#based on p values, we choose SO2</code></pre>
+<pre class="r"><code>#MLR
+summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~tree_density+sulfur_dioxide_so2+children_under_5_years_old_in_poverty,data=final_df)) %&gt;%
+  broom::tidy() %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-103.55417</td>
+<td align="right">7.107578e+01</td>
+<td align="right">-1.4569545</td>
+<td align="right">0.1527456</td>
+</tr>
+<tr class="even">
+<td align="left">tree_density</td>
+<td align="right">-450005.47197</td>
+<td align="right">7.087065e+05</td>
+<td align="right">-0.6349673</td>
+<td align="right">0.5289775</td>
+</tr>
+<tr class="odd">
+<td align="left">sulfur_dioxide_so2</td>
+<td align="right">192.94852</td>
+<td align="right">6.144257e+01</td>
+<td align="right">3.1403066</td>
+<td align="right">0.0031272</td>
+</tr>
+<tr class="even">
+<td align="left">children_under_5_years_old_in_poverty</td>
+<td align="right">11.17321</td>
+<td align="right">1.438942e+00</td>
+<td align="right">7.7648807</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(lm(asthma_emergency_department_visits_children_5_to_14_yrs_old~tree_density+sulfur_dioxide_so2+poverty,data=final_df)) %&gt;%
+  broom::tidy() %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-82.55365</td>
+<td align="right">5.019181e+01</td>
+<td align="right">-1.6447634</td>
+<td align="right">0.1076654</td>
+</tr>
+<tr class="even">
+<td align="left">tree_density</td>
+<td align="right">-471392.09498</td>
+<td align="right">4.963879e+05</td>
+<td align="right">-0.9496446</td>
+<td align="right">0.3478574</td>
+</tr>
+<tr class="odd">
+<td align="left">sulfur_dioxide_so2</td>
+<td align="right">122.64218</td>
+<td align="right">4.405184e+01</td>
+<td align="right">2.7840421</td>
+<td align="right">0.0080856</td>
+</tr>
+<tr class="even">
+<td align="left">poverty</td>
+<td align="right">12.87822</td>
+<td align="right">1.587895e+00</td>
+<td align="right">8.1102445</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %&gt;%
+  gather(key = poverty_age, value = poverty, poverty:children_under_5_years_old_in_poverty) %&gt;%
+  filter((asthma_age == &quot;asthma_emergency_department_visits_children_5_to_14_yrs_old&quot;&amp;poverty_age == &quot;poverty&quot;)|(asthma_age == &quot;asthma_emergency_department_visits_children_0_to_4_yrs_old&quot;&amp; poverty_age == &quot;children_under_5_years_old_in_poverty&quot;))
+
+#asthma and so2
+ggplot(final_asthma_df) +
+   geom_point(aes(x = sulfur_dioxide_so2, y = rate, color = asthma_age))+
+   geom_smooth(aes(x = sulfur_dioxide_so2, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
+   labs(
+    title = &quot;Asthma and Sulfur Dioxide&quot;,
+    x = &quot;Sulfur Dioxide Annual Average&quot;,
+    y = &quot;Asthma Rate&quot;
+  ) +
+   theme(legend.position = &quot;bottom&quot;) </code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>#asthma and pm2.5
+ggplot(final_asthma_df) +
+   geom_point(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age))+
+   geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre class="r"><code>#asthma and poverty
+ggplot(final_asthma_df) +
+   geom_point(aes(x = poverty, y = rate, color = asthma_age))+
+   geom_smooth(aes(x = poverty, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+<pre class="r"><code>#asthma and tree
+ggplot(final_asthma_df) +
+  geom_point(aes(x = tree_density, y = rate, color = asthma_age)) +
+   geom_smooth(aes(x = tree_density, y = rate, color = asthma_age), method = &quot;lm&quot;,se = F) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
+<pre class="r"><code>#asthma 0-4 and asthma 5-14 in each UHF42
+ggplot(final_asthma_df) +
+  geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = &quot;identity&quot;, position = &quot;dodge&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
+<pre class="r"><code>  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<pre><code>## List of 1
+##  $ legend.position: chr &quot;bottom&quot;
+##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;theme&quot; &quot;gg&quot;
+##  - attr(*, &quot;complete&quot;)= logi FALSE
+##  - attr(*, &quot;validate&quot;)= logi TRUE</code></pre>
+<pre class="r"><code>#tree and SO2
+ggplot(final_asthma_df) +
+  geom_point(aes(x = sulfur_dioxide_so2, y = tree_density)) +
+  geom_smooth(aes(x = sulfur_dioxide_so2, y = tree_density), method = &quot;lm&quot;, se = F)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-6.png" width="672" /></p>
+<pre class="r"><code>#tree and pm2.5
+ggplot(final_asthma_df) +
+  geom_point(aes(x = fine_particulate_matter_pm2_5, y = tree_density)) +
+  geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = tree_density), method = &quot;lm&quot;, se = F) +
+   labs(
+    title = &quot;Tree Density and PM2.5&quot;,
+    x = &quot;PM2.5 Average&quot;,
+    y = &quot;Tree Density&quot;
+  ) </code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-7.png" width="672" /></p>
+<pre class="r"><code>#asthma 0-4 and asthma 5-14 in each UHF42
+ggplot(final_asthma_df) +
+  geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
+   labs(
+    title = &quot;Asthma Rate In Each Entity&quot;,
+    x = &quot;Entity Name&quot;,
+    y = &quot;Asthma Rate&quot;
+  ) +
+   theme(legend.position = &quot;bottom&quot;, axis.text.x = element_text(angle = 75, hjust = 1)) +
+   guides(fill = guide_legend(nrow = 2)) +
+   scale_fill_hue(name = &quot;Age&quot;) </code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-8.png" width="672" /></p>
+<pre class="r"><code>#Paired T test to test if there is significant difference between asthma rate of 0-4 and that of 5-14
+t.test(final_df$asthma_emergency_department_visits_children_0_to_4_yrs_old, final_df$asthma_emergency_department_visits_children_5_to_14_yrs_old, paired=T) %&gt;%
+  broom::tidy() %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">estimate</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">57.01778</td>
+<td align="right">4.761863</td>
+<td align="right">2.11e-05</td>
+<td align="right">44</td>
+<td align="right">32.88609</td>
+<td align="right">81.14946</td>
+<td align="left">Paired t-test</td>
+<td align="left">two.sided</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

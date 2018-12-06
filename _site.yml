@@ -6,7 +6,13 @@ navbar:
   right:
     - text: "Data"
       href:  Data.html
+<<<<<<< HEAD
+    - text: "MLR"
+      href:  about.html      
+    - text: "Dashboard"
+=======
     - text: "Asthma"
+>>>>>>> 0ccc907f250948999fd41bd54753f163d891c6ff
       href: dashboRD.html
     - text: "Tree and asthma"
       href: dashboard2.html
