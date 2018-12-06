@@ -112,20 +112,7 @@ tree_density = tree_df %>%
 #read and tidy data
 download.file("https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv",mode = "wb",destfile = "asthma_air_poverty.csv")
 
-asthma_air_poverty = read_csv("asthma_air_poverty.csv") %>%
-  select(geo_entity_id, geo_entity_name, name, data_value) %>%
-  filter(is.na(geo_entity_id) == FALSE) %>%
-  spread(key = name, value = data_value) %>%
-  janitor::clean_names() %>%
-  select(poverty, children_under_5_years_old_in_poverty, everything()) %>%
-  mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
-         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
 
-tree_density_total = tree_density %>%
-  select(geo_entity_id=uhf42_code, tree_density) %>%
-  distinct()
-
-final_df = left_join(asthma_air_poverty, tree_density_total)
 ```
 
 

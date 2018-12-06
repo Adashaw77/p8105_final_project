@@ -74,7 +74,9 @@ map_data = map_data %>%
 names(map_data)[1:2] = c("x","y") 
 
 ## Tidy asthma data
-asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
+download.file("https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv",mode = "wb",destfile = "asthma_air_poverty.csv")
+
+asthma_air_poverty = read_csv("asthma_air_poverty.csv") %>%
   select(geo_entity_id, geo_entity_name, name, data_value) %>%
   filter(is.na(geo_entity_id) == FALSE) %>%
   spread(key = name, value = data_value) %>%

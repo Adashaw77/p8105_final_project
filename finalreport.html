@@ -291,22 +291,7 @@ tree_density = tree_df %&gt;%
   ungroup() %&gt;%
   mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))</code></pre>
 <pre class="r"><code>#read and tidy data
-download.file(&quot;https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv&quot;,mode = &quot;wb&quot;,destfile = &quot;asthma_air_poverty.csv&quot;)
-
-asthma_air_poverty = read_csv(&quot;asthma_air_poverty.csv&quot;) %&gt;%
-  select(geo_entity_id, geo_entity_name, name, data_value) %&gt;%
-  filter(is.na(geo_entity_id) == FALSE) %&gt;%
-  spread(key = name, value = data_value) %&gt;%
-  janitor::clean_names() %&gt;%
-  select(poverty, children_under_5_years_old_in_poverty, everything()) %&gt;%
-  mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
-         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
-
-tree_density_total = tree_density %&gt;%
-  select(geo_entity_id=uhf42_code, tree_density) %&gt;%
-  distinct()
-
-final_df = left_join(asthma_air_poverty, tree_density_total)</code></pre>
+download.file(&quot;https://raw.githubusercontent.com/BS1125/project_data/master/asthma_pollutes_poverty.csv&quot;,mode = &quot;wb&quot;,destfile = &quot;asthma_air_poverty.csv&quot;)</code></pre>
 </div>
 </div>
 </div>
