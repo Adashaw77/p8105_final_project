@@ -35,22 +35,6 @@ tree_df = left_join(tree_df, area, by = "uhf42_code")
 ```
 
 ```{r }
-#among 652,173 trees, only 361 trees have diameter larger than 70, so we make plots without them.
-
-#density plot of tree_dbh
-ggplot(tree_df) +
-  geom_density(aes(x = tree_dbh, fill = boroname, alpha = 0.5))+ 
-  scale_x_continuous(limits = c(0, 50)) +
-  theme(legend.position = "bottom")
-
-#violin plot of tree_dbh
-ggplot(tree_df) +
-  geom_violin(aes(x = boroname, y = tree_dbh, fill = boroname))+ 
-  scale_y_continuous(limits = c(0, 50)) +
-  theme(legend.position = "bottom")
-```
-
-```{r }
 #tree density
 tree_density = tree_df %>%
   group_by(boroname, uhf42_name, uhf42_code, area) %>%
@@ -135,43 +119,83 @@ ggplot(final_asthma_df) +
    geom_smooth(aes(x = sulfur_dioxide_so2, y = rate, color = asthma_age), method = "lm", se = F) +
    labs(
     title = "Asthma and Sulfur Dioxide",
-    x = "Sulfur Dioxide Annual Average",
+    x = "Sulfur Dioxide Average",
     y = "Asthma Rate"
   ) +
-   theme(legend.position = "bottom") 
+   theme(legend.position = "bottom") +
+   guides(color = guide_legend(nrow = 2)) +
+   scale_color_hue(name = "Age")
 
 #asthma and pm2.5
 ggplot(final_asthma_df) +
    geom_point(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age))+
    geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age), method = "lm", se = F) +
-  theme(legend.position = "bottom")
+   labs(
+    title = "Asthma and PM2.5",
+    x = "PM2.5 Average",
+    y = "Asthma Rate"
+  ) +
+   theme(legend.position = "bottom") +
+   guides(color = guide_legend(nrow = 2)) +
+   scale_color_hue(name = "Age")
 
 #asthma and poverty
 ggplot(final_asthma_df) +
    geom_point(aes(x = poverty, y = rate, color = asthma_age))+
    geom_smooth(aes(x = poverty, y = rate, color = asthma_age), method = "lm", se = F) +
-  theme(legend.position = "bottom")
+   labs(
+    title = "Asthma and Poverty",
+    x = "Poverty Percent",
+    y = "Asthma Rate"
+  ) +
+   theme(legend.position = "bottom") +
+   guides(color = guide_legend(nrow = 2)) +
+   scale_color_hue(name = "Age")
 
 #asthma and tree
 ggplot(final_asthma_df) +
   geom_point(aes(x = tree_density, y = rate, color = asthma_age)) +
    geom_smooth(aes(x = tree_density, y = rate, color = asthma_age), method = "lm",se = F) +
-  theme(legend.position = "bottom")
+   labs(
+    title = "Asthma and Tree Density",
+    x = "Tree Density",
+    y = "Asthma Rate"
+  ) +
+   theme(legend.position = "bottom") +
+   guides(color = guide_legend(nrow = 2)) +
+   scale_color_hue(name = "Age")
 
 #asthma 0-4 and asthma 5-14 in each UHF42
 ggplot(final_asthma_df) +
-  geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = "identity", position = "dodge")
-  theme(legend.position = "bottom")
+  geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = "identity", position = "dodge") +
+   labs(
+    title = "Asthma Rate In Each Entity",
+    x = "Entity Name",
+    y = "Asthma Rate"
+  ) +
+   theme(legend.position = "bottom", axis.text.x = element_text(angle = 75, hjust = 1)) +
+   guides(fill = guide_legend(nrow = 2)) +
+   scale_fill_hue(name = "Age") 
 
 #tree and SO2
 ggplot(final_asthma_df) +
   geom_point(aes(x = sulfur_dioxide_so2, y = tree_density)) +
-  geom_smooth(aes(x = sulfur_dioxide_so2, y = tree_density), method = "lm", se = F)
+  geom_smooth(aes(x = sulfur_dioxide_so2, y = tree_density), method = "lm", se = F) +
+   labs(
+    title = "Tree Density and Sulfur Dioxide",
+    x = "Sulfur Dioxide Average",
+    y = "Tree Density"
+  ) 
 
 #tree and pm2.5
 ggplot(final_asthma_df) +
   geom_point(aes(x = fine_particulate_matter_pm2_5, y = tree_density)) +
-  geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = tree_density), method = "lm", se = F) 
+  geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = tree_density), method = "lm", se = F) +
+   labs(
+    title = "Tree Density and PM2.5",
+    x = "PM2.5 Average",
+    y = "Tree Density"
+  ) 
 ```
 
 
