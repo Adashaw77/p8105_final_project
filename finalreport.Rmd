@@ -1,13 +1,15 @@
 ---
-title: "final report"
-author: "Jingwei Ren, Baoyi Shi, Xinyao Wu, Qi Shao"
+title: "The relationship between Tree density and asthma rate among children in New York City"
+author: "Jingwei Ren (jr3869); Qi Shao (qs2200);  Xinyao Wu (xw2598); Baoyi Shi bs3141"
 date: "12/2/2018"
 output: github_document
 ---
 
-## motivation
+## Motivation
 
-Over the past decades, the prevalence of asthma has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Asthma is the most prevalent chronic disease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presence of extra mucus in narrow airways. Data on the influence of green spaces on asthma in children are inconstant. Previous research that did in Kaunas, Lithuania showed a positive association between the level of the surrounding greenness and risk of asthma in children. Their study suggested that high exposure to green spaces may increase the risk of allergic conditions and the prevalence of asthma through the effect of pollen. Another ecological design study did in New York City observed an inverse association between street tree density and the prevalence of asthma. Others have reported no relationships between greenery densities, canopy cover and asthma.
+Over the past decades, the prevalence of asthma has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Asthma is the most prevalent chronic disease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presence of extra mucus in narrow airways. Data on the influence of green spaces on asthma in children are inconstant.
+
+Previous research that did in Kaunas, Lithuania showed a positive association between the level of the surrounding greenness and risk of asthma in children. Their study suggested that high exposure to green spaces may increase the risk of allergic conditions and the prevalence of asthma through the effect of pollen. Another ecological design study did in New York City observed an inverse association between street tree density and the prevalence of asthma. Others have reported no relationships between greenery densities, canopy cover and asthma.
 
 Our goal was to investigate the association between tree densities and asthma among children in New York City, including variables like poverties and air quality factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2).
 
@@ -26,14 +28,12 @@ Furthermore, we investigated the relationships between asthma and other factors,
 
 
 ##Data
+
 Our GitHub repo of the steps in this analysis can be found [here](https://github.com/Adashaw77/p8105_final_project/blob/master/final.Rmd).
 
 The original tree data includes variables: zip code of each neighborhoods, boroname, tree's diameter, status(alive and dead), health, spc_common (tree species) and tree's latitude and longitude.
 
 The asthma dataset has a total 16 variables and it includes important variables like neighborhoods, asthma rate for children from 0 to 4 years old and children from 5 to 14 years old, so2 level, poverty percent, percent of the children under 5 years living in the poverty areas, tree's density and total asthma rate.
-
-
-
 
 ### Data Source
 
@@ -45,7 +45,7 @@ All neighborhood data was retrieved from (http://www.infoshare.org/misc/UHF.pdf)
 
 
 
-### scraping method, cleaning
+### Scraping method, cleaning
 ```{r include = FALSE}
 library(tidyverse)
 library(dplyr)
@@ -54,7 +54,7 @@ library(ggplot2)
 library(readxl)
 ```
 
-```{r}
+```{r message = F}
 
 #import and tidy tree data
 tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
@@ -88,7 +88,7 @@ tree_density = tree_df %>%
 ```
 
 
-```{r}
+```{r message = F}
 # import and tidy astham data
 
 asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
@@ -116,7 +116,7 @@ final_df = left_join(asthma_air_poverty, tree_density_total)
 ###Step one
 
 
-```{r}
+```{r message = F}
 #plot between asthma and tree
 final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_emergency_department_visits_children_0_to_4_yrs_old:asthma_emergency_department_visits_children_5_to_14_yrs_old) %>%
   gather(key = poverty_age, value = poverty, poverty:children_under_5_years_old_in_poverty) %>%
@@ -140,10 +140,9 @@ This plot 1 showed the relationship between asthma and tree. Visually, there was
 
 
 ### Step two
->>>>>>> 9b3979ef49895e8f5e21553305a8014306fd4d43
 Other factors may also impact the astham rate. We made plots showing the association between astham and air qualities (fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2) ) and the association between asthma and poverty rate. 
 
-```{r}
+```{r message = F}
 
 #plot between asthma and so2
 ggplot(final_asthma_df) +
@@ -196,7 +195,7 @@ Visually, there was a positive association between astham rate and SO2, PM 2.5 a
 
 We are interested in seeing whether asthma rate is different between children from 0 to 4 years old and children from 5 to 14 years old in 42 neighborhoods in new york city. 
 
-```{r}
+```{r message = F}
 
 #plot between asthma 0-4 and asthma 5-14 in each UHF42
 ggplot(final_asthma_df) +
@@ -268,7 +267,7 @@ model two: asthma = -82.55 -471392 tree_density+ 122SO2+12.87poverty
 
 
 We tested the association between astham rate and all pollutes including ozone, black carbon, PM 2.5, NO, NO2, SO2.
-```{r}
+```{r message = F}
 #SLR:choose the pollutes associated with asthma
 o3_p1 = summary(lm(asthma_emergency_department_visits_children_0_to_4_yrs_old~ozone_o3, data=final_df))$coefficients[2,4]
 
@@ -307,7 +306,7 @@ The result showed that only SO2 had an association with asthma, since the p valu
 
 We did a paired T test to test if there is significant difference between asthma rate of 0-4 and that of 5-14
 
-```{r}
+```{r message = F}
 
 #Paired T test to test if there is significant difference between asthma rate of 0-4 and that of 5-14
 t.test(final_df$asthma_emergency_department_visits_children_0_to_4_yrs_old, final_df$asthma_emergency_department_visits_children_5_to_14_yrs_old, paired=T) %>%

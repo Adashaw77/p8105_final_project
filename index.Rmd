@@ -1,4 +1,6 @@
 ---
+title: "The relationship between Tree density and asthma rate among children in New York City"
+author: "Jingwei Ren (jr3869); Qi Shao (qs2200);  Xinyao Wu (xw2598); Baoyi Shi bs3141"
 output:
   html_document:
    toc: true
@@ -6,11 +8,6 @@ output:
    theme: sandstone
    highlight: monochrome
 ---
-##
-##
-
-Tree density influences on asthma among children in New York City
-------------------------------------------------------------
 
 <img src="figure/lung.png" style="width:75%">
 
@@ -30,8 +27,7 @@ Our goal was to investigate the association between tree densities and asthma am
 
 # Conclusion
 
-In conclusion, we found out that there is no association between tree density and asthma rate based on our data set. If more variables are included in the future, we would expect to see that afforestation in low-income communities will help improve air-quality and thus decrease the risk of child asthma over a long-term period.
-
+Our main goal is to discuss the relationship between tree density in New York City and children asthma rate in 2015. We built two multilinear regression models, investigating the relationship between asthma rate and tree density, SO2 and poverty level for children from 0 to 4 years old and children from 5 to 14 years old. The result showed that exposure to air pollution (SO2) (P-value = 0.048, 0.0116) and increased poverty level(p-value = 6.41e-09,2.83e-09) could contribute to excess asthma in urban areas. All the factors are significant except tree density ( p-value = 0.86, 0.64). We listed some possible reasons that explained why no obvious association was shown between tree density and asthma. One possible explanation is the season. In the spring and summer months, increasing tree densities might have a positive impact on asthma rate. Pollen could be an allergen that gives some people sneezing fits and watery eyes, which could indirectly cause an asthma attack in others. Certain trees like Ash, Birch, and Oak could cause aggravate respiratory allergies. However, in the fall and winter months, increasing tree densities might decrease the asthma rate through the effect on local air quality. Those two situations might counteract each other and result in the conclusion that overall, there was no association between tree density in New York City and children asthma rate in 2015. Other factors might also influence the asthma rate, including sociodemographic characteristics, population density and hospitals amount in the neighborhood. After adjustment, the association between tree density and hospitalizations as a result of asthma might no longer significant. 
 
 
 

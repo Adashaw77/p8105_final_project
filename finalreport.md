@@ -1,12 +1,14 @@
-final report
+The relationship between Tree density and asthma rate among children in New York City
 ================
-Jingwei Ren, Baoyi Shi, Xinyao Wu, Qi Shao
+Jingwei Ren (jr3869); Qi Shao (qs2200); Xinyao Wu (xw2598); Baoyi Shi bs3141
 12/2/2018
 
-motivation
+Motivation
 ----------
 
-Over the past decades, the prevalence of asthma has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Asthma is the most prevalent chronic disease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presence of extra mucus in narrow airways. Data on the influence of green spaces on asthma in children are inconstant. Previous research that did in Kaunas, Lithuania showed a positive association between the level of the surrounding greenness and risk of asthma in children. Their study suggested that high exposure to green spaces may increase the risk of allergic conditions and the prevalence of asthma through the effect of pollen. Another ecological design study did in New York City observed an inverse association between street tree density and the prevalence of asthma. Others have reported no relationships between greenery densities, canopy cover and asthma.
+Over the past decades, the prevalence of asthma has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Asthma is the most prevalent chronic disease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presence of extra mucus in narrow airways. Data on the influence of green spaces on asthma in children are inconstant.
+
+Previous research that did in Kaunas, Lithuania showed a positive association between the level of the surrounding greenness and risk of asthma in children. Their study suggested that high exposure to green spaces may increase the risk of allergic conditions and the prevalence of asthma through the effect of pollen. Another ecological design study did in New York City observed an inverse association between street tree density and the prevalence of asthma. Others have reported no relationships between greenery densities, canopy cover and asthma.
 
 Our goal was to investigate the association between tree densities and asthma among children in New York City, including variables like poverties and air quality factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2).
 
@@ -39,28 +41,14 @@ All data related to trees was retrieved from NYC open data (<https://data.cityof
 
 All neighborhood data was retrieved from (<http://www.infoshare.org/misc/UHF.pdf>)
 
-### scraping method, cleaning
+### Scraping method, cleaning
 
 ``` r
 #import and tidy tree data
 tree_df = read_csv("./data/2015StreetTreesCensus_TREES.csv") %>%
   janitor::clean_names() %>%
   filter(status == "Alive") 
-```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   zipcode = col_integer(),
-    ##   boroname = col_character(),
-    ##   tree_dbh = col_integer(),
-    ##   status = col_character(),
-    ##   health = col_character(),
-    ##   spc_common = col_character(),
-    ##   Latitude = col_double(),
-    ##   longitude = col_double()
-    ## )
-
-``` r
 zipcode_uhf42 = read_excel("./data/Zipcode_UHF42.xlsx") %>%
    gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %>%
    select(-zipcode_no, uhf42_name) %>%
@@ -104,36 +92,13 @@ asthma_air_poverty = read_csv("./data/asthma_pollutes_poverty.csv") %>%
   select(poverty, children_under_5_years_old_in_poverty, everything()) %>%
   mutate(asthma_total = asthma_emergency_department_visits_children_0_to_4_yrs_old + asthma_emergency_department_visits_children_5_to_14_yrs_old,
          geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total))
-```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   `Unique Id` = col_character(),
-    ##   indicator_id = col_integer(),
-    ##   geo_type_id = col_integer(),
-    ##   measurement_type_id = col_integer(),
-    ##   internal_id = col_integer(),
-    ##   subtopic_id = col_integer(),
-    ##   name = col_character(),
-    ##   Measure = col_character(),
-    ##   geo_type_name = col_character(),
-    ##   description = col_character(),
-    ##   geo_entity_id = col_integer(),
-    ##   geo_entity_name = col_character(),
-    ##   year_description = col_character(),
-    ##   data_value = col_double(),
-    ##   message = col_character()
-    ## )
-
-``` r
 tree_density_total = tree_density %>%
   select(boroname, geo_entity_id=uhf42_code, tree_density) %>%
   distinct()
 
 final_df = left_join(asthma_air_poverty, tree_density_total)
 ```
-
-    ## Joining, by = "geo_entity_id"
 
 Exploratory analysis:
 ---------------------
@@ -168,7 +133,7 @@ This plot 1 showed the relationship between asthma and tree. Visually, there was
 
 ### Step two
 
-> > > > > > > 9b3979ef49895e8f5e21553305a8014306fd4d43 Other factors may also impact the astham rate. We made plots showing the association between astham and air qualities (fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2) ) and the association between asthma and poverty rate.
+Other factors may also impact the astham rate. We made plots showing the association between astham and air qualities (fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2) ) and the association between asthma and poverty rate.
 
 ``` r
 #plot between asthma and so2
