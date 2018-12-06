@@ -132,15 +132,16 @@ map = ggplot(asthma_map) +
     scale_fill_gradient(high = "#c51b8a",low = "#fde0dd", guide = "colorbar", name="Asthma Rate") +
     expand_limits(map_data) +
   geom_text(data = cnames, aes(x = x, y = y, label = geo_entity_name), size = 2) + theme_void()+
+  labs(title = "Asthma rate among chidren in NYC")+
   theme(legend.justification=c(1,0), legend.position=c(1,0)) +
     theme_nothing()
 
   ggplotly(map) %>%
-  layout(title = "Asthma rate among chidren in NYC",
+  layout(
     hoverlabel = list(bgcolor = "white", 
                               font = list(family = "Calibri", 
                                           size = 10, 
-                                          color = "black"))
+                                        color = "black"))
          )
         
 
