@@ -6,14 +6,18 @@ navbar:
   right:
     - text: "Data"
       href:  Data.html
+<<<<<<< HEAD
     - text: "MLR"
       href:  about.html      
     - text: "Dashboard"
+=======
+    - text: "Asthma"
+>>>>>>> 0ccc907f250948999fd41bd54753f163d891c6ff
       href: dashboRD.html
-    - text: "Dashboard"
+    - text: "Tree and asthma"
       href: dashboard2.html
     - icon: fab fa-youtube
-      href: Data.Rmd
+      href: https://www.youtube.com/watch?v=XUR1DjuEwj0&feature=youtu.be/
     - icon: fa-github fa-lg
       href: https://github.com/Adashaw77/p8105_final_project/
 output:
