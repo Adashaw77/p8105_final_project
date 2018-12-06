@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Jingwei Ren," />
+
+
+<title>final report</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="Data.html">Data</a>
+</li>
+<li>
+  <a href="dashboRD.html">Dashboard</a>
+</li>
+<li>
+  <a href="dashboard2.html">Dashboard</a>
+</li>
+<li>
+  <a href="map.Rmd">
+    <span class="fab fa fab fa-youtube"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/Adashaw77/p8105_final_project/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">final report</h1>
+<h4 class="author"><em>Jingwei Ren,</em></h4>
+<h4 class="date"><em>12/2/2018</em></h4>
+
+</div>
+
+
+<div id="final-report" class="section level2">
+<h2>final report</h2>
+</div>
+<div id="motivation" class="section level2">
+<h2>motivation</h2>
+<p>Over the past decades, the prevalence of asthma has increased in the urban areas with the potential effects of airflow, air quality and production of aeroallergens. Asthma is the most prevalent chronic disease among children. The disease can make breathing difficult and trigger coughing, wheezing and shortness of breath by the presence of extra mucus in narrow airways. Data on the influence of green spaces on asthma in children are inconstant. Previous research that did in Kaunas, Lithuania showed a positive association between the level of the surrounding greenness and risk of asthma in children. Their study suggested that high exposure to green spaces may increase the risk of allergic conditions and the prevalence of asthma through the effect of pollen. Another ecological design study did in New York City observed an inverse association between street tree density and the prevalence of asthma. Others have reported no relationships between greenery densities, canopy cover and asthma.</p>
+<p>Our goal was to investigate the association between tree densities and asthma among children in New York City, including variables like poverties and air quality factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2).</p>
+</div>
+<div id="related-work" class="section level2">
+<h2>related work</h2>
+<p>Asthma infection has been an issue for a long time. Inconsistent associations between urban greenery and childhood asthma had stimulated studies on the relations between those two factors. Scientific reviews related to tree densities and asthma rate are here: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3415223/">Children Living in areas with more street tress have lower prevalence of asthma</a>, <a href="https://repository.lsmuni.lt/bitstream/handle/1/1787/27067890.pdf?sequence=1&amp;isAllowed=y">Associations between neighborhood greenness and asthma in preschool children in Kaunas,Lithuania</a> and <a href="https://ehp.niehs.nih.gov/doi/10.1289/ehp.1308038">Risks and benefits of Green Spaces for children: A Cross-Sectional Study of Associations with Sedentary Behavior, Obesity, Asthma, and Allergy</a>.</p>
+</div>
+<div id="initial-questions" class="section level2">
+<h2>Initial Questions</h2>
+<p>Our initial questions was whether there is an association between tree densities and asthma among children in New York City based on 42 different neighborhoods.</p>
+<p>Furthermore, we investigated the relationships between asthma and other factors, like poverties and air qualities, factors like fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2)). We were also interested in the association between tree densities in 42 different neighborhoods and air quality factors.</p>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>Our GitHub repo of the steps in this analysis can be found <a href="https://github.com/Adashaw77/p8105_final_project/blob/master/final.Rmd">here</a>.</p>
+<p>The original tree data includes variables: zip code of each neighborhoods, boroname, tree’s diameter, status(alive and dead), health, spc_common (tree species) and tree’s latitude and longitude.</p>
+<p>The asthma dataset has a total 16 variables and it includes important variables like neighborhoods, asthma rate for children from 0 to 4 years old and children from 5 to 14 years old, so2 level, poverty percent, percent of the children under 5 years living in the poverty areas, tree’s density and total asthma rate.</p>
+<div id="source" class="section level3">
+<h3>source</h3>
+<p>All data about asthma, poverty and air qualities was retrieved from NYC health (<a href="http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx" class="uri">http://a816-dohbesp.nyc.gov/IndicatorPublic/PublicTracking.aspx</a>)</p>
+<p>All data related to trees was retrieved from NYC open data (<a href="https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35" class="uri">https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35</a>)</p>
+<p>All neighborhood data was retrieved from (<a href="http://www.infoshare.org/misc/UHF.pdf" class="uri">http://www.infoshare.org/misc/UHF.pdf</a>)</p>
+</div>
+<div id="scraping-method-cleaning" class="section level3">
+<h3>scraping method, cleaning</h3>
+<pre class="r"><code>library(tidyverse)
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(readxl)</code></pre>
+<pre class="r"><code>#import and tidy tree data
+tree_df = read_csv(&quot;./data/2015StreetTreesCensus_TREES.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(status == &quot;Alive&quot;) %&gt;%
+  dplyr::select(-status)
+
+zipcode_uhf42 = read_excel(&quot;./data/Zipcode_UHF42.xlsx&quot;) %&gt;%
+   gather(key = zipcode_no, value = zipcode, zipcode1:zipcode9) %&gt;%
+   dplyr::select(-zipcode_no, uhf42_name) %&gt;%
+   filter(is.na(zipcode) == FALSE)
+
+tree_df = left_join(tree_df, zipcode_uhf42, by = &quot;zipcode&quot;) 
+
+mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/ada/Documents/Ada Documents/Master in Columbia/Courses/Data Science/R programming/homework/p8105_final_project/UHF42/UHF_42_DOHMH.shp&quot;, layer: &quot;UHF_42_DOHMH&quot;
+## with 43 features
+## It has 8 fields</code></pre>
+<pre class="r"><code>area=data.frame(uhf42_code = mydat$UHFCODE,area = mydat$SHAPE_Area) %&gt;%
+  filter(is.na(uhf42_code) == FALSE)
+
+tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)
+
+#tree density element is added
+tree_density = tree_df %&gt;%
+  group_by(uhf42_name, uhf42_code, area, health) %&gt;%
+  dplyr::summarize(health_total = n()) %&gt;%
+  filter(is.na(uhf42_name) == FALSE) %&gt;%
+  group_by(uhf42_name) %&gt;%
+  dplyr::mutate(total = sum(health_total),
+                tree_density = total/area,
+                health_tree_density = health_total/area) %&gt;%
+  ungroup() %&gt;%
+  mutate(uhf42_name = forcats::fct_reorder(uhf42_name, tree_density))</code></pre>
+<pre class="r"><code># import and tidy astham data
+
+asthma_air = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
+  janitor::clean_names()
+
+asthma_em_0to4 = asthma_air %&gt;%
+  filter(name == &quot;Asthma Emergency Department Visits (Children 0 to 4 Yrs Old)&quot;,
+         measure == &quot;Rate&quot;,
+         year_description == &quot;2015&quot;) %&gt;%
+  dplyr::select(geo_entity_id, geo_entity_name, asthma_em_0to4 = data_value)
+
+asthma_em_5to14 = asthma_air %&gt;%
+  filter(name == &quot;Asthma Emergency Department Visits (Children 5 to 14 Yrs Old)&quot;,
+         measure == &quot;Rate&quot;,
+         year_description == &quot;2015&quot;) %&gt;%
+  dplyr::select(geo_entity_id, asthma_em_5to14 = data_value) 
+
+so2 = asthma_air %&gt;%
+  filter(name == &quot;Sulfur Dioxide (SO2)&quot;,
+         measure == &quot;Mean&quot;,
+         year_description == &quot;Winter 2014-15&quot;) %&gt;%
+  dplyr::select(geo_entity_id, so2 = data_value)
+
+poverty = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(year_description == &quot;2011-15&quot;,
+         measure == &quot;Percent&quot;,
+         name == &quot;Poverty&quot;) %&gt;%
+  dplyr::select(geo_entity_id, poverty = data_value) 
+
+poverty_under5 = read_csv(&quot;./data/asthma_pollutes_poverty.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  filter(year_description == &quot;2011-15&quot;,
+         measure == &quot;Percent&quot;,
+         name == &quot;Children under 5 years old in Poverty&quot;) %&gt;%
+  dplyr::select(geo_entity_id, poverty_under5 = data_value) 
+
+tree_density_total = tree_density%&gt;%
+  dplyr::select(geo_entity_id=uhf42_code,tree_density) %&gt;%
+  distinct()
+
+final_df = left_join(asthma_em_0to4,asthma_em_5to14) %&gt;%
+  left_join(so2) %&gt;%
+  left_join(poverty) %&gt;%
+  left_join(poverty_under5) %&gt;%
+  left_join(tree_density_total) %&gt;%
+  mutate(asthma_total = asthma_em_0to4+asthma_em_5to14,
+         geo_entity_name = forcats::fct_reorder(geo_entity_name, asthma_total)) </code></pre>
+</div>
+</div>
+<div id="exploratory-analysis" class="section level2">
+<h2>Exploratory Analysis</h2>
+<p>Visualizations, summaries, and exploratory statistical analyses. Justify the steps you took, and show any major changes to your ideas.</p>
+</div>
+<div id="asthma-visualizations" class="section level2">
+<h2>Asthma Visualizations</h2>
+<div id="step-one" class="section level3">
+<h3>step one</h3>
+<p>We made a plot showing the assoication between tree density and astham rate.</p>
+<pre class="r"><code>#plot between asthma and tree
+final_asthma_df = gather(final_df, key = asthma_age, value = rate, asthma_em_0to4:asthma_em_5to14) %&gt;%
+  gather(key = poverty_age, value = poverty, poverty:poverty_under5) %&gt;%
+  filter((asthma_age == &quot;asthma_em_5to14&quot;&amp;poverty_age == &quot;poverty&quot;)|(asthma_age == &quot;asthma_em_0to4&quot;&amp; poverty_age == &quot;poverty_under5&quot;))
+
+ggplot(final_asthma_df) +
+  geom_point(aes(x=tree_density,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=tree_density,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<p><img src="final__report_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>This plot showed the relationship between asthma and tree. Visually, there was a positive association between tree density and astham rate.</p>
+</div>
+<div id="step-two" class="section level3">
+<h3>step two</h3>
+<p>Other factors may also impact the astham rate. We made plots showing the association between astham and air qualities (fine particulate matter (PM2.5), and ambient concentrations of sulfur dioxide (SO2) ) and the association between asthma and poverty rate.</p>
+<pre class="r"><code># plot between asthma and so2
+ggplot(final_asthma_df) +
+   geom_point(aes(x=so2,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=so2,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<p><img src="final__report_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>#plot between asthma and poverty
+ggplot(final_asthma_df) +
+   geom_point(aes(x=poverty,y=rate,color=asthma_age))+
+   geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = &quot;lm&quot;,se=F)</code></pre>
+<p><img src="final__report_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p>plot1 showed the relationship between asthma and so2. plot2 showed the relationship between asthma and poverty. Visually, there was a positive association between astham rate and so2 and there was a postive association between astham rate and poverty level.</p>
+</div>
+<div id="step-three" class="section level3">
+<h3>step three</h3>
+<p>We are interested in seeing whether asthma rate is different between children from 0 to 4 years old and children from 5 to 14 years old in 42 neighborhoods in new york city.</p>
+<pre class="r"><code>#plot between asthma 0-4 and asthma 5-14 in each UHF42
+ggplot(final_asthma_df) +
+  geom_bar(aes(x=geo_entity_name,y=rate,fill=asthma_age),stat = &quot;identity&quot;,position = &quot;dodge&quot;) +
+  coord_flip()</code></pre>
+<p><img src="final__report_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Plot showed that children from 0 to 4 years have higher asthma rate compared to children from 5 to 14 years old.</p>
+</div>
+</div>
+<div id="tree-visualizations" class="section level2">
+<h2>Tree Visualizations</h2>
+<p>Tree</p>
+</div>
+<div id="statistical-analyses" class="section level2">
+<h2>statistical analyses</h2>
+<pre class="r"><code># mlr showing the relationship between asthma rate of kids from 0 to 4 years and tree density, so2 levels, percent of the children under 5 years living in the poverty areas
+
+summary(lm(asthma_em_0to4~tree_density+so2+poverty_under5,data=final_df))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_em_0to4 ~ tree_density + so2 + poverty_under5, 
+##     data = final_df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -390.05  -60.43    2.28   97.32  259.42 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      -155.24      90.12  -1.723  0.09307 .  
+## tree_density   163130.32  941507.03   0.173  0.86336    
+## so2               189.68      62.76   3.022  0.00448 ** 
+## poverty_under5     11.07       1.49   7.434 6.41e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 144.7 on 38 degrees of freedom
+## Multiple R-squared:  0.6473, Adjusted R-squared:  0.6195 
+## F-statistic: 23.25 on 3 and 38 DF,  p-value: 1.028e-08</code></pre>
+<pre class="r"><code># mlr howing the relationship between asthma rate of kids from 5 to 14 years and tree density, so2 levels, poverty levels
+
+summary(lm(asthma_em_5to14~tree_density+so2+poverty,data=final_df))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = asthma_em_5to14 ~ tree_density + so2 + poverty, 
+##     data = final_df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -238.96  -48.70   10.19   35.69  229.04 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -8.828e+01  6.421e+01  -1.375   0.1772    
+## tree_density -4.140e+05  6.694e+05  -0.619   0.5399    
+## so2           1.225e+02  4.567e+01   2.683   0.0107 *  
+## poverty       1.290e+01  1.684e+00   7.662 3.18e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 103 on 38 degrees of freedom
+## Multiple R-squared:  0.6769, Adjusted R-squared:  0.6514 
+## F-statistic: 26.54 on 3 and 38 DF,  p-value: 1.988e-09</code></pre>
+<p>Based on the multiple linear regression models, all the factors are significant except tree density ( p value is 0.86, 0.64). This indicated that there are associations between asthma rate of kids and so2 and poverty levels.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
