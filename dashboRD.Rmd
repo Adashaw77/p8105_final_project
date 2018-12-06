@@ -3,7 +3,7 @@ title: "Dashboard"
 output: 
   flexdashboard::flex_dashboard:
     vertical_layout: fill
-    theme: cosmo
+    theme: spacelab
 ---
 
 ```{r dashboard, include=FALSE}
@@ -174,7 +174,7 @@ plot_ly(final_asthma_df,x= ~rate, y= ~geo_entity_name, color = ~asthma_age, type
 
 Column {data-width=550}
 -----------------------------------------------------------------------
-### Scatterplot between SO2 and the rate of asthma emergency department visits in different age group children
+### Scatterplot between SO2 and the asthma rate in  different age group of children
 
 ```{r}
 so2_plot = ggplot(final_asthma_df) +
@@ -182,13 +182,13 @@ so2_plot = ggplot(final_asthma_df) +
    geom_smooth(aes(x=sulfur_dioxide_so2,y=rate,color = asthma_age), method = "lm",se=F)+theme(legend.position = "none")
 ggplotly(so2_plot) %>% 
   layout(
-         yaxis = list(title = "Rate of Asthma Emergency Department Visits"),
+         yaxis = list(title = "Asthma Rate"),
          xaxis = list(title = "Average SO2 ")
   )
 ```
 
 
-### Scatterplot between poverty and the rate of asthma emergency department visits in different age griup children
+### Scatterplot between poverty and asthma rate different age griup children
 
 ```{r}
 #asthma and poverty
@@ -197,7 +197,7 @@ poverty = ggplot(final_asthma_df) +
    geom_smooth(aes(x=poverty,y=rate,color = asthma_age), method = "lm",se=F)+theme(legend.position = "none")
   ggplotly(poverty) %>% 
       layout(
-         yaxis = list(title = "Rate of Asthma Emergency Department Visits"),
+         yaxis = list(title = "Asthma Rate"),
          xaxis = list(title = "Poverty Level")
   )
 
