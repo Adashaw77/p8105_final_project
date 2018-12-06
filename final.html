@@ -268,6 +268,22 @@ mydat = rgdal::readOGR(&quot;./UHF42/UHF_42_DOHMH.shp&quot;)</code></pre>
   filter(is.na(uhf42_code) == FALSE)
 
 tree_df = left_join(tree_df, area, by = &quot;uhf42_code&quot;)</code></pre>
+<pre class="r"><code>#among 652,173 trees, only 361 trees have diameter larger than 70, so we make plots without them.
+
+#density plot of tree_dbh
+ggplot(tree_df) +
+  geom_density(aes(x = tree_dbh, fill = boroname, alpha = 0.5))+ 
+  scale_x_continuous(limits = c(0, 50)) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<pre><code>## Warning: Removed 361 rows containing non-finite values (stat_density).</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>#violin plot of tree_dbh
+ggplot(tree_df) +
+  geom_violin(aes(x = boroname, y = tree_dbh, fill = boroname))+ 
+  scale_y_continuous(limits = c(0, 50)) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<pre><code>## Warning: Removed 361 rows containing non-finite values (stat_ydensity).</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
 <pre class="r"><code>#tree density
 tree_density = tree_df %&gt;%
   group_by(boroname, uhf42_name, uhf42_code, area) %&gt;%
@@ -480,62 +496,44 @@ ggplot(final_asthma_df) +
    geom_smooth(aes(x = sulfur_dioxide_so2, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
    labs(
     title = &quot;Asthma and Sulfur Dioxide&quot;,
-    x = &quot;Sulfur Dioxide Average&quot;,
+    x = &quot;Sulfur Dioxide Annual Average&quot;,
     y = &quot;Asthma Rate&quot;
   ) +
-   theme(legend.position = &quot;bottom&quot;) +
-   guides(color = guide_legend(nrow = 2)) +
-   scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+   theme(legend.position = &quot;bottom&quot;) </code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <pre class="r"><code>#asthma and pm2.5
 ggplot(final_asthma_df) +
    geom_point(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age))+
    geom_smooth(aes(x = fine_particulate_matter_pm2_5, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
-   labs(
-    title = &quot;Asthma and PM2.5&quot;,
-    x = &quot;PM2.5 Average&quot;,
-    y = &quot;Asthma Rate&quot;
-  ) +
-   theme(legend.position = &quot;bottom&quot;) +
-   guides(color = guide_legend(nrow = 2)) +
-   scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <pre class="r"><code>#asthma and poverty
 ggplot(final_asthma_df) +
    geom_point(aes(x = poverty, y = rate, color = asthma_age))+
    geom_smooth(aes(x = poverty, y = rate, color = asthma_age), method = &quot;lm&quot;, se = F) +
-   labs(
-    title = &quot;Asthma and Poverty&quot;,
-    x = &quot;Poverty Percent&quot;,
-    y = &quot;Asthma Rate&quot;
-  ) +
-   theme(legend.position = &quot;bottom&quot;) +
-   guides(color = guide_legend(nrow = 2)) +
-   scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
 <pre class="r"><code>#asthma and tree
 ggplot(final_asthma_df) +
   geom_point(aes(x = tree_density, y = rate, color = asthma_age)) +
    geom_smooth(aes(x = tree_density, y = rate, color = asthma_age), method = &quot;lm&quot;,se = F) +
-   labs(
-    title = &quot;Asthma and Tree Density&quot;,
-    x = &quot;Tree Density&quot;,
-    y = &quot;Asthma Rate&quot;
-  ) +
-   theme(legend.position = &quot;bottom&quot;) +
-   guides(color = guide_legend(nrow = 2)) +
-   scale_color_hue(name = &quot;Age&quot;)</code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
+<pre class="r"><code>#asthma 0-4 and asthma 5-14 in each UHF42
+ggplot(final_asthma_df) +
+  geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = &quot;identity&quot;, position = &quot;dodge&quot;)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
+<pre class="r"><code>  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<pre><code>## List of 1
+##  $ legend.position: chr &quot;bottom&quot;
+##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;theme&quot; &quot;gg&quot;
+##  - attr(*, &quot;complete&quot;)= logi FALSE
+##  - attr(*, &quot;validate&quot;)= logi TRUE</code></pre>
 <pre class="r"><code>#tree and SO2
 ggplot(final_asthma_df) +
   geom_point(aes(x = sulfur_dioxide_so2, y = tree_density)) +
-  geom_smooth(aes(x = sulfur_dioxide_so2, y = tree_density), method = &quot;lm&quot;, se = F) +
-   labs(
-    title = &quot;Tree Density and Sulfur Dioxide&quot;,
-    x = &quot;Sulfur Dioxide Average&quot;,
-    y = &quot;Tree Density&quot;
-  ) </code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-7-5.png" width="672" /></p>
+  geom_smooth(aes(x = sulfur_dioxide_so2, y = tree_density), method = &quot;lm&quot;, se = F)</code></pre>
+<p><img src="final_files/figure-html/unnamed-chunk-8-6.png" width="672" /></p>
 <pre class="r"><code>#tree and pm2.5
 ggplot(final_asthma_df) +
   geom_point(aes(x = fine_particulate_matter_pm2_5, y = tree_density)) +
@@ -545,7 +543,7 @@ ggplot(final_asthma_df) +
     x = &quot;PM2.5 Average&quot;,
     y = &quot;Tree Density&quot;
   ) </code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-7-6.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-8-7.png" width="672" /></p>
 <pre class="r"><code>#asthma 0-4 and asthma 5-14 in each UHF42
 ggplot(final_asthma_df) +
   geom_bar(aes(x = geo_entity_name, y = rate, fill = asthma_age), stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
@@ -557,7 +555,7 @@ ggplot(final_asthma_df) +
    theme(legend.position = &quot;bottom&quot;, axis.text.x = element_text(angle = 75, hjust = 1)) +
    guides(fill = guide_legend(nrow = 2)) +
    scale_fill_hue(name = &quot;Age&quot;) </code></pre>
-<p><img src="final_files/figure-html/unnamed-chunk-7-7.png" width="672" /></p>
+<p><img src="final_files/figure-html/unnamed-chunk-8-8.png" width="672" /></p>
 <pre class="r"><code>#Paired T test to test if there is significant difference between asthma rate of 0-4 and that of 5-14
 t.test(final_df$asthma_emergency_department_visits_children_0_to_4_yrs_old, final_df$asthma_emergency_department_visits_children_5_to_14_yrs_old, paired=T) %&gt;%
   broom::tidy() %&gt;%
