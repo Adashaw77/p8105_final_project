@@ -19,3 +19,5 @@ model two: asthma = -82.55 -471392 tree_density+ 122SO2+12.87poverty
 
 ##
 <img src="image/5-14.png" style="width:75%">
+
+The result showed that exposure to air pollution (SO2) (P-value = 0.048, 0.0116) and increased poverty level(p-value = 6.41e-09,2.83e-09) could contribute to excess asthma in urban areas. All the factors are significant except tree density ( p-value = 0.86, 0.64).
